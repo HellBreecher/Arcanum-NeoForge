@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_greensapphire_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:greensapphireblock"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_greensapphire"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_greensapphire_block"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_greensapphire"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_infernaldiamond": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:infernaldiamond"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_infernalshovel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_infernaldiamond"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_infernalshovel"
+    ]
+  }
+}

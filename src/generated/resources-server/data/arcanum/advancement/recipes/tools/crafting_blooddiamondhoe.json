@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_blooddiamond": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:blooddiamond"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_blooddiamondhoe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_blooddiamond"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_blooddiamondhoe"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "minecraft:wheat",
+    "Y": "minecraft:potion",
+    "Z": "arcanum:redcup"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XZX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:unfermentedbeer"
+  }
+}

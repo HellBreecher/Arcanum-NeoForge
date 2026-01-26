@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_greensapphireore": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:greensapphireore"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:smelting_greensapphire"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_greensapphireore"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:smelting_greensapphire"
+    ]
+  }
+}

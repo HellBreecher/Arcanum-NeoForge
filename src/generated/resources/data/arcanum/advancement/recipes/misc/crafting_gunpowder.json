@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sulfurblock": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:sulfurblock"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_gunpowder"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sulfurblock"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_gunpowder"
+    ]
+  }
+}

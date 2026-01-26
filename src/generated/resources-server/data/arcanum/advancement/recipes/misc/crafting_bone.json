@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_boneblock": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:boneblock"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_bone"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_boneblock"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_bone"
+    ]
+  }
+}

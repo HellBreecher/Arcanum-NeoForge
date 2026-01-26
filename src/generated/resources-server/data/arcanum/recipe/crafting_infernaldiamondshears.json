@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "arcanum:infernaldiamond",
+    "Y": "#forge:gems/diamond",
+    "Z": "arcanum:infernalbeatingstick"
+  },
+  "pattern": [
+    "XZ",
+    "ZY"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:infernaldiamondshears"
+  }
+}

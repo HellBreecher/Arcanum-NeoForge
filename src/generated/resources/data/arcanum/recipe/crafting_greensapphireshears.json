@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "arcanum:greensapphire",
+    "Y": "arcanum:greensapphire"
+  },
+  "pattern": [
+    "X ",
+    " Y"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:greensapphireshears"
+  }
+}

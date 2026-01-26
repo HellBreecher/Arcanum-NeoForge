@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "#forge:rods/wooden"
+  },
+  "pattern": [
+    " X ",
+    " YX",
+    "Y  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:hammer"
+  }
+}

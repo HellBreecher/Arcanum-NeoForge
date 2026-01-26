@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "arcanum:infernaldiamond",
+    "Z": "arcanum:voiddiamondboots"
+  },
+  "pattern": [
+    "XZX",
+    "X X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:infernaldiamondboots"
+  }
+}

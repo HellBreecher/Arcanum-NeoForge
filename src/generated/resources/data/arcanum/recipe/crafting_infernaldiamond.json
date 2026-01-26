@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "arcanum:voiddiamondblock",
+    "Y": "arcanum:blooddiamondblock",
+    "Z": "minecraft:blaze_rod"
+  },
+  "pattern": [
+    "XYX",
+    "YZY",
+    "XYX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:infernaldiamond"
+  }
+}

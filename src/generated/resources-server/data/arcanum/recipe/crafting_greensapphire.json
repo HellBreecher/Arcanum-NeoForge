@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "arcanum:greensapphireblock"
+  ],
+  "result": {
+    "count": 9,
+    "id": "arcanum:greensapphire"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_blooddiamondore": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:blooddiamondore"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:smelting_blooddiamond"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_blooddiamondore"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:smelting_blooddiamond"
+    ]
+  }
+}

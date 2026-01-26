@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "arcanum:blooddiamond",
+    "Y": "#forge:gems/quartz",
+    "Z": "minecraft:diamond_leggings"
+  },
+  "pattern": [
+    "YXY",
+    "XZX",
+    "X X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:blooddiamondleggings"
+  }
+}

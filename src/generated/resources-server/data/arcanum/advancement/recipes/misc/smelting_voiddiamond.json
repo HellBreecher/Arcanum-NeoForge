@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:smelting_voiddiamond"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_voiddiamondore": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:voiddiamondore"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_voiddiamondore"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:smelting_voiddiamond"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "arcanum:infernaldiamond",
+    "Z": "arcanum:voiddiamondchestplate"
+  },
+  "pattern": [
+    "X X",
+    "XZX",
+    "XXX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:infernaldiamondchestplate"
+  }
+}

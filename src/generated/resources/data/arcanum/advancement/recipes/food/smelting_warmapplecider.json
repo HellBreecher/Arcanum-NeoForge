@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_applecider": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:applecider"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:smelting_warmapplecider"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_applecider"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:smelting_warmapplecider"
+    ]
+  }
+}

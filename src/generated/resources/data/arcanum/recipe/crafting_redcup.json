@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "arcanum:emptycan",
+    "Y": "minecraft:red_dye"
+  },
+  "pattern": [
+    "Y",
+    "X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:redcup"
+  }
+}

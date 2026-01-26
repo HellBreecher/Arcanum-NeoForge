@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "#forge:rods/wooden",
+    "Y": "arcanum:greensapphirecoal"
+  },
+  "pattern": [
+    "Y",
+    "X"
+  ],
+  "result": {
+    "count": 64,
+    "id": "arcanum:greensapphiretorch"
+  }
+}

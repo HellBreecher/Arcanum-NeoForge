@@ -1,0 +1,15 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "arcanum:greensapphire_ore",
+    "arcanum:blooddiamond_ore",
+    "arcanum:voiddiamond_ore",
+    "arcanum:vanillarandom_ore",
+    "arcanum:modrandom_ore",
+    "arcanum:bone_ore",
+    "arcanum:flesh_ore",
+    "arcanum:sulfur_ore"
+  ],
+  "step": "underground_ores"
+}
