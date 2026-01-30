@@ -69,5 +69,25 @@ public class Config {
             .comment("Sprint speed bonus multiplier for infernal diamond armor.")
             .defineInRange("infernalDiamond.armor.sprintSpeedMultiplier", 0.5D, 0.0D, 5.0D);
 
+    public static final ModConfigSpec.BooleanValue RECIPES_ENABLE_UPGRADES = BUILDER
+            .comment("Enable upgrade-tier crafting recipes (blood/void/infernal tiers).")
+            .define("recipes.enableUpgrades", true);
+
+    public static final ModConfigSpec.BooleanValue RECIPES_ENABLE_FERMENTER = BUILDER
+            .comment("Enable fermenter recipes.")
+            .define("recipes.enableFermenter", true);
+
+    public static final ModConfigSpec.BooleanValue RECIPES_ENABLE_SMELTING = BUILDER
+            .comment("Enable smelting recipes.")
+            .define("recipes.enableSmelting", true);
+
+    public static final ModConfigSpec.BooleanValue RECIPES_ENABLE_FURNACE_BLOCKS = BUILDER
+            .comment("Enable furnace block crafting recipes.")
+            .define("recipes.enableFurnaceBlocks", true);
+
+    public static final ModConfigSpec.BooleanValue RECIPES_ENABLE_GENERATORS = BUILDER
+            .comment("Enable generator crafting recipes.")
+            .define("recipes.enableGenerators", true);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }

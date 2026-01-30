@@ -1,6 +1,15 @@
 package com.hellbreecher.arcanum.core;
 
 import com.hellbreecher.arcanum.common.blocks.BaseBlockItem;
+import com.hellbreecher.arcanum.common.blocks.BloodDiamondFurnaceBlock;
+import com.hellbreecher.arcanum.common.blocks.BloodDiamondGeneratorBlock;
+import com.hellbreecher.arcanum.common.blocks.FermenterBlock;
+import com.hellbreecher.arcanum.common.blocks.InfernalGeneratorBlock;
+import com.hellbreecher.arcanum.common.blocks.InfernalFurnaceBlock;
+import com.hellbreecher.arcanum.common.blocks.SapphireGeneratorBlock;
+import com.hellbreecher.arcanum.common.blocks.SapphireFurnaceBlock;
+import com.hellbreecher.arcanum.common.blocks.VoidDiamondFurnaceBlock;
+import com.hellbreecher.arcanum.common.blocks.VoidDiamondGeneratorBlock;
 import com.hellbreecher.arcanum.common.lib.Reference;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -145,6 +154,50 @@ public class ArcanumBlocks {
 
     //Misc Block Items
     public static final DeferredItem<Item> greensapphirecoal_block_item = registerBlockItem("greensapphirecoalblock", greensapphirecoal_block);
+
+    //Containers
+
+    public static final DeferredBlock<SapphireFurnaceBlock> sapphirefurnace_block = registerBlock("sapphirefurnace",
+            SapphireFurnaceBlock::new,
+            BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.5F).lightLevel(state -> state.getValue(SapphireFurnaceBlock.LIT) ? 13 : 0));
+    public static final DeferredBlock<BloodDiamondFurnaceBlock> blooddiamondfurnace_block = registerBlock("blooddiamondfurnace",
+            BloodDiamondFurnaceBlock::new,
+            BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.5F).lightLevel(state -> state.getValue(BloodDiamondFurnaceBlock.LIT) ? 13 : 0));
+    public static final DeferredBlock<VoidDiamondFurnaceBlock> voiddiamondfurnace_block = registerBlock("voiddiamondfurnace",
+            VoidDiamondFurnaceBlock::new,
+            BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.5F).lightLevel(state -> state.getValue(VoidDiamondFurnaceBlock.LIT) ? 13 : 0));
+    public static final DeferredBlock<InfernalFurnaceBlock> infernalfurnace_block = registerBlock("infernalfurnace",
+            InfernalFurnaceBlock::new,
+            BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.5F).lightLevel(state -> state.getValue(InfernalFurnaceBlock.LIT) ? 13 : 0));
+    public static final DeferredBlock<FermenterBlock> fermenter_block = registerBlock("fermenter",
+            FermenterBlock::new,
+            BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.5F).lightLevel(state -> 0));
+    public static final DeferredBlock<SapphireGeneratorBlock> sapphiregenerator_block = registerBlock("sapphiregenerator",
+            SapphireGeneratorBlock::new,
+            BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.5F)
+                    .lightLevel(state -> state.getValue(SapphireGeneratorBlock.LIT) ? 13 : 0));
+    public static final DeferredBlock<BloodDiamondGeneratorBlock> blooddiamondgenerator_block = registerBlock("blooddiamondgenerator",
+            BloodDiamondGeneratorBlock::new,
+            BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.5F)
+                    .lightLevel(state -> state.getValue(BloodDiamondGeneratorBlock.LIT) ? 13 : 0));
+    public static final DeferredBlock<VoidDiamondGeneratorBlock> voiddiamondgenerator_block = registerBlock("voiddiamondgenerator",
+            VoidDiamondGeneratorBlock::new,
+            BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.5F)
+                    .lightLevel(state -> state.getValue(VoidDiamondGeneratorBlock.LIT) ? 13 : 0));
+    public static final DeferredBlock<InfernalGeneratorBlock> infernalgenerator_block = registerBlock("infernalgenerator",
+            InfernalGeneratorBlock::new,
+            BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.5F)
+                    .lightLevel(state -> state.getValue(InfernalGeneratorBlock.LIT) ? 13 : 0));
+
+    public static final DeferredItem<Item> sapphirefurnace_block_item = registerBlockItem("sapphirefurnace", sapphirefurnace_block);
+    public static final DeferredItem<Item> blooddiamondfurnace_block_item = registerBlockItem("blooddiamondfurnace", blooddiamondfurnace_block);
+    public static final DeferredItem<Item> voiddiamondfurnace_block_item = registerBlockItem("voiddiamondfurnace", voiddiamondfurnace_block);
+    public static final DeferredItem<Item> infernalfurnace_block_item = registerBlockItem("infernalfurnace", infernalfurnace_block);
+    public static final DeferredItem<Item> fermenter_block_item = registerBlockItem("fermenter", fermenter_block);
+    public static final DeferredItem<Item> sapphiregenerator_block_item = registerBlockItem("sapphiregenerator", sapphiregenerator_block);
+    public static final DeferredItem<Item> blooddiamondgenerator_block_item = registerBlockItem("blooddiamondgenerator", blooddiamondgenerator_block);
+    public static final DeferredItem<Item> voiddiamondgenerator_block_item = registerBlockItem("voiddiamondgenerator", voiddiamondgenerator_block);
+    public static final DeferredItem<Item> infernalgenerator_block_item = registerBlockItem("infernalgenerator", infernalgenerator_block);
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);

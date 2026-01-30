@@ -19,6 +19,10 @@
     "arcanum:boneblock",
     "arcanum:fleshblock",
     "arcanum:sulfurblock",
-    "arcanum:greensapphirecoalblock"
+    "arcanum:greensapphirecoalblock",
+    "arcanum:voiddiamondfurnace",
+    "arcanum:sapphirefurnace",
+    "arcanum:blooddiamondfurnace",
+    "arcanum:infernalfurnace"
   ]
 }

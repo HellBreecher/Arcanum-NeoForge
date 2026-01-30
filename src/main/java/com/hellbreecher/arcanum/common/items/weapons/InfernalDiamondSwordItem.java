@@ -3,6 +3,7 @@ package com.hellbreecher.arcanum.common.items.weapons;
 import com.hellbreecher.arcanum.core.Config;
 
 import com.hellbreecher.arcanum.common.lib.ArcanumToolMaterials;
+import com.hellbreecher.arcanum.core.ArcanumItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -17,6 +18,7 @@ public class InfernalDiamondSwordItem extends Item {
     public InfernalDiamondSwordItem(Identifier id) {
         super(new Properties()
                 .sword(ArcanumToolMaterials.InfernalDiamondTool, 1.0F, -2.4F)
+                .repairable(ArcanumItems.infernaldiamond.get())
                 .setId(ResourceKey.create(Registries.ITEM, id)));
     }
 

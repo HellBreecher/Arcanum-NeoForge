@@ -1,42 +1,58 @@
 package com.hellbreecher.arcanum.common.blocks;
 
+import com.hellbreecher.arcanum.common.blocks.tileentities.FermenterBlockEntity;
+import com.hellbreecher.arcanum.common.registration.ArcanumBlockEntities;
 import com.mojang.serialization.MapCodec;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.Containers;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class FermenterBlock extends AbstractFurnaceBlock{
+import javax.annotation.Nullable;
 
-	protected FermenterBlock() {
-		super(BlockBehaviour.Properties.of()
-	    		.sound(SoundType.STONE)
-	    		.strength(1.0F, 15.0F)
-	    		.requiresCorrectToolForDrops()
-	    		);
-	}
+public class FermenterBlock extends AbstractFurnaceBlock {
+    public static final MapCodec<FermenterBlock> CODEC = simpleCodec(FermenterBlock::new);
 
+    public FermenterBlock(Properties properties) {
+        super(properties);
+    }
 
+    @Override
+    protected MapCodec<? extends AbstractFurnaceBlock> codec() {
+        return CODEC;
+    }
 
-	@Override
-	public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new FermenterBlockEntity(pos, state);
+    }
 
-	@Override
-	protected void openContainer(Level p_48690_, BlockPos p_48691_, Player p_48692_) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof FermenterBlockEntity) {
+                Containers.dropContents(level, pos, (FermenterBlockEntity) blockEntity);
+            }
+            level.removeBlockEntity(pos);
+        }
+    }
 
-	@Override
-	protected MapCodec<? extends AbstractFurnaceBlock> codec() {
-		// TODO Auto-generated method stub
-		return null;
-	}}
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return level.isClientSide() ? null : createTickerHelper(type, ArcanumBlockEntities.FERMENTER.get(), FermenterBlockEntity::serverTick);
+    }
+
+    @Override
+    protected void openContainer(Level level, BlockPos pos, Player player) {
+        BlockEntity blockentity = level.getBlockEntity(pos);
+        if (blockentity instanceof FermenterBlockEntity) {
+            player.openMenu((FermenterBlockEntity) blockentity);
+        }
+    }
+}

@@ -45,6 +45,16 @@ public class ArcanumCreativeTabs  {
                 output.accept(ArcanumBlocks.greensapphirecoal_block.get());
                 //Block Wall & Floor
                 output.accept(ArcanumBlocks.greensapphiretorch_block.get());
+                //Block Containers
+                output.accept(ArcanumBlocks.sapphirefurnace_block.get());
+                output.accept(ArcanumBlocks.blooddiamondfurnace_block.get());
+                output.accept(ArcanumBlocks.voiddiamondfurnace_block.get());
+                output.accept(ArcanumBlocks.infernalfurnace_block.get());
+                output.accept(ArcanumBlocks.fermenter_block.get());
+                output.accept(ArcanumBlocks.sapphiregenerator_block.get());
+                output.accept(ArcanumBlocks.blooddiamondgenerator_block.get());
+                output.accept(ArcanumBlocks.voiddiamondgenerator_block.get());
+                output.accept(ArcanumBlocks.infernalgenerator_block.get());
                 //Item Food
                 output.accept(ArcanumFood.crushedapple.get());
                 output.accept(ArcanumFood.toast.get());

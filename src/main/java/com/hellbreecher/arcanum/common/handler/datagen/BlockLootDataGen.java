@@ -51,6 +51,15 @@ public final class BlockLootDataGen extends BlockLootSubProvider {
         dropOther(ArcanumBlocks.greensapphiretorch_block.get(), ArcanumBlocks.greensapphiretorch_block_item.get());
         dropOther(ArcanumBlocks.wall_greensapphiretorch_block.get(), ArcanumBlocks.greensapphiretorch_block_item.get());
         dropSelf(ArcanumBlocks.greensapphirecoal_block.get());
+        dropSelf(ArcanumBlocks.voiddiamondfurnace_block.get());
+        dropSelf(ArcanumBlocks.sapphirefurnace_block.get());
+        dropSelf(ArcanumBlocks.blooddiamondfurnace_block.get());
+        dropSelf(ArcanumBlocks.infernalfurnace_block.get());
+        dropSelf(ArcanumBlocks.fermenter_block.get());
+        dropSelf(ArcanumBlocks.sapphiregenerator_block.get());
+        dropSelf(ArcanumBlocks.blooddiamondgenerator_block.get());
+        dropSelf(ArcanumBlocks.voiddiamondgenerator_block.get());
+        dropSelf(ArcanumBlocks.infernalgenerator_block.get());
     }
 
     @Override

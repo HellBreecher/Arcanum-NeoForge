@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableFurnaceBlocks"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "arcanum:voiddiamondfurnace",
+    "X": "arcanum:infernaldiamond"
+  },
+  "pattern": [
+    "XFX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:infernalfurnace"
+  }
+}

@@ -5,6 +5,7 @@ import com.hellbreecher.arcanum.core.Config;
 import com.hellbreecher.arcanum.common.lib.ArcanumArmorMaterials;
 import com.hellbreecher.arcanum.core.ArcanumArmor;
 import com.hellbreecher.arcanum.core.Arcanum;
+import com.hellbreecher.arcanum.core.ArcanumItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -35,12 +36,12 @@ public class InfernalArmorItem extends Item {
     public InfernalArmorItem(Identifier id, ArmorType type) {
         super(new Item.Properties()
                 .humanoidArmor(ArcanumArmorMaterials.INFERNAL, type)
+                .repairable(ArcanumItems.infernaldiamond.get())
                 .setId(ResourceKey.create(Registries.ITEM, id)));
     }
 
     @Override
-    public void onCraftedBy(ItemStack stack, Player player) {
-        Level level = player.level();
+    public void onCraftedPostProcess(ItemStack stack, Level level) {
         if (!Config.ENABLE_CRAFTED_ENCHANTMENTS.get()) {
             return;
         }

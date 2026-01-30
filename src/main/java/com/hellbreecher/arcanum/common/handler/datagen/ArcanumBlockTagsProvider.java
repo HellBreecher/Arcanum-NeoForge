@@ -36,7 +36,11 @@ public final class ArcanumBlockTagsProvider extends BlockTagsProvider {
                 ArcanumBlocks.bone_block.get(),
                 ArcanumBlocks.flesh_block.get(),
                 ArcanumBlocks.sulfur_block.get(),
-                ArcanumBlocks.greensapphirecoal_block.get()
+                ArcanumBlocks.greensapphirecoal_block.get(),
+                ArcanumBlocks.voiddiamondfurnace_block.get(),
+                ArcanumBlocks.sapphirefurnace_block.get(),
+                ArcanumBlocks.blooddiamondfurnace_block.get(),
+                ArcanumBlocks.infernalfurnace_block.get()
         );
     }
 }

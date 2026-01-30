@@ -1,12 +1,20 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableUpgrades"
+    }
+  ],
+  "type": "arcanum:upgrade_copy",
+  "base": "arcanum:blooddiamondshears",
   "category": "equipment",
   "key": {
     "X": "arcanum:voiddiamond",
-    "Y": "arcanum:blooddiamond"
+    "Y": "arcanum:blooddiamond",
+    "Z": "arcanum:blooddiamondshears"
   },
   "pattern": [
-    "X ",
+    "XZ",
     " Y"
   ],
   "result": {

@@ -1,5 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableUpgrades"
+    }
+  ],
+  "type": "arcanum:upgrade_copy",
+  "base": "arcanum:infernaldiamondboots",
   "category": "equipment",
   "key": {
     "X": "arcanum:infernaldiamond",
@@ -13,5 +20,6 @@
   "result": {
     "count": 1,
     "id": "arcanum:infernalboots"
-  }
+  },
+  "strip_enchantments": true
 }

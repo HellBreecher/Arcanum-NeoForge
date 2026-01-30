@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableFermenter"
+    }
+  ],
+  "type": "arcanum:fermenting",
+  "base": "arcanum:applecider",
+  "ingredient1": "minecraft:sugar",
+  "ingredient2": "minecraft:red_dye",
+  "ingredient3": "arcanum:unfermentedbeer",
+  "result": {
+    "count": 1,
+    "id": "arcanum:cortonwine"
+  }
+}

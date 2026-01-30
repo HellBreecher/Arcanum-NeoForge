@@ -31,18 +31,21 @@ public class ArcanumTools {
             "greensapphirepickaxe",
             id -> new Item(new Item.Properties()
                     .pickaxe(ArcanumToolMaterials.GreenSapphireTool, 1.0F, -2.8F)
+                    .repairable(ArcanumItems.greensapphire.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<Item> blooddiamondpickaxe = ITEMS.register(
             "blooddiamondpickaxe",
             id -> new Item(new Item.Properties()
                     .pickaxe(ArcanumToolMaterials.BloodDiamondTool, 1.0F, -2.8F)
+                    .repairable(ArcanumItems.blooddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<Item> voiddiamondpickaxe = ITEMS.register(
             "voiddiamondpickaxe",
             id -> new Item(new Item.Properties()
                     .pickaxe(ArcanumToolMaterials.VoidDiamondTool, 1.0F, -2.8F)
+                    .repairable(ArcanumItems.voiddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<Item> infernaldiamondpickaxe = ITEMS.register("infernaldiamondpickaxe", InfernalDiamondPickaxeItem::new);
@@ -51,16 +54,19 @@ public class ArcanumTools {
     public static final DeferredItem<AxeItem> greensapphireaxe = ITEMS.register(
             "greensapphireaxe",
             id -> new AxeItem(ArcanumToolMaterials.GreenSapphireTool, 6.0F, -3.1F, new Item.Properties()
+                    .repairable(ArcanumItems.greensapphire.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<AxeItem> blooddiamondaxe = ITEMS.register(
             "blooddiamondaxe",
             id -> new AxeItem(ArcanumToolMaterials.BloodDiamondTool, 6.0F, -3.1F, new Item.Properties()
+                    .repairable(ArcanumItems.blooddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<AxeItem> voiddiamondaxe = ITEMS.register(
             "voiddiamondaxe",
             id -> new AxeItem(ArcanumToolMaterials.VoidDiamondTool, 6.0F, -3.1F, new Item.Properties()
+                    .repairable(ArcanumItems.voiddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<AxeItem> infernaldiamondaxe = ITEMS.register("infernaldiamondaxe", InfernalDiamondAxeItem::new);
@@ -69,16 +75,19 @@ public class ArcanumTools {
     public static final DeferredItem<ShovelItem> greensapphireshovel = ITEMS.register(
             "greensapphireshovel",
             id -> new ShovelItem(ArcanumToolMaterials.GreenSapphireTool, 1.5F, -3.0F, new Item.Properties()
+                    .repairable(ArcanumItems.greensapphire.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<ShovelItem> blooddiamondshovel = ITEMS.register(
             "blooddiamondshovel",
             id -> new ShovelItem(ArcanumToolMaterials.BloodDiamondTool, 1.5F, -3.0F, new Item.Properties()
+                    .repairable(ArcanumItems.blooddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<ShovelItem> voiddiamondshovel = ITEMS.register(
             "voiddiamondshovel",
             id -> new ShovelItem(ArcanumToolMaterials.VoidDiamondTool, 1.5F, -3.0F, new Item.Properties()
+                    .repairable(ArcanumItems.voiddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<ShovelItem> infernaldiamondshovel = ITEMS.register("infernaldiamondshovel", InfernalDiamondShovelItem::new);
@@ -88,18 +97,21 @@ public class ArcanumTools {
             "greensapphireshears",
             id -> new ShearsItem(new Item.Properties()
                     .durability(1500)
+                    .repairable(ArcanumItems.greensapphire.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<ShearsItem> blooddiamondshears = ITEMS.register(
             "blooddiamondshears",
             id -> new ShearsItem(new Item.Properties()
                     .durability(3000)
+                    .repairable(ArcanumItems.blooddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<ShearsItem> voiddiamondshears = ITEMS.register(
             "voiddiamondshears",
             id -> new ShearsItem(new Item.Properties()
                     .durability(6000)
+                    .repairable(ArcanumItems.voiddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<ShearsItem> infernaldiamondshears = ITEMS.register("infernaldiamondshears", InfernalDiamondShearsItem::new);
@@ -108,16 +120,19 @@ public class ArcanumTools {
     public static final DeferredItem<HoeItem> greensapphirehoe = ITEMS.register(
             "greensapphirehoe",
             id -> new HoeItem(ArcanumToolMaterials.GreenSapphireTool, -2.0F, -3.0F, new Item.Properties()
+                    .repairable(ArcanumItems.greensapphire.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<HoeItem> blooddiamondhoe = ITEMS.register(
             "blooddiamondhoe",
             id -> new HoeItem(ArcanumToolMaterials.BloodDiamondTool, -2.0F, -3.0F, new Item.Properties()
+                    .repairable(ArcanumItems.blooddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<HoeItem> voiddiamondhoe = ITEMS.register(
             "voiddiamondhoe",
             id -> new HoeItem(ArcanumToolMaterials.VoidDiamondTool, -2.0F, -3.0F, new Item.Properties()
+                    .repairable(ArcanumItems.voiddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<HoeItem> infernaldiamondhoe = ITEMS.register("infernaldiamondhoe", InfernalDiamondHoeItem::new);

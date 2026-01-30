@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableFermenter"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_applecider": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:applecider"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:fermenting_cortonwine"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_applecider"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:fermenting_cortonwine"
+    ]
+  }
+}

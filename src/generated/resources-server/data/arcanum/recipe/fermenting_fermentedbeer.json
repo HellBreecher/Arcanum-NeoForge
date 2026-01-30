@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableFermenter"
+    }
+  ],
+  "type": "arcanum:fermenting",
+  "base": "arcanum:unfermentedbeer",
+  "ingredient1": "minecraft:apple",
+  "ingredient2": "minecraft:wheat",
+  "ingredient3": "minecraft:honey_bottle",
+  "result": {
+    "count": 1,
+    "id": "arcanum:fermentedbeer"
+  }
+}

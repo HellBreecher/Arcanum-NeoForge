@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableGenerators"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "arcanum:sapphiregenerator",
+    "X": "arcanum:blooddiamond"
+  },
+  "pattern": [
+    "XXX",
+    "XFX",
+    "XXX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanum:blooddiamondgenerator"
+  }
+}

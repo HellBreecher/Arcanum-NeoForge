@@ -1,5 +1,7 @@
 package com.hellbreecher.arcanum.common.items.tools;
 
+import com.hellbreecher.arcanum.common.lib.ArcanumToolMaterials;
+import com.hellbreecher.arcanum.core.ArcanumItems;
 import com.hellbreecher.arcanum.core.Config;
 
 import net.minecraft.core.registries.Registries;
@@ -17,6 +19,7 @@ public class InfernalDiamondShearsItem extends ShearsItem {
     public InfernalDiamondShearsItem(Identifier id) {
         super(new Properties()
                 .durability(8000)
+                .repairable(ArcanumItems.infernaldiamond.get())
                 .setId(ResourceKey.create(Registries.ITEM, id)));
     }
 

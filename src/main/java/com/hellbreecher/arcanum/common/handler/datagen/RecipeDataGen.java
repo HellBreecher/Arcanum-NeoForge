@@ -7,6 +7,7 @@ import com.hellbreecher.arcanum.core.ArcanumFood;
 import com.hellbreecher.arcanum.core.ArcanumItems;
 import com.hellbreecher.arcanum.core.ArcanumTools;
 import com.hellbreecher.arcanum.core.ArcanumWeapons;
+import com.hellbreecher.arcanum.common.conditions.ConfigBooleanCondition;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -38,8 +39,12 @@ public final class RecipeDataGen extends RecipeProvider {
     protected void buildRecipes() {
         HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
         TagKey<Item> woodenRods = itemTag("forge:rods/wooden");
-        TagKey<Item> diamondGems = itemTag("forge:gems/diamond");
         TagKey<Item> quartzGems = itemTag("forge:gems/quartz");
+        RecipeOutput upgradeOutput = output.withConditions(new ConfigBooleanCondition("recipes.enableUpgrades"));
+        RecipeOutput fermenterOutput = output.withConditions(new ConfigBooleanCondition("recipes.enableFermenter"));
+        RecipeOutput smeltingOutput = output.withConditions(new ConfigBooleanCondition("recipes.enableSmelting"));
+        RecipeOutput furnaceBlocksOutput = output.withConditions(new ConfigBooleanCondition("recipes.enableFurnaceBlocks"));
+        RecipeOutput generatorOutput = output.withConditions(new ConfigBooleanCondition("recipes.enableGenerators"));
 
         // Ingots and blocks
         shapeless(items, RecipeCategory.MISC, ArcanumItems.greensapphire.get(), 9)
@@ -220,55 +225,60 @@ public final class RecipeDataGen extends RecipeProvider {
 
 
         // Blood diamond tools
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.blooddiamondpickaxe.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.blooddiamondpickaxe.get())
                 .pattern("XZX")
                 .pattern(" Y ")
                 .pattern(" Y ")
                 .define('X', ArcanumItems.blooddiamond.get())
                 .define('Y', ArcanumItems.quartzstick.get())
                 .define('Z', Items.DIAMOND_PICKAXE)
+                .base(Items.DIAMOND_PICKAXE)
                 .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
-                .save(output, recipeId("crafting_blooddiamondpickaxe"));
+                .save(upgradeOutput, recipeId("crafting_blooddiamondpickaxe"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.blooddiamondaxe.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.blooddiamondaxe.get())
                 .pattern("XZ ")
                 .pattern("XY ")
                 .pattern(" Y ")
                 .define('X', ArcanumItems.blooddiamond.get())
                 .define('Y', ArcanumItems.quartzstick.get())
                 .define('Z', Items.DIAMOND_AXE)
+                .base(Items.DIAMOND_AXE)
                 .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
-                .save(output, recipeId("crafting_blooddiamondaxe"));
+                .save(upgradeOutput, recipeId("crafting_blooddiamondaxe"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.blooddiamondhoe.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.blooddiamondhoe.get())
                 .pattern("XZ ")
                 .pattern(" Y ")
                 .pattern(" Y ")
                 .define('X', ArcanumItems.blooddiamond.get())
                 .define('Y', ArcanumItems.quartzstick.get())
                 .define('Z', Items.DIAMOND_HOE)
+                .base(Items.DIAMOND_HOE)
                 .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
-                .save(output, recipeId("crafting_blooddiamondhoe"));
+                .save(upgradeOutput, recipeId("crafting_blooddiamondhoe"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.blooddiamondshovel.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.blooddiamondshovel.get())
                 .pattern("X")
                 .pattern("Z")
                 .pattern("Y")
                 .define('X', ArcanumItems.blooddiamond.get())
                 .define('Y', ArcanumItems.quartzstick.get())
                 .define('Z', Items.DIAMOND_SHOVEL)
+                .base(Items.DIAMOND_SHOVEL)
                 .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
-                .save(output, recipeId("crafting_blooddiamondshovel"));
+                .save(upgradeOutput, recipeId("crafting_blooddiamondshovel"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.blooddiamondsword.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.blooddiamondsword.get())
                 .pattern("X")
                 .pattern("Z")
                 .pattern("Y")
                 .define('X', ArcanumItems.blooddiamond.get())
                 .define('Y', ArcanumItems.quartzstick.get())
                 .define('Z', Items.DIAMOND_SWORD)
+                .base(Items.DIAMOND_SWORD)
                 .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
-                .save(output, recipeId("crafting_blooddiamondsword"));
+                .save(upgradeOutput, recipeId("crafting_blooddiamondsword"));
 
         shaped(items, RecipeCategory.TOOLS, ArcanumTools.blooddiamondshears.get())
                 .pattern("X ")
@@ -279,43 +289,47 @@ public final class RecipeDataGen extends RecipeProvider {
                 .save(output, recipeId("crafting_blooddiamondshears"));
 
         // Blood diamond armor
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.blooddiamondhelmet.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.blooddiamondhelmet.get())
                 .pattern("XYX")
                 .pattern("XZX")
                 .define('X', ArcanumItems.blooddiamond.get())
                 .define('Y', quartzGems)
                 .define('Z', Items.DIAMOND_HELMET)
+                .base(Items.DIAMOND_HELMET)
                 .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
-                .save(output, recipeId("crafting_blooddiamondhelmet"));
+                .save(upgradeOutput, recipeId("crafting_blooddiamondhelmet"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.blooddiamondchestplate.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.blooddiamondchestplate.get())
                 .pattern("Y Y")
                 .pattern("XZX")
                 .pattern("XXX")
                 .define('X', ArcanumItems.blooddiamond.get())
                 .define('Y', quartzGems)
                 .define('Z', Items.DIAMOND_CHESTPLATE)
+                .base(Items.DIAMOND_CHESTPLATE)
                 .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
-                .save(output, recipeId("crafting_blooddiamondchestplate"));
+                .save(upgradeOutput, recipeId("crafting_blooddiamondchestplate"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.blooddiamondleggings.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.blooddiamondleggings.get())
                 .pattern("YXY")
                 .pattern("XZX")
                 .pattern("X X")
                 .define('X', ArcanumItems.blooddiamond.get())
                 .define('Y', quartzGems)
                 .define('Z', Items.DIAMOND_LEGGINGS)
+                .base(Items.DIAMOND_LEGGINGS)
                 .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
-                .save(output, recipeId("crafting_blooddiamondlegs"));
+                .save(upgradeOutput, recipeId("crafting_blooddiamondlegs"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.blooddiamondboots.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.blooddiamondboots.get())
                 .pattern("YZY")
                 .pattern("X X")
                 .define('X', ArcanumItems.blooddiamond.get())
                 .define('Y', quartzGems)
                 .define('Z', Items.DIAMOND_BOOTS)
+                .base(Items.DIAMOND_BOOTS)
                 .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
-                .save(output, recipeId("crafting_blooddiamondboots"));
+                .save(upgradeOutput, recipeId("crafting_blooddiamondboots"));
 
         // Blood diamond beating stick
         shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.blooddiamondbeatingstick.get())
@@ -328,102 +342,113 @@ public final class RecipeDataGen extends RecipeProvider {
                 .save(output, recipeId("crafting_blooddiamondbeatingstick"));
 
         // Void diamond tools
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondpickaxe.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondpickaxe.get())
                 .pattern("XZX")
                 .pattern(" Y ")
                 .pattern(" Y ")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamondstick.get())
                 .define('Z', ArcanumTools.blooddiamondpickaxe.get())
+                .base(ArcanumTools.blooddiamondpickaxe.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondpickaxe"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondpickaxe"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondaxe.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondaxe.get())
                 .pattern("XZ ")
                 .pattern("XY ")
                 .pattern(" Y ")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamondstick.get())
                 .define('Z', ArcanumTools.blooddiamondaxe.get())
+                .base(ArcanumTools.blooddiamondaxe.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondaxe"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondaxe"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondhoe.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondhoe.get())
                 .pattern("XZ ")
                 .pattern(" Y ")
                 .pattern(" Y ")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamondstick.get())
                 .define('Z', ArcanumTools.blooddiamondhoe.get())
+                .base(ArcanumTools.blooddiamondhoe.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondhoe"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondhoe"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondshovel.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondshovel.get())
                 .pattern("X")
                 .pattern("Z")
                 .pattern("Y")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamondstick.get())
                 .define('Z', ArcanumTools.blooddiamondshovel.get())
+                .base(ArcanumTools.blooddiamondshovel.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondshovel"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondshovel"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.voiddiamondsword.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.voiddiamondsword.get())
                 .pattern("X")
                 .pattern("Z")
                 .pattern("Y")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamondstick.get())
                 .define('Z', ArcanumWeapons.blooddiamondsword.get())
+                .base(ArcanumWeapons.blooddiamondsword.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondsword"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondsword"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondshears.get())
-                .pattern("X ")
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.voiddiamondshears.get())
+                .pattern("XZ")
                 .pattern(" Y")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamond.get())
+                .define('Z', ArcanumTools.blooddiamondshears.get())
+                .base(ArcanumTools.blooddiamondshears.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondshears"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondshears"));
 
         // Void diamond armor
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.voiddiamondhelmet.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.voiddiamondhelmet.get())
                 .pattern("XYX")
                 .pattern("XZX")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamond.get())
                 .define('Z', ArcanumArmor.blooddiamondhelmet.get())
+                .base(ArcanumArmor.blooddiamondhelmet.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondhelmet"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondhelmet"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.voiddiamondchestplate.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.voiddiamondchestplate.get())
                 .pattern("Y Y")
                 .pattern("XZX")
                 .pattern("XXX")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamond.get())
                 .define('Z', ArcanumArmor.blooddiamondchestplate.get())
+                .base(ArcanumArmor.blooddiamondchestplate.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondchest"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondchest"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.voiddiamondleggings.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.voiddiamondleggings.get())
                 .pattern("YXY")
                 .pattern("XZX")
                 .pattern("X X")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamond.get())
                 .define('Z', ArcanumArmor.blooddiamondleggings.get())
+                .base(ArcanumArmor.blooddiamondleggings.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondlegs"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondlegs"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.voiddiamondboots.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.voiddiamondboots.get())
                 .pattern("YZY")
                 .pattern("X X")
                 .define('X', ArcanumItems.voiddiamond.get())
                 .define('Y', ArcanumItems.blooddiamond.get())
                 .define('Z', ArcanumArmor.blooddiamondboots.get())
+                .base(ArcanumArmor.blooddiamondboots.get())
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
-                .save(output, recipeId("crafting_voiddiamondboots"));
+                .save(upgradeOutput, recipeId("crafting_voiddiamondboots"));
 
         // Void diamond beating stick
         shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.voiddiamondbeatingstick.get())
@@ -436,99 +461,109 @@ public final class RecipeDataGen extends RecipeProvider {
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
                 .save(output, recipeId("crafting_voiddiamondbeatingstick"));
         // Infernal diamond tools
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondpickaxe.get())
-                .pattern("XYX")
-                .pattern(" Z ")
-                .pattern(" Z ")
-                .define('X', ArcanumItems.infernaldiamond.get())
-                .define('Y', diamondGems)
-                .define('Z', ArcanumWeapons.infernalbeatingstick.get())
-                .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondpickaxe"));
-
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondaxe.get())
-                .pattern("YX ")
-                .pattern("XZ ")
-                .pattern(" Z ")
-                .define('X', ArcanumItems.infernaldiamond.get())
-                .define('Y', diamondGems)
-                .define('Z', ArcanumWeapons.infernalbeatingstick.get())
-                .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondaxe"));
-
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondhoe.get())
-                .pattern("XY ")
-                .pattern(" Z ")
-                .pattern(" Z ")
-                .define('X', ArcanumItems.infernaldiamond.get())
-                .define('Y', diamondGems)
-                .define('Z', ArcanumWeapons.infernalbeatingstick.get())
-                .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondhoe"));
-
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondshovel.get())
-                .pattern(" Y ")
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondpickaxe.get())
                 .pattern("XZX")
-                .pattern(" Z ")
+                .pattern(" Y ")
+                .pattern(" Y ")
                 .define('X', ArcanumItems.infernaldiamond.get())
-                .define('Y', diamondGems)
-                .define('Z', ArcanumWeapons.infernalbeatingstick.get())
+                .define('Y', ArcanumWeapons.infernalbeatingstick.get())
+                .define('Z', ArcanumTools.voiddiamondpickaxe.get())
+                .base(ArcanumTools.voiddiamondpickaxe.get())
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondshovel"));
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondpickaxe"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.infernaldiamondsword.get())
-                .pattern("Y")
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondaxe.get())
+                .pattern("XZ ")
+                .pattern("XY ")
+                .pattern(" Y ")
+                .define('X', ArcanumItems.infernaldiamond.get())
+                .define('Y', ArcanumWeapons.infernalbeatingstick.get())
+                .define('Z', ArcanumTools.voiddiamondaxe.get())
+                .base(ArcanumTools.voiddiamondaxe.get())
+                .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondaxe"));
+
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondhoe.get())
+                .pattern("XZ ")
+                .pattern(" Y ")
+                .pattern(" Y ")
+                .define('X', ArcanumItems.infernaldiamond.get())
+                .define('Y', ArcanumWeapons.infernalbeatingstick.get())
+                .define('Z', ArcanumTools.voiddiamondhoe.get())
+                .base(ArcanumTools.voiddiamondhoe.get())
+                .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondhoe"));
+
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondshovel.get())
                 .pattern("X")
                 .pattern("Z")
+                .pattern("Y")
                 .define('X', ArcanumItems.infernaldiamond.get())
-                .define('Y', diamondGems)
-                .define('Z', ArcanumWeapons.infernalbeatingstick.get())
+                .define('Y', ArcanumWeapons.infernalbeatingstick.get())
+                .define('Z', ArcanumTools.voiddiamondshovel.get())
+                .base(ArcanumTools.voiddiamondshovel.get())
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondsword"));
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondshovel"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondshears.get())
-                .pattern("XZ")
-                .pattern("ZY")
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.infernaldiamondsword.get())
+                .pattern("X")
+                .pattern("Z")
+                .pattern("Y")
                 .define('X', ArcanumItems.infernaldiamond.get())
-                .define('Y', diamondGems)
-                .define('Z', ArcanumWeapons.infernalbeatingstick.get())
+                .define('Y', ArcanumWeapons.infernalbeatingstick.get())
+                .define('Z', ArcanumWeapons.voiddiamondsword.get())
+                .base(ArcanumWeapons.voiddiamondsword.get())
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondshears"));
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondsword"));
+
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernaldiamondshears.get())
+                .pattern("XZ")
+                .pattern(" Y")
+                .define('X', ArcanumItems.infernaldiamond.get())
+                .define('Y', ArcanumWeapons.infernalbeatingstick.get())
+                .define('Z', ArcanumTools.voiddiamondshears.get())
+                .base(ArcanumTools.voiddiamondshears.get())
+                .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondshears"));
 
         // Infernal diamond armor
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernaldiamondhelmet.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernaldiamondhelmet.get())
                 .pattern("XXX")
                 .pattern("XZX")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Z', ArcanumArmor.voiddiamondhelmet.get())
+                .base(ArcanumArmor.voiddiamondhelmet.get())
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondhelmet"));
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondhelmet"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernaldiamondchestplate.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernaldiamondchestplate.get())
                 .pattern("X X")
                 .pattern("XZX")
                 .pattern("XXX")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Z', ArcanumArmor.voiddiamondchestplate.get())
+                .base(ArcanumArmor.voiddiamondchestplate.get())
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondchestplate"));
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondchestplate"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernaldiamondleggings.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernaldiamondleggings.get())
                 .pattern("XXX")
                 .pattern("XZX")
                 .pattern("X X")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Z', ArcanumArmor.voiddiamondleggings.get())
+                .base(ArcanumArmor.voiddiamondleggings.get())
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondlegs"));
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondlegs"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernaldiamondboots.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernaldiamondboots.get())
                 .pattern("XZX")
                 .pattern("X X")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Z', ArcanumArmor.voiddiamondboots.get())
+                .base(ArcanumArmor.voiddiamondboots.get())
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernaldiamondboots"));
+                .save(upgradeOutput, recipeId("crafting_infernaldiamondboots"));
 
         // Infernal beating stick
         shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.infernalbeatingstick.get())
@@ -542,96 +577,116 @@ public final class RecipeDataGen extends RecipeProvider {
                 .save(output, recipeId("crafting_infernalbeatingstick"));
 
         // Infernal tools
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalpickaxe.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalpickaxe.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumTools.infernaldiamondpickaxe.get())
+                .base(ArcanumTools.infernaldiamondpickaxe.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernalpickaxe"));
+                .save(upgradeOutput, recipeId("crafting_infernalpickaxe"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalaxe.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalaxe.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumTools.infernaldiamondaxe.get())
+                .base(ArcanumTools.infernaldiamondaxe.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernalaxe"));
+                .save(upgradeOutput, recipeId("crafting_infernalaxe"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalhoe.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalhoe.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumTools.infernaldiamondhoe.get())
+                .base(ArcanumTools.infernaldiamondhoe.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernalhoe"));
+                .save(upgradeOutput, recipeId("crafting_infernalhoe"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalshovel.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalshovel.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumTools.infernaldiamondshovel.get())
+                .base(ArcanumTools.infernaldiamondshovel.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernalshovel"));
+                .save(upgradeOutput, recipeId("crafting_infernalshovel"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.infernalsword.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumWeapons.infernalsword.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumWeapons.infernaldiamondsword.get())
+                .base(ArcanumWeapons.infernaldiamondsword.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernalsword"));
+                .save(upgradeOutput, recipeId("crafting_infernalsword"));
 
-        shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalshears.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.TOOLS, ArcanumTools.infernalshears.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumTools.infernaldiamondshears.get())
+                .base(ArcanumTools.infernaldiamondshears.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernalshears"));
+                .save(upgradeOutput, recipeId("crafting_infernalshears"));
 
         // Infernal armor
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernalhelmet.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernalhelmet.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumArmor.infernaldiamondhelmet.get())
+                .base(ArcanumArmor.infernaldiamondhelmet.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernalhelmet"));
+                .save(upgradeOutput, recipeId("crafting_infernalhelmet"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernalchestplate.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernalchestplate.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumArmor.infernaldiamondchestplate.get())
+                .base(ArcanumArmor.infernaldiamondchestplate.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernalchest"));
+                .save(upgradeOutput, recipeId("crafting_infernalchest"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernalleggings.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernalleggings.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumArmor.infernaldiamondleggings.get())
+                .base(ArcanumArmor.infernaldiamondleggings.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernallegs"));
+                .save(upgradeOutput, recipeId("crafting_infernallegs"));
 
-        shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernalboots.get())
+        UpgradeCopyRecipeBuilder.shaped(items, RecipeCategory.COMBAT, ArcanumArmor.infernalboots.get())
                 .pattern(" X ")
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', ArcanumItems.infernaldiamond.get())
                 .define('Y', ArcanumArmor.infernaldiamondboots.get())
+                .base(ArcanumArmor.infernaldiamondboots.get())
+                .stripEnchantments()
                 .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
-                .save(output, recipeId("crafting_infernalboots"));
+                .save(upgradeOutput, recipeId("crafting_infernalboots"));
         // Greensapphire coal and torch
         shaped(items, RecipeCategory.MISC, ArcanumItems.greensapphirecoal.get(), 4)
                 .pattern(" X ")
@@ -769,7 +824,7 @@ public final class RecipeDataGen extends RecipeProvider {
                         200
                 )
                 .unlockedBy("has_greensapphireore", has(ArcanumBlocks.greensapphireore_block.get()))
-                .save(output, recipeId("smelting_greensapphire"));
+                .save(smeltingOutput, recipeId("smelting_greensapphire"));
 
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(ArcanumBlocks.blooddiamondore_block.get()),
@@ -779,7 +834,7 @@ public final class RecipeDataGen extends RecipeProvider {
                         200
                 )
                 .unlockedBy("has_blooddiamondore", has(ArcanumBlocks.blooddiamondore_block.get()))
-                .save(output, recipeId("smelting_blooddiamond"));
+                .save(smeltingOutput, recipeId("smelting_blooddiamond"));
 
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(ArcanumBlocks.voiddiamondore_block.get()),
@@ -789,7 +844,31 @@ public final class RecipeDataGen extends RecipeProvider {
                         200
                 )
                 .unlockedBy("has_voiddiamondore", has(ArcanumBlocks.voiddiamondore_block.get()))
-                .save(output, recipeId("smelting_voiddiamond"));
+                .save(smeltingOutput, recipeId("smelting_voiddiamond"));
+
+        FermentingRecipeBuilder.fermenting(
+                        Ingredient.of(ArcanumFood.unfermentedbeer.get()),
+                        Ingredient.of(Items.APPLE),
+                        Ingredient.of(Items.WHEAT),
+                        Ingredient.of(Items.HONEY_BOTTLE),
+                        RecipeCategory.FOOD,
+                        ArcanumFood.fermentedbeer.get(),
+                        1200
+                )
+                .unlockedBy("has_unfermentedbeer", has(ArcanumFood.unfermentedbeer.get()))
+                .save(fermenterOutput, recipeId("fermenting_fermentedbeer"));
+
+        FermentingRecipeBuilder.fermenting(
+                        Ingredient.of(ArcanumFood.applecider.get()),
+                        Ingredient.of(Items.SUGAR),
+                        Ingredient.of(Items.RED_DYE),
+                        Ingredient.of(ArcanumFood.unfermentedbeer.get()),
+                        RecipeCategory.FOOD,
+                        ArcanumFood.cortonwine.get(),
+                        1200
+                )
+                .unlockedBy("has_applecider", has(ArcanumFood.applecider.get()))
+                .save(fermenterOutput, recipeId("fermenting_cortonwine"));
 
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(Items.BREAD),
@@ -799,7 +878,7 @@ public final class RecipeDataGen extends RecipeProvider {
                         200
                 )
                 .unlockedBy("has_bread", has(Items.BREAD))
-                .save(output, recipeId("smelting_toast"));
+                .save(smeltingOutput, recipeId("smelting_toast"));
 
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(ArcanumFood.applecider.get()),
@@ -809,7 +888,73 @@ public final class RecipeDataGen extends RecipeProvider {
                         200
                 )
                 .unlockedBy("has_applecider", has(ArcanumFood.applecider.get()))
-                .save(output, recipeId("smelting_warmapplecider"));
+                .save(smeltingOutput, recipeId("smelting_warmapplecider"));
+
+        shaped(items, RecipeCategory.DECORATIONS, ArcanumBlocks.sapphirefurnace_block.get())
+                .pattern(" X ")
+                .pattern("XFX")
+                .pattern(" X ")
+                .define('X', ArcanumItems.greensapphire.get())
+                .define('F', Items.FURNACE)
+                .unlockedBy("has_greensapphire", has(ArcanumItems.greensapphire.get()))
+                .save(furnaceBlocksOutput, recipeId("crafting_sapphirefurnace"));
+
+        shaped(items, RecipeCategory.DECORATIONS, ArcanumBlocks.blooddiamondfurnace_block.get())
+                .pattern("XXX")
+                .pattern("XFX")
+                .pattern("XXX")
+                .define('X', ArcanumItems.blooddiamond.get())
+                .define('F', ArcanumBlocks.sapphirefurnace_block_item)
+                .unlockedBy("has_blooddiamond", has(ArcanumItems.blooddiamond.get()))
+                .save(furnaceBlocksOutput, recipeId("crafting_blooddiamondfurnace"));
+
+        shaped(items, RecipeCategory.DECORATIONS, ArcanumBlocks.voiddiamondfurnace_block.get())
+                .pattern(" X ")
+                .pattern("XFX")
+                .pattern(" X ")
+                .define('X', ArcanumItems.voiddiamond.get())
+                .define('F', ArcanumBlocks.blooddiamondfurnace_block_item)
+                .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
+                .save(furnaceBlocksOutput, recipeId("crafting_voiddiamondfurnace"));
+
+        shaped(items, RecipeCategory.DECORATIONS, ArcanumBlocks.infernalfurnace_block.get())
+                .pattern("XFX")
+                .define('X', ArcanumItems.infernaldiamond.get())
+                .define('F', ArcanumBlocks.voiddiamondfurnace_block_item)
+                .unlockedBy("has_infernaldiamond", has(ArcanumItems.infernaldiamond.get()))
+                .save(furnaceBlocksOutput, recipeId("crafting_infernalfurnace"));
+
+        shaped(items, RecipeCategory.DECORATIONS, ArcanumBlocks.sapphiregenerator_block.get())
+                .pattern("XRX")
+                .pattern("XFX")
+                .pattern("XRX")
+                .define('X', ArcanumItems.greensapphire.get())
+                .define('R', Items.REDSTONE)
+                .define('F', ArcanumBlocks.sapphirefurnace_block_item)
+                .unlockedBy("has_sapphirefurnace", has(ArcanumBlocks.sapphirefurnace_block_item))
+                .save(generatorOutput, recipeId("crafting_sapphiregenerator"));
+        shaped(items, RecipeCategory.DECORATIONS, ArcanumBlocks.blooddiamondgenerator_block.get())
+                .pattern("XXX")
+                .pattern("XFX")
+                .pattern("XXX")
+                .define('X', ArcanumItems.blooddiamond.get())
+                .define('F', ArcanumBlocks.sapphiregenerator_block_item)
+                .unlockedBy("has_sapphiregenerator", has(ArcanumBlocks.blooddiamondfurnace_block_item))
+                .save(generatorOutput, recipeId("crafting_blooddiamondgenerator"));
+        shaped(items, RecipeCategory.DECORATIONS, ArcanumBlocks.voiddiamondgenerator_block.get())
+                .pattern(" X ")
+                .pattern("XFX")
+                .pattern(" X ")
+                .define('X', ArcanumItems.voiddiamond.get())
+                .define('F', ArcanumBlocks.blooddiamondgenerator_block_item)
+                .unlockedBy("has_voiddiamondgenerator", has(ArcanumBlocks.voiddiamondfurnace_block_item))
+                .save(generatorOutput, recipeId("crafting_voiddiamondgenerator"));
+        shaped(items, RecipeCategory.DECORATIONS, ArcanumBlocks.infernalgenerator_block.get())
+                .pattern("XFX")
+                .define('X', ArcanumItems.infernaldiamond.get())
+                .define('F', ArcanumBlocks.voiddiamondgenerator_block_item)
+                .unlockedBy("has_voiddiamondgenerator", has(ArcanumBlocks.infernalfurnace_block_item))
+                .save(generatorOutput, recipeId("crafting_infernalgenerator"));
     }
     private static ResourceKey<Recipe<?>> recipeId(String path) {
         return ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(Arcanum.MODID, path));

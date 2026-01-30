@@ -3,6 +3,7 @@ package com.hellbreecher.arcanum.common.items.tools;
 import com.hellbreecher.arcanum.core.Config;
 
 import com.hellbreecher.arcanum.common.lib.ArcanumToolMaterials;
+import com.hellbreecher.arcanum.core.ArcanumItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -18,6 +19,7 @@ public class InfernalDiamondShovelItem extends ShovelItem {
 
     public InfernalDiamondShovelItem(Identifier id) {
         super(ArcanumToolMaterials.InfernalDiamondTool, 1.5F, -3.0F, new Item.Properties()
+                .repairable(ArcanumItems.infernaldiamond.get())
                 .setId(ResourceKey.create(Registries.ITEM, id)));
     }
 

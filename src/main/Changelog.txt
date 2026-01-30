@@ -1,3 +1,20 @@
+###Arcanum 1.21.11-9.0.1.0
+    *Blocks
+        Added Tiered furnaces for Sapphire, Blood Diamond, Void Diamond and Infernal
+        Added Fermenter
+        Added Tiered generators for Sapphire, Blood Diamond, Void Diamond and Infernal (generating FE)
+    *Crafting
+        Added recipes for Tiered furnaces
+        Changed Tiered recipes to allow damaged items to be upgraded
+        Added recipes for Fermenter (Fermented Beer, Corton Wine)
+        Added recipes for Tiered generators
+    *Config
+        Added config for Tiered furnaces
+        Added config for Fermenter
+        Added config for recipe categories
+    *Bug Fixes
+        Infernal Diamond not being consumed on craft completion
+        Tools & Armor repair not working
 ###Arcanum 1.21.11-9.0.0.0
 	*API
 		Update to Neoforge 1.21.11-21.11.37-beta

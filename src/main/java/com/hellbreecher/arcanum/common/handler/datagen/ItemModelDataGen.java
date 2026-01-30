@@ -156,6 +156,15 @@ public final class ItemModelDataGen extends ModelProvider {
         registerCubeWithItem(blockModels, ArcanumBlocks.flesh_block.get());
         registerCubeWithItem(blockModels, ArcanumBlocks.sulfur_block.get());
         registerCubeWithItem(blockModels, ArcanumBlocks.greensapphirecoal_block.get());
+        blockModels.createFurnace(ArcanumBlocks.sapphirefurnace_block.get(), net.minecraft.client.data.models.model.TexturedModel.ORIENTABLE_ONLY_TOP);
+        blockModels.createFurnace(ArcanumBlocks.blooddiamondfurnace_block.get(), net.minecraft.client.data.models.model.TexturedModel.ORIENTABLE_ONLY_TOP);
+        blockModels.createFurnace(ArcanumBlocks.voiddiamondfurnace_block.get(), net.minecraft.client.data.models.model.TexturedModel.ORIENTABLE_ONLY_TOP);
+        blockModels.createFurnace(ArcanumBlocks.infernalfurnace_block.get(), net.minecraft.client.data.models.model.TexturedModel.ORIENTABLE_ONLY_TOP);
+        blockModels.createFurnace(ArcanumBlocks.fermenter_block.get(), net.minecraft.client.data.models.model.TexturedModel.ORIENTABLE_ONLY_TOP);
+        blockModels.createFurnace(ArcanumBlocks.sapphiregenerator_block.get(), net.minecraft.client.data.models.model.TexturedModel.ORIENTABLE_ONLY_TOP);
+        blockModels.createFurnace(ArcanumBlocks.blooddiamondgenerator_block.get(), net.minecraft.client.data.models.model.TexturedModel.ORIENTABLE_ONLY_TOP);
+        blockModels.createFurnace(ArcanumBlocks.voiddiamondgenerator_block.get(), net.minecraft.client.data.models.model.TexturedModel.ORIENTABLE_ONLY_TOP);
+        blockModels.createFurnace(ArcanumBlocks.infernalgenerator_block.get(), net.minecraft.client.data.models.model.TexturedModel.ORIENTABLE_ONLY_TOP);
         blockModels.createNormalTorch(
                 ArcanumBlocks.greensapphiretorch_block.get(),
                 ArcanumBlocks.wall_greensapphiretorch_block.get()

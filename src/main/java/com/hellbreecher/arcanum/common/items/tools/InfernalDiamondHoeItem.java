@@ -3,6 +3,7 @@ package com.hellbreecher.arcanum.common.items.tools;
 import com.hellbreecher.arcanum.core.Config;
 
 import com.hellbreecher.arcanum.common.lib.ArcanumToolMaterials;
+import com.hellbreecher.arcanum.core.ArcanumItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -17,6 +18,7 @@ public class InfernalDiamondHoeItem extends HoeItem {
 
     public InfernalDiamondHoeItem(Identifier id) {
         super(ArcanumToolMaterials.InfernalDiamondTool, -2.0F, -3.0F, new Properties()
+                .repairable(ArcanumItems.infernaldiamond.get())
                 .setId(ResourceKey.create(Registries.ITEM, id)));
     }
 

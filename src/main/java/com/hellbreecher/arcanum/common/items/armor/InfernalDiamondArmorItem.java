@@ -5,6 +5,7 @@ import com.hellbreecher.arcanum.core.Config;
 import com.hellbreecher.arcanum.common.lib.ArcanumArmorMaterials;
 import com.hellbreecher.arcanum.core.Arcanum;
 import com.hellbreecher.arcanum.core.ArcanumArmor;
+import com.hellbreecher.arcanum.core.ArcanumItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -34,6 +35,7 @@ public class InfernalDiamondArmorItem extends Item {
     public InfernalDiamondArmorItem(Identifier id, ArmorType type) {
         super(new Item.Properties()
                 .humanoidArmor(ArcanumArmorMaterials.INFERNAL_DIAMOND, type)
+                .repairable(ArcanumItems.infernaldiamond.get())
                 .setId(ResourceKey.create(Registries.ITEM, id)));
     }
 

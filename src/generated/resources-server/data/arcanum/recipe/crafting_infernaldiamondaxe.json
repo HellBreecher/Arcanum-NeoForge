@@ -1,15 +1,22 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableUpgrades"
+    }
+  ],
+  "type": "arcanum:upgrade_copy",
+  "base": "arcanum:voiddiamondaxe",
   "category": "equipment",
   "key": {
     "X": "arcanum:infernaldiamond",
-    "Y": "#forge:gems/diamond",
-    "Z": "arcanum:infernalbeatingstick"
+    "Y": "arcanum:infernalbeatingstick",
+    "Z": "arcanum:voiddiamondaxe"
   },
   "pattern": [
-    "YX ",
     "XZ ",
-    " Z "
+    "XY ",
+    " Y "
   ],
   "result": {
     "count": 1,

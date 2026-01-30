@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableUpgrades"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_blooddiamond": {

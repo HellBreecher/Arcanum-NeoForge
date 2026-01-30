@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableGenerators"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sapphiregenerator": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:blooddiamondfurnace"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_blooddiamondgenerator"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sapphiregenerator"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_blooddiamondgenerator"
+    ]
+  }
+}

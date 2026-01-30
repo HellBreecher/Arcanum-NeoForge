@@ -4,11 +4,20 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import com.hellbreecher.arcanum.common.handler.ArcanumAnvil;
+import com.hellbreecher.arcanum.common.handler.ArcanumCapabilities;
 import com.hellbreecher.arcanum.common.handler.datagen.ArcanumDataGen;
+import com.hellbreecher.arcanum.common.items.InfernalDiamondItem;
 import com.hellbreecher.arcanum.common.items.armor.InfernalArmorItem;
 import com.hellbreecher.arcanum.common.items.armor.InfernalDiamondArmorItem;
 import com.hellbreecher.arcanum.common.items.tools.InfernalAxeItem;
 import com.hellbreecher.arcanum.common.items.tools.InfernalPickaxeItem;
+import com.hellbreecher.arcanum.common.recipe.ArcanumRecipeSerializers;
+import com.hellbreecher.arcanum.common.recipe.ArcanumRecipeTypes;
+import com.hellbreecher.arcanum.common.registration.ArcanumBlockEntities;
+import com.hellbreecher.arcanum.common.registration.ArcanumConditionSerializers;
+import com.hellbreecher.arcanum.common.registration.ArcanumMenuTypes;
+import com.hellbreecher.arcanum.client.ArcanumClient;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
@@ -36,17 +45,24 @@ public class Arcanum {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(ArcanumDataGen::gatherClient);
         modEventBus.addListener(ArcanumDataGen::gatherServer);
+        modEventBus.addListener(ArcanumCapabilities::register);
 
         // Register the Deferred Register to the mod event bus so blocks get registered
         ArcanumBlocks.register(modEventBus);
+        ArcanumBlockEntities.register(modEventBus);
+        ArcanumConditionSerializers.register(modEventBus);
+        ArcanumMenuTypes.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
         ArcanumItems.register(modEventBus);
         ArcanumFood.register(modEventBus);
         ArcanumTools.register(modEventBus);
         ArcanumWeapons.register(modEventBus);
         ArcanumArmor.register(modEventBus);
+        ArcanumRecipeSerializers.register(modEventBus);
+        ArcanumRecipeTypes.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         ArcanumCreativeTabs.register(modEventBus);
+        ArcanumClient.init(modEventBus, modContainer);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Arcanum) to respond directly to events.
@@ -58,6 +74,8 @@ public class Arcanum {
         NeoForge.EVENT_BUS.addListener(InfernalDiamondArmorItem::onArmorEquipped);
         NeoForge.EVENT_BUS.addListener(InfernalArmorItem::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(InfernalDiamondArmorItem::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(InfernalDiamondItem::onItemCrafted);
+        NeoForge.EVENT_BUS.addListener(ArcanumAnvil::onAnvilUpdate);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

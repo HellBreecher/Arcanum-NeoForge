@@ -23,18 +23,21 @@ public class ArcanumWeapons {
             "greensapphiresword",
             id -> new Item(new Item.Properties()
                     .sword(ArcanumToolMaterials.GreenSapphireTool, 1.0F, -2.4F)
+                    .repairable(ArcanumItems.greensapphire.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<Item> blooddiamondsword = ITEMS.register(
             "blooddiamondsword",
             id -> new Item(new Item.Properties()
                     .sword(ArcanumToolMaterials.BloodDiamondTool, 1.0F, -2.4F)
+                    .repairable(ArcanumItems.blooddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<Item> voiddiamondsword = ITEMS.register(
             "voiddiamondsword",
             id -> new Item(new Item.Properties()
                     .sword(ArcanumToolMaterials.VoidDiamondTool, 1.0F, -2.4F)
+                    .repairable(ArcanumItems.voiddiamond.get())
                     .setId(ResourceKey.create(Registries.ITEM, id)))
     );
     public static final DeferredItem<Item> infernaldiamondsword = ITEMS.register("infernaldiamondsword", InfernalDiamondSwordItem::new);
