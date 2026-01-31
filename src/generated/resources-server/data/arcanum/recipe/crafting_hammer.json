@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "X": "minecraft:iron_ingot",
-    "Y": "#forge:rods/wooden"
+    "Y": "minecraft:stick"
   },
   "pattern": [
     " X ",

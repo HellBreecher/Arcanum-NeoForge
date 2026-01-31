@@ -100,7 +100,7 @@ public final class RecipeDataGen extends RecipeProvider {
                 .pattern("XYX")
                 .pattern(" X ")
                 .define('X', Items.QUARTZ)
-                .define('Y', woodenRods)
+                .define('Y', Items.STICK)
                 .unlockedBy("has_quartz", has(Items.QUARTZ))
                 .save(output, recipeId("crafting_quartzstick"));
 
@@ -118,7 +118,7 @@ public final class RecipeDataGen extends RecipeProvider {
                 .pattern(" YX")
                 .pattern("Y  ")
                 .define('X', Items.IRON_INGOT)
-                .define('Y', woodenRods)
+                .define('Y', Items.STICK)
                 .unlockedBy("has_iron_ingot", has(Items.IRON_INGOT))
                 .save(output, recipeId("crafting_hammer"));
 
@@ -137,7 +137,7 @@ public final class RecipeDataGen extends RecipeProvider {
                 .pattern(" Y ")
                 .pattern(" Y ")
                 .define('X', ArcanumItems.greensapphire.get())
-                .define('Y', woodenRods)
+                .define('Y', Items.STICK)
                 .unlockedBy("has_greensapphire", has(ArcanumItems.greensapphire.get()))
                 .save(output, recipeId("crafting_greensapphirepickaxe"));
 
@@ -146,7 +146,7 @@ public final class RecipeDataGen extends RecipeProvider {
                 .pattern("XY ")
                 .pattern(" Y ")
                 .define('X', ArcanumItems.greensapphire.get())
-                .define('Y', woodenRods)
+                .define('Y', Items.STICK)
                 .unlockedBy("has_greensapphire", has(ArcanumItems.greensapphire.get()))
                 .save(output, recipeId("crafting_greensapphireaxe"));
 
@@ -155,7 +155,7 @@ public final class RecipeDataGen extends RecipeProvider {
                 .pattern(" Y ")
                 .pattern(" Y ")
                 .define('X', ArcanumItems.greensapphire.get())
-                .define('Y', woodenRods)
+                .define('Y', Items.STICK)
                 .unlockedBy("has_greensapphire", has(ArcanumItems.greensapphire.get()))
                 .save(output, recipeId("crafting_greensapphirehoe"));
 
@@ -164,7 +164,7 @@ public final class RecipeDataGen extends RecipeProvider {
                 .pattern("Y")
                 .pattern("Y")
                 .define('X', ArcanumItems.greensapphire.get())
-                .define('Y', woodenRods)
+                .define('Y', Items.STICK)
                 .unlockedBy("has_greensapphire", has(ArcanumItems.greensapphire.get()))
                 .save(output, recipeId("crafting_greensapphireshovel"));
 
@@ -173,7 +173,7 @@ public final class RecipeDataGen extends RecipeProvider {
                 .pattern("X")
                 .pattern("Y")
                 .define('X', ArcanumItems.greensapphire.get())
-                .define('Y', woodenRods)
+                .define('Y', Items.STICK)
                 .unlockedBy("has_greensapphire", has(ArcanumItems.greensapphire.get()))
                 .save(output, recipeId("crafting_greensapphiresword"));
 

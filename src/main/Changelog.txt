@@ -1,3 +1,6 @@
+###Arcanum 1.21.11-9.0.1.1
+    *Bug Fixes
+        Green Sapphire crafting recipe not working
 ###Arcanum 1.21.11-9.0.1.0
     *Blocks
         Added Tiered furnaces for Sapphire, Blood Diamond, Void Diamond and Infernal

@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "X": "arcanum:greensapphire",
-    "Y": "#forge:rods/wooden"
+    "Y": "minecraft:stick"
   },
   "pattern": [
     "X",

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "X": "minecraft:quartz",
-    "Y": "#forge:rods/wooden"
+    "Y": "minecraft:stick"
   },
   "pattern": [
     " X ",
