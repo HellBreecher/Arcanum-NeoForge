@@ -1,2 +1,14 @@
-// 1.21.11	2026-01-30T22:39:33.8749181	Tags for minecraft:block mod id arcanum
+// 1.21.11	2026-06-04T00:55:47.7828908	Tags for minecraft:block mod id arcanum
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/arcanum/tags/block/incorrect_for_bloodiamond_tool.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/arcanum/tags/block/incorrect_for_infernaldiamond_tool.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/arcanum/tags/block/incorrect_for_infernal_tool.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/arcanum/tags/block/incorrect_for_voiddiamond_tool.json
+c3b5d90c5a0994b1bcd1d50e9247cc02eba8e1f0 data/arcanum/tags/block/needs_bloodiamond_tool.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/arcanum/tags/block/needs_infernaldiamond_tool.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/arcanum/tags/block/needs_infernal_tool.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/arcanum/tags/block/needs_voiddiamond_tool.json
+c3b5d90c5a0994b1bcd1d50e9247cc02eba8e1f0 data/minecraft/tags/block/incorrect_for_diamond_tool.json
+c3b5d90c5a0994b1bcd1d50e9247cc02eba8e1f0 data/minecraft/tags/block/incorrect_for_netherite_tool.json
 262843cb88f56801cbaa6a564bd86263042c3941 data/minecraft/tags/block/mineable/pickaxe.json
+9cb6881959a23dd1a2bae4fa1e2b4b48b8edd57d data/minecraft/tags/block/needs_diamond_tool.json
+290a4fcb7de981d4c0615c643789244ca93daf32 data/minecraft/tags/block/needs_iron_tool.json

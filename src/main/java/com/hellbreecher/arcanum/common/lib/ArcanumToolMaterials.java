@@ -15,7 +15,7 @@ public final class ArcanumToolMaterials {
     public static final TagKey<Item> INFERNAL_DIAMOND_REPAIR = itemTag("tool_materials/infernaldiamond");
 
     public static final ToolMaterial GreenSapphireTool = new ToolMaterial(
-            BlockTags.NEEDS_DIAMOND_TOOL,
+            BlockTags.INCORRECT_FOR_DIAMOND_TOOL,
             1500,
             10.0F,
             10.0F,
@@ -24,7 +24,7 @@ public final class ArcanumToolMaterials {
     );
 
     public static final ToolMaterial BloodDiamondTool = new ToolMaterial(
-            BlockTags.INCORRECT_FOR_NETHERITE_TOOL,
+            ArcanumBlockTags.INCORRECT_FOR_BLOODDIAMOND_TOOL,
             3000,
             20.0F,
             50.0F,
@@ -33,7 +33,7 @@ public final class ArcanumToolMaterials {
     );
 
     public static final ToolMaterial VoidDiamondTool = new ToolMaterial(
-            BlockTags.INCORRECT_FOR_NETHERITE_TOOL,
+            ArcanumBlockTags.INCORRECT_FOR_VOIDDIAMOND_TOOL,
             6000,
             50.0F,
             75.0F,
@@ -42,7 +42,7 @@ public final class ArcanumToolMaterials {
     );
 
     public static final ToolMaterial InfernalDiamondTool = new ToolMaterial(
-            BlockTags.INCORRECT_FOR_NETHERITE_TOOL,
+            ArcanumBlockTags.INCORRECT_FOR_INFERNALDIAMOND_TOOL,
             8000,
             100.0F,
             100.0F,
@@ -51,7 +51,7 @@ public final class ArcanumToolMaterials {
     );
 
     public static final ToolMaterial InfernalTool = new ToolMaterial(
-            BlockTags.INCORRECT_FOR_NETHERITE_TOOL,
+            ArcanumBlockTags.INCORRECT_FOR_INFERNAL_TOOL,
             1,
             500.0F,
             100000.0F,

@@ -1,3 +1,6 @@
+###Arcanum 1.21.11-9.0.1.2
+    *Bug Fixes
+        Tiered mining not working for ores
 ###Arcanum 1.21.11-9.0.1.1
     *Bug Fixes
         Green Sapphire crafting recipe not working

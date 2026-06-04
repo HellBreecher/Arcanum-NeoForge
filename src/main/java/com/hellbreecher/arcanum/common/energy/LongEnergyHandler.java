@@ -73,7 +73,7 @@ public class LongEnergyHandler implements EnergyHandler, ValueIOSerializable {
         if (room <= 0L) {
             return 0;
         }
-        int inserted = (int) Math.min(room, Math.min((long) amount, (long) maxInsert));
+        int inserted = (int) Math.min(room, Math.min(amount, (long) maxInsert));
         if (inserted > 0) {
             energyJournal.updateSnapshots(transaction);
             energy += inserted;
@@ -89,7 +89,7 @@ public class LongEnergyHandler implements EnergyHandler, ValueIOSerializable {
         if (energy <= 0L) {
             return 0;
         }
-        int extracted = (int) Math.min(energy, Math.min((long) amount, (long) maxExtract));
+        int extracted = (int) Math.min(energy, Math.min(amount, (long) maxExtract));
         if (extracted > 0) {
             energyJournal.updateSnapshots(transaction);
             energy -= extracted;

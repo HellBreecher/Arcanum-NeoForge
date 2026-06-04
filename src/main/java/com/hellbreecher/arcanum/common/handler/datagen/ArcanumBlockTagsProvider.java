@@ -1,5 +1,6 @@
 package com.hellbreecher.arcanum.common.handler.datagen;
 
+import com.hellbreecher.arcanum.common.lib.ArcanumBlockTags;
 import com.hellbreecher.arcanum.core.Arcanum;
 import com.hellbreecher.arcanum.core.ArcanumBlocks;
 import net.minecraft.core.HolderLookup;
@@ -42,5 +43,37 @@ public final class ArcanumBlockTagsProvider extends BlockTagsProvider {
                 ArcanumBlocks.blooddiamondfurnace_block.get(),
                 ArcanumBlocks.infernalfurnace_block.get()
         );
+        tag(BlockTags.NEEDS_IRON_TOOL).add(
+                ArcanumBlocks.greensapphireore_block.get(),
+                ArcanumBlocks.deepslategreensapphireore_block.get()
+        );
+        tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
+                ArcanumBlocks.blooddiamondore_block.get(),
+                ArcanumBlocks.deepslateblooddiamondore_block.get()
+        );
+
+        tag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL).add(
+                ArcanumBlocks.voiddiamondore_block.get(),
+                ArcanumBlocks.deepslatevoiddiamondore_block.get()
+        );
+
+        tag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL).add(
+                ArcanumBlocks.voiddiamondore_block.get(),
+                ArcanumBlocks.deepslatevoiddiamondore_block.get()
+        );
+
+        tag(ArcanumBlockTags.NEEDS_BLOODDIAMOND_TOOL).add(
+                ArcanumBlocks.voiddiamondore_block.get(),
+                ArcanumBlocks.deepslatevoiddiamondore_block.get()
+        );
+
+        tag(ArcanumBlockTags.NEEDS_VOIDDIAMOND_TOOL);
+        tag(ArcanumBlockTags.NEEDS_INFERNALDIAMOND_TOOL);
+        tag(ArcanumBlockTags.NEEDS_INFERNAL_TOOL);
+
+        tag(ArcanumBlockTags.INCORRECT_FOR_BLOODDIAMOND_TOOL);
+        tag(ArcanumBlockTags.INCORRECT_FOR_VOIDDIAMOND_TOOL);
+        tag(ArcanumBlockTags.INCORRECT_FOR_INFERNALDIAMOND_TOOL);
+        tag(ArcanumBlockTags.INCORRECT_FOR_INFERNAL_TOOL);
     }
 }
