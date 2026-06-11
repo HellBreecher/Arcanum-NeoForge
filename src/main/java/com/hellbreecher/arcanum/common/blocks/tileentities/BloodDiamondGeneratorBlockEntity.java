@@ -46,8 +46,10 @@ public class BloodDiamondGeneratorBlockEntity extends BaseContainerBlockEntity i
             return switch (index) {
                 case 0 -> BloodDiamondGeneratorBlockEntity.this.burnTime;
                 case 1 -> BloodDiamondGeneratorBlockEntity.this.burnTimeTotal;
-                case 2 -> BloodDiamondGeneratorBlockEntity.this.energy.getAmountAsInt();
-                case 3 -> BloodDiamondGeneratorBlockEntity.this.energy.getCapacityAsInt();
+                case 2 -> lowInt(BloodDiamondGeneratorBlockEntity.this.energy.getAmountAsLong());
+                case 3 -> highInt(BloodDiamondGeneratorBlockEntity.this.energy.getAmountAsLong());
+                case 4 -> lowInt(BloodDiamondGeneratorBlockEntity.this.energy.getCapacityAsLong());
+                case 5 -> highInt(BloodDiamondGeneratorBlockEntity.this.energy.getCapacityAsLong());
                 default -> 0;
             };
         }
@@ -62,7 +64,7 @@ public class BloodDiamondGeneratorBlockEntity extends BaseContainerBlockEntity i
 
         @Override
         public int getCount() {
-            return 4;
+            return 6;
         }
     };
 
@@ -85,7 +87,7 @@ public class BloodDiamondGeneratorBlockEntity extends BaseContainerBlockEntity i
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BloodDiamondGeneratorBlockEntity blockEntity) {
-        boolean hasEnergyRoom = blockEntity.energy.getAmountAsLong() < blockEntity.energy.getCapacityAsLong();
+        boolean canGenerate = blockEntity.canGenerateEnergy();
         boolean wasLit = state.getValue(BloodDiamondGeneratorBlock.LIT);
         ItemStack fuel = blockEntity.items.get(FUEL_SLOT);
         int rawBurnTime = blockEntity.getBurnTime(fuel, level);
@@ -93,7 +95,7 @@ public class BloodDiamondGeneratorBlockEntity extends BaseContainerBlockEntity i
 
         if (specialFuel) {
             blockEntity.specialFuelMode = true;
-            if (hasEnergyRoom) {
+            if (canGenerate) {
                 if (blockEntity.burnTime <= 0) {
                     blockEntity.consumeFuel(level, pos);
                 }
@@ -111,12 +113,12 @@ public class BloodDiamondGeneratorBlockEntity extends BaseContainerBlockEntity i
             }
 
             if (blockEntity.burnTime > 0) {
-                if (hasEnergyRoom) {
+                if (canGenerate) {
                     blockEntity.burnTime--;
                     blockEntity.generateEnergy();
                     setChanged(level, pos, state);
                 }
-            } else if (hasEnergyRoom && rawBurnTime > 0) {
+            } else if (canGenerate && rawBurnTime > 0) {
                 blockEntity.burnTime = rawBurnTime;
                 blockEntity.burnTimeTotal = rawBurnTime;
                 blockEntity.consumeFuel(level, pos);
@@ -124,7 +126,7 @@ public class BloodDiamondGeneratorBlockEntity extends BaseContainerBlockEntity i
             }
         }
 
-        boolean lit = hasEnergyRoom && (blockEntity.burnTime > 0 || (blockEntity.specialFuelMode && !fuel.isEmpty()));
+        boolean lit = canGenerate && (blockEntity.burnTime > 0 || (blockEntity.specialFuelMode && !fuel.isEmpty()));
         if (wasLit != lit) {
             level.setBlock(pos, state.setValue(BloodDiamondGeneratorBlock.LIT, lit), 3);
         }
@@ -189,6 +191,18 @@ public class BloodDiamondGeneratorBlockEntity extends BaseContainerBlockEntity i
             return 0;
         }
         return stack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
+    }
+
+    private boolean canGenerateEnergy() {
+        return this.energy.getCapacityAsLong() - this.energy.getAmountAsLong() >= FE_PER_TICK;
+    }
+
+    private static int lowInt(long value) {
+        return (int) value;
+    }
+
+    private static int highInt(long value) {
+        return (int) (value >>> 32);
     }
 
     private void generateEnergy() {

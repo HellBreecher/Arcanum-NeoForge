@@ -130,10 +130,10 @@ public class ArcanumBlocks {
     //Wall & Floor Blocks
     public static final DeferredBlock<TorchBlock> greensapphiretorch_block = registerBlock("greensapphiretorch",
             props -> new TorchBlock(ParticleTypes.FLAME, props),
-            BlockBehaviour.Properties.of().noCollision().instabreak().lightLevel(state -> 14).sound(SoundType.WOOD));
+            BlockBehaviour.Properties.of().noCollision().instabreak().lightLevel(state -> 15).sound(SoundType.WOOD));
     public static final DeferredBlock<WallTorchBlock> wall_greensapphiretorch_block = registerBlock("wall_greensapphiretorch",
             props -> new WallTorchBlock(ParticleTypes.FLAME, props),
-            BlockBehaviour.Properties.of().noCollision().instabreak().lightLevel(state -> 14)
+            BlockBehaviour.Properties.of().noCollision().instabreak().lightLevel(state -> 15)
                     .sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
 
     //Standing & Wall Block Items

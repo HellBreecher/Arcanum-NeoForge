@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 
 public class SapphireGeneratorMenu extends AbstractContainerMenu {
     private static final int FUEL_SLOT = 0;
-    private static final int DATA_COUNT = 4;
+    private static final int DATA_COUNT = 6;
     private static final int INV_SLOT_START = 1;
     private static final int INV_SLOT_END = 28;
     private static final int USE_ROW_SLOT_START = 28;
@@ -95,16 +95,20 @@ public class SapphireGeneratorMenu extends AbstractContainerMenu {
         return this.data.get(1);
     }
 
-    public int getEnergyStored() {
-        return this.data.get(2);
+    public long getEnergyStored() {
+        return combineLong(this.data.get(2), this.data.get(3));
     }
 
-    public int getEnergyCapacity() {
-        return this.data.get(3);
+    public long getEnergyCapacity() {
+        return combineLong(this.data.get(4), this.data.get(5));
     }
 
     private boolean isFuel(ItemStack stack) {
         return stack.getBurnTime(RecipeType.SMELTING, this.level.fuelValues()) > 0;
+    }
+
+    private static long combineLong(int low, int high) {
+        return ((long) high << 32) | (low & 0xFFFFFFFFL);
     }
 
     private static class FuelSlot extends Slot {

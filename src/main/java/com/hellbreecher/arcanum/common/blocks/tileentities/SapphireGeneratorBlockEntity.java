@@ -46,8 +46,10 @@ public class SapphireGeneratorBlockEntity extends BaseContainerBlockEntity imple
             return switch (index) {
                 case 0 -> SapphireGeneratorBlockEntity.this.burnTime;
                 case 1 -> SapphireGeneratorBlockEntity.this.burnTimeTotal;
-                case 2 -> SapphireGeneratorBlockEntity.this.energy.getAmountAsInt();
-                case 3 -> SapphireGeneratorBlockEntity.this.energy.getCapacityAsInt();
+                case 2 -> lowInt(SapphireGeneratorBlockEntity.this.energy.getAmountAsLong());
+                case 3 -> highInt(SapphireGeneratorBlockEntity.this.energy.getAmountAsLong());
+                case 4 -> lowInt(SapphireGeneratorBlockEntity.this.energy.getCapacityAsLong());
+                case 5 -> highInt(SapphireGeneratorBlockEntity.this.energy.getCapacityAsLong());
                 default -> 0;
             };
         }
@@ -62,7 +64,7 @@ public class SapphireGeneratorBlockEntity extends BaseContainerBlockEntity imple
 
         @Override
         public int getCount() {
-            return 4;
+            return 6;
         }
     };
 
@@ -85,7 +87,7 @@ public class SapphireGeneratorBlockEntity extends BaseContainerBlockEntity imple
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SapphireGeneratorBlockEntity blockEntity) {
-        boolean hasEnergyRoom = blockEntity.energy.getAmountAsLong() < blockEntity.energy.getCapacityAsLong();
+        boolean canGenerate = blockEntity.canGenerateEnergy();
         boolean wasLit = state.getValue(SapphireGeneratorBlock.LIT);
         ItemStack fuel = blockEntity.items.get(FUEL_SLOT);
         int rawBurnTime = blockEntity.getBurnTime(fuel, level);
@@ -93,7 +95,7 @@ public class SapphireGeneratorBlockEntity extends BaseContainerBlockEntity imple
 
         if (specialFuel) {
             blockEntity.specialFuelMode = true;
-            if (hasEnergyRoom) {
+            if (canGenerate) {
                 if (blockEntity.burnTime <= 0) {
                     blockEntity.consumeFuel(level, pos);
                 }
@@ -111,12 +113,12 @@ public class SapphireGeneratorBlockEntity extends BaseContainerBlockEntity imple
             }
 
             if (blockEntity.burnTime > 0) {
-                if (hasEnergyRoom) {
+                if (canGenerate) {
                     blockEntity.burnTime--;
                     blockEntity.generateEnergy();
                     setChanged(level, pos, state);
                 }
-            } else if (hasEnergyRoom && rawBurnTime > 0) {
+            } else if (canGenerate && rawBurnTime > 0) {
                 blockEntity.burnTime = rawBurnTime;
                 blockEntity.burnTimeTotal = rawBurnTime;
                 blockEntity.consumeFuel(level, pos);
@@ -124,7 +126,7 @@ public class SapphireGeneratorBlockEntity extends BaseContainerBlockEntity imple
             }
         }
 
-        boolean lit = hasEnergyRoom && (blockEntity.burnTime > 0 || (blockEntity.specialFuelMode && !fuel.isEmpty()));
+        boolean lit = canGenerate && (blockEntity.burnTime > 0 || (blockEntity.specialFuelMode && !fuel.isEmpty()));
         if (wasLit != lit) {
             level.setBlock(pos, state.setValue(SapphireGeneratorBlock.LIT, lit), 3);
         }
@@ -189,6 +191,18 @@ public class SapphireGeneratorBlockEntity extends BaseContainerBlockEntity imple
             return 0;
         }
         return stack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
+    }
+
+    private boolean canGenerateEnergy() {
+        return this.energy.getCapacityAsLong() - this.energy.getAmountAsLong() >= FE_PER_TICK;
+    }
+
+    private static int lowInt(long value) {
+        return (int) value;
+    }
+
+    private static int highInt(long value) {
+        return (int) (value >>> 32);
     }
 
     private void generateEnergy() {

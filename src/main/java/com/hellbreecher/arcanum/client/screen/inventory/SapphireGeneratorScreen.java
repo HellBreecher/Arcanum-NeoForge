@@ -69,9 +69,9 @@ public class SapphireGeneratorScreen extends AbstractContainerScreen<SapphireGen
             }
         }
 
-        int energy = this.menu.getEnergyStored();
-        int capacity = Math.max(1, this.menu.getEnergyCapacity());
-        int fill = Mth.clamp(Math.round(ENERGY_HEIGHT * (energy / (float) capacity)), 0, ENERGY_HEIGHT);
+        long energy = this.menu.getEnergyStored();
+        long capacity = Math.max(1L, this.menu.getEnergyCapacity());
+        int fill = Mth.clamp((int) Math.floor(ENERGY_HEIGHT * (energy / (double) capacity)), 0, ENERGY_HEIGHT);
         if (fill > 0) {
             int yOffset = ENERGY_HEIGHT - fill;
             graphics.blit(
@@ -104,8 +104,8 @@ public class SapphireGeneratorScreen extends AbstractContainerScreen<SapphireGen
         int x1 = x0 + ENERGY_WIDTH;
         int y1 = y0 + ENERGY_HEIGHT;
         if (mouseX >= x0 && mouseX < x1 && mouseY >= y0 && mouseY < y1) {
-            int energy = this.menu.getEnergyStored();
-            int capacity = this.menu.getEnergyCapacity();
+            long energy = this.menu.getEnergyStored();
+            long capacity = this.menu.getEnergyCapacity();
             Component text = Component.literal(energy + " / " + capacity + " FE")
                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5FD3FF)));
             graphics.setTooltipForNextFrame(this.font, text, mouseX, mouseY);
