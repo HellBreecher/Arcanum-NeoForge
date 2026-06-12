@@ -12,9 +12,9 @@ public final class ArcanumRecipeSerializers {
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, Reference.MODID);
 
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<UpgradeCopyRecipe>> UPGRADE_COPY =
-            RECIPE_SERIALIZERS.register("upgrade_copy", UpgradeCopyRecipe.Serializer::new);
+            RECIPE_SERIALIZERS.register("upgrade_copy", () -> UpgradeCopyRecipe.Serializer.INSTANCE);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<FermentingRecipe>> FERMENTING =
-            RECIPE_SERIALIZERS.register("fermenting", FermentingRecipe.Serializer::new);
+            RECIPE_SERIALIZERS.register("fermenting", () -> FermentingRecipe.Serializer.INSTANCE);
 
     private ArcanumRecipeSerializers() {}
 

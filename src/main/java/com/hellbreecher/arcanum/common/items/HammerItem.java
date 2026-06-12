@@ -4,7 +4,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
 public class HammerItem extends Item {
     public HammerItem(Identifier id) {
@@ -12,12 +14,12 @@ public class HammerItem extends Item {
     }
 
     @Override
-    public ItemStack getCraftingRemainder(ItemStack stack) {
-        if (stack.getDamageValue() >= stack.getMaxDamage() - 1) {
-            return ItemStack.EMPTY;
+    public ItemStackTemplate getCraftingRemainder(ItemInstance stack) {
+        if (!(stack instanceof ItemStack itemStack) || itemStack.getDamageValue() >= itemStack.getMaxDamage() - 1) {
+            return null;
         }
-        ItemStack result = stack.copy();
+        ItemStack result = itemStack.copy();
         result.setDamageValue(result.getDamageValue() + 1);
-        return result;
+        return ItemStackTemplate.fromNonEmptyStack(result);
     }
 }

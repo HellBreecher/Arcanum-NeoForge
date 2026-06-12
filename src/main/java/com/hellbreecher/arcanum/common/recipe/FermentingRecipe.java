@@ -3,7 +3,6 @@ package com.hellbreecher.arcanum.common.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -94,7 +93,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
     }
 
     @Override
-    public ItemStack assemble(FermentingRecipeInput input, HolderLookup.Provider registries) {
+    public ItemStack assemble(FermentingRecipeInput input) {
         return this.result.copy();
     }
 
@@ -109,6 +108,11 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
     }
 
     @Override
+    public boolean showNotification() {
+        return false;
+    }
+
+    @Override
     public PlacementInfo placementInfo() {
         return PlacementInfo.NOT_PLACEABLE;
     }
@@ -118,7 +122,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
         return RecipeBookCategories.FURNACE_FOOD;
     }
 
-    public static class Serializer implements RecipeSerializer<FermentingRecipe> {
+    public static final class Serializer {
         private static final MapCodec<FermentingRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 builder -> builder.group(
                                 Codec.STRING.optionalFieldOf("group", "").forGetter(recipe -> recipe.group),
@@ -126,7 +130,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
                                 Ingredient.CODEC.fieldOf("ingredient1").forGetter(recipe -> recipe.ingredient1),
                                 Ingredient.CODEC.fieldOf("ingredient2").forGetter(recipe -> recipe.ingredient2),
                                 Ingredient.CODEC.fieldOf("ingredient3").forGetter(recipe -> recipe.ingredient3),
-                                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                                ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                                 Codec.INT.optionalFieldOf("ferment_time", 1200).forGetter(recipe -> recipe.fermentTime)
                         )
                         .apply(builder, FermentingRecipe::new)
@@ -135,16 +139,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
                 FermentingRecipe.Serializer::toNetwork,
                 FermentingRecipe.Serializer::fromNetwork
         );
-
-        @Override
-        public MapCodec<FermentingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, FermentingRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
+        public static final RecipeSerializer<FermentingRecipe> INSTANCE = new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
         private static FermentingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
             String group = buffer.readUtf();

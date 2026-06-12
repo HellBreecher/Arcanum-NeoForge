@@ -1,7 +1,7 @@
 package com.hellbreecher.arcanum.client.screen.inventory;
 
 import com.hellbreecher.arcanum.common.blocks.container.SapphireGeneratorMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -31,9 +31,7 @@ public class SapphireGeneratorScreen extends AbstractContainerScreen<SapphireGen
     private static final int ENERGY_HEIGHT = 60;
 
     public SapphireGeneratorScreen(SapphireGeneratorMenu menu, Inventory playerInventory, Component title) {
-        super(menu, playerInventory, title);
-        this.imageWidth = 176;
-        this.imageHeight = 166;
+        super(menu, playerInventory, title, 176, 166);
     }
 
     @Override
@@ -43,7 +41,8 @@ public class SapphireGeneratorScreen extends AbstractContainerScreen<SapphireGen
     }
 
     @Override
-    protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractBackground(graphics, mouseX, mouseY, partialTick);
         int left = (this.width - this.imageWidth) / 2;
         int top = (this.height - this.imageHeight) / 2;
         graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, left, top, 0.0F, 0.0F, this.imageWidth, this.imageHeight, TEXTURE_WIDTH, TEXTURE_HEIGHT);
@@ -90,13 +89,12 @@ public class SapphireGeneratorScreen extends AbstractContainerScreen<SapphireGen
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        super.render(graphics, mouseX, mouseY, partialTick);
+    protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         renderEnergyTooltip(graphics, mouseX, mouseY);
-        this.renderTooltip(graphics, mouseX, mouseY);
+        super.extractTooltip(graphics, mouseX, mouseY);
     }
 
-    private void renderEnergyTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+    private void renderEnergyTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         int left = (this.width - this.imageWidth) / 2;
         int top = (this.height - this.imageHeight) / 2;
         int x0 = left + ENERGY_X;

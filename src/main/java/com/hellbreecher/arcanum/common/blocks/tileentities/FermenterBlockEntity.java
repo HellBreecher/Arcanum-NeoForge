@@ -19,6 +19,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -207,7 +208,7 @@ public class FermenterBlockEntity extends BaseContainerBlockEntity implements Wo
         return level.recipeAccess()
                 .getRecipeFor(ArcanumRecipeTypes.FERMENTING.get(), input, level)
                 .map(holder -> holder.value())
-                .map(recipe -> recipe.assemble(input, level.registryAccess()))
+                .map(recipe -> recipe.assemble(input))
                 .filter(result -> canAcceptOutput(output, result))
                 .isPresent();
     }
@@ -245,7 +246,7 @@ public class FermenterBlockEntity extends BaseContainerBlockEntity implements Wo
                 .map(holder -> holder.value())
                 .orElse(null);
         if (recipe != null) {
-            ItemStack result = recipe.assemble(input, level.registryAccess());
+            ItemStack result = recipe.assemble(input);
             if (canAcceptOutput(output, result)) {
                 if (output.isEmpty()) {
                     blockEntity.items.set(OUTPUT_SLOT, result);
@@ -266,7 +267,8 @@ public class FermenterBlockEntity extends BaseContainerBlockEntity implements Wo
         if (stack.isEmpty()) {
             return;
         }
-        ItemStack remainder = stack.getCraftingRemainder();
+        ItemStackTemplate remainderTemplate = stack.getCraftingRemainder();
+        ItemStack remainder = remainderTemplate == null ? ItemStack.EMPTY : remainderTemplate.create();
         stack.shrink(1);
         if (!remainder.isEmpty()) {
             if (stack.isEmpty()) {

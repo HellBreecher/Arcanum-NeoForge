@@ -34,7 +34,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 public class InfernalPickaxeItem extends Item {
 
@@ -84,7 +84,7 @@ public class InfernalPickaxeItem extends Item {
         );
     }
 
-    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+    public static void onBlockBreak(BreakBlockEvent event) {
         Player player = event.getPlayer();
         if (player == null) {
             return;
@@ -151,13 +151,13 @@ public class InfernalPickaxeItem extends Item {
         Optional<RecipeHolder<SmeltingRecipe>> smelting = level.recipeAccess()
                 .getRecipeFor(RecipeType.SMELTING, input, level);
         if (smelting.isPresent()) {
-            return smelting.get().value().assemble(input, level.registryAccess());
+            return smelting.get().value().assemble(input);
         }
 
         Optional<RecipeHolder<BlastingRecipe>> blasting = level.recipeAccess()
                 .getRecipeFor(RecipeType.BLASTING, input, level);
         if (blasting.isPresent()) {
-            return blasting.get().value().assemble(input, level.registryAccess());
+            return blasting.get().value().assemble(input);
         }
 
         return ItemStack.EMPTY;

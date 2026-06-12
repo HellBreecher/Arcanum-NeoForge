@@ -152,7 +152,7 @@ public class InfernalWandItem extends Item {
             return stack;
         }
 
-        ItemStack result = recipe.get().value().assemble(input, serverLevel.registryAccess());
+        ItemStack result = recipe.get().value().assemble(input);
         if (result.isEmpty()) {
             return stack;
         }

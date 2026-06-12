@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -219,7 +220,8 @@ public class SapphireGeneratorBlockEntity extends BaseContainerBlockEntity imple
         if (stack.isEmpty()) {
             return;
         }
-        ItemStack remainder = stack.getCraftingRemainder();
+        ItemStackTemplate remainderTemplate = stack.getCraftingRemainder();
+        ItemStack remainder = remainderTemplate == null ? ItemStack.EMPTY : remainderTemplate.create();
         stack.shrink(1);
         if (!remainder.isEmpty()) {
             if (stack.isEmpty()) {

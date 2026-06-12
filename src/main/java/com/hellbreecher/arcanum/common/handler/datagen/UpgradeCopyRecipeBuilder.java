@@ -114,8 +114,8 @@ public class UpgradeCopyRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public Item getResult() {
-        return this.resultStack.getItem();
+    public ResourceKey<Recipe<?>> defaultId() {
+        return RecipeBuilder.getDefaultRecipeId(this.resultStack);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class UpgradeCopyRecipeBuilder implements RecipeBuilder {
 
         UpgradeCopyRecipe recipe = new UpgradeCopyRecipe(
                 Objects.requireNonNullElse(this.group, ""),
-                RecipeBuilder.determineBookCategory(this.category),
+                RecipeBuilder.determineCraftingBookCategory(this.category),
                 pattern,
                 this.resultStack,
                 this.baseIngredient,

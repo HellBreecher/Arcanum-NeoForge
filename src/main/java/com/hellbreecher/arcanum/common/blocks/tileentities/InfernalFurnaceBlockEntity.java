@@ -98,7 +98,7 @@ public class InfernalFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
         if (recipe == null) {
             return false;
         }
-        ItemStack result = recipe.value().assemble(recipeInput, level.registryAccess());
+        ItemStack result = recipe.value().assemble(recipeInput);
         if (result.isEmpty()) {
             return false;
         }

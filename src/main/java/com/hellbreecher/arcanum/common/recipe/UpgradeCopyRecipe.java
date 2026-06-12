@@ -5,11 +5,11 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import javax.annotation.Nullable;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -87,7 +87,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+    public ItemStack assemble(CraftingInput input) {
         ItemStack base = findBaseStack(input);
         if (base == null || base.isEmpty()) {
             return ItemStack.EMPTY;
@@ -116,7 +116,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
                                 .stream()
                                 .map(ingredient -> ingredient.map(Ingredient::display).orElse(SlotDisplay.Empty.INSTANCE))
                                 .toList(),
-                        new SlotDisplay.ItemStackSlotDisplay(this.result),
+                        new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(this.result)),
                         new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
                 )
         );
@@ -137,7 +137,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
         return found;
     }
 
-    public static class Serializer implements RecipeSerializer<UpgradeCopyRecipe> {
+    public static final class Serializer {
         private static final MapCodec<UpgradeCopyRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 builder -> builder.group(
                                 Codec.STRING.optionalFieldOf("group", "").forGetter(recipe -> recipe.group),
@@ -145,7 +145,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
                                         .orElse(CraftingBookCategory.MISC)
                                         .forGetter(recipe -> recipe.category),
                                 ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern),
-                                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                                ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                                 Ingredient.CODEC.fieldOf("base").forGetter(recipe -> recipe.baseIngredient),
                                 Codec.BOOL.optionalFieldOf("strip_enchantments", false)
                                         .forGetter(recipe -> recipe.stripEnchantments),
@@ -158,16 +158,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
                 UpgradeCopyRecipe.Serializer::toNetwork,
                 UpgradeCopyRecipe.Serializer::fromNetwork
         );
-
-        @Override
-        public MapCodec<UpgradeCopyRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, UpgradeCopyRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
+        public static final RecipeSerializer<UpgradeCopyRecipe> INSTANCE = new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
         private static UpgradeCopyRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
             String group = buffer.readUtf();

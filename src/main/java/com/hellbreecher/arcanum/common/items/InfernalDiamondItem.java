@@ -4,7 +4,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.FlintAndSteelItem;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.block.entity.FuelValues;
@@ -23,8 +25,11 @@ public class InfernalDiamondItem extends FlintAndSteelItem {
     }
 
     @Override
-    public ItemStack getCraftingRemainder(ItemStack stack) {
-        return stack.copy();
+    public ItemStackTemplate getCraftingRemainder(ItemInstance stack) {
+        if (!(stack instanceof ItemStack itemStack) || itemStack.isEmpty()) {
+            return null;
+        }
+        return ItemStackTemplate.fromNonEmptyStack(itemStack.copy());
     }
 
     public ItemStack getContainerItem(ItemStack stack) {

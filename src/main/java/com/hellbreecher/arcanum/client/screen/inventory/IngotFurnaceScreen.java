@@ -15,10 +15,4 @@ public class IngotFurnaceScreen extends AbstractFurnaceScreen<IngotFurnaceMenu> 
     public IngotFurnaceScreen(IngotFurnaceMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title, title, TEXTURE, LIT_PROGRESS_SPRITE, BURN_PROGRESS_SPRITE, List.of());
     }
-
-    @Override
-    public void render(net.minecraft.client.gui.GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        super.render(graphics, mouseX, mouseY, partialTick);
-        this.renderTooltip(graphics, mouseX, mouseY);
-    }
 }

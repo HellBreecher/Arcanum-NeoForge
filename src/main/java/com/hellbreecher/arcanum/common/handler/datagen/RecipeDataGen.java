@@ -25,6 +25,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 
@@ -819,6 +820,7 @@ public final class RecipeDataGen extends RecipeProvider {
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(ArcanumBlocks.greensapphireore_block.get()),
                         RecipeCategory.MISC,
+                        CookingBookCategory.MISC,
                         ArcanumItems.greensapphire.get(),
                         1.0F,
                         200
@@ -829,6 +831,7 @@ public final class RecipeDataGen extends RecipeProvider {
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(ArcanumBlocks.blooddiamondore_block.get()),
                         RecipeCategory.MISC,
+                        CookingBookCategory.MISC,
                         ArcanumItems.blooddiamond.get(),
                         1.0F,
                         200
@@ -839,6 +842,7 @@ public final class RecipeDataGen extends RecipeProvider {
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(ArcanumBlocks.voiddiamondore_block.get()),
                         RecipeCategory.MISC,
+                        CookingBookCategory.MISC,
                         ArcanumItems.voiddiamond.get(),
                         1.0F,
                         200
@@ -873,6 +877,7 @@ public final class RecipeDataGen extends RecipeProvider {
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(Items.BREAD),
                         RecipeCategory.FOOD,
+                        CookingBookCategory.FOOD,
                         ArcanumFood.toast.get(),
                         1.0F,
                         200
@@ -883,6 +888,7 @@ public final class RecipeDataGen extends RecipeProvider {
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(ArcanumFood.applecider.get()),
                         RecipeCategory.FOOD,
+                        CookingBookCategory.FOOD,
                         ArcanumFood.warmapplecider.get(),
                         1.0F,
                         200
