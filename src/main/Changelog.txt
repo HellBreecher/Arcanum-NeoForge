@@ -1,3 +1,6 @@
+###Arcanum 26.1.2-10.0.0.0
+    *API
+        Update to Neoforge to 26.1.2.76
 ###Arcanum 1.21.11-9.0.1.3
     *Bug Fixes
         Generators not stopping fuel consumption when FE storage is full
