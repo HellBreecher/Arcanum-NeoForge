@@ -12,6 +12,7 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
@@ -55,6 +56,8 @@ public final class ItemModelDataGen extends ModelProvider {
         itemModels.generateFlatItem(ArcanumItems.voiddiamond.get(), ModelTemplates.FLAT_ITEM);
         //Magic
         itemModels.generateFlatItem(ArcanumItems.infernaldiamond.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.infernalcrystal.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.spellbook.get(), ModelTemplates.FLAT_ITEM);
         //Misc
         itemModels.generateFlatItem(ArcanumItems.quartzstick.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ArcanumItems.blooddiamondstick.get(), ModelTemplates.FLAT_ITEM);
@@ -149,6 +152,12 @@ public final class ItemModelDataGen extends ModelProvider {
         registerCubeWithItem(blockModels, ArcanumBlocks.greensapphire_block.get());
         registerCubeWithItem(blockModels, ArcanumBlocks.blooddiamond_block.get());
         registerCubeWithItem(blockModels, ArcanumBlocks.voiddiamond_block.get());
+        registerCubeWithItem(blockModels, ArcanumBlocks.infernalcrystal_block.get());
+        blockModels.createCrossBlock(
+                ArcanumBlocks.infernalcrystal_plant.get(),
+                BlockModelGenerators.PlantType.NOT_TINTED,
+                TextureMapping.cross(ArcanumBlocks.infernalcrystal_plant.get())
+        );
         registerCubeWithItem(blockModels, ArcanumBlocks.boneore_block.get());
         registerCubeWithItem(blockModels, ArcanumBlocks.fleshore_block.get());
         registerCubeWithItem(blockModels, ArcanumBlocks.sulfurore_block.get());

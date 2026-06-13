@@ -1,6 +1,30 @@
-###Arcanum 26.1.2-10.0.0.0
+###Arcanum 26.1.2-10.1.0.0
     *API
         Update to Neoforge to 26.1.2.76
+    *Magic
+        Added Spellbook with selectable spells and mana-powered casting
+        Added mana storage, passive mana regeneration with Spellbook, and mana HUD
+        Added Lumenfall, Firebolt, Renew, Ember Ward, and Aetherwing spells
+        Added Aetherwing flight spell, granting creative-style flight until landing
+        Added Firebolt transmutation for Void Diamond, Void Diamond Block, Void Diamond Furnace, and Void Diamond Generator
+        Added stacking mana regeneration bonus while the player is on fire
+    *Items
+        Added Infernal Crystal and Infernal Crystal Block
+        Infernal Crystal increases mana storage and current mana when consumed
+        Infernal Crystal Block increases mana storage and current mana by 9x crystal value when consumed
+        Infernal gear now uses mana for magical bonuses
+    *Blocks
+        Added harvestable Infernal Crystal growth around lava
+        Infernal Crystal growth requires Silk Touch or Infernal tools to drop
+    *World Gen
+        Infernal Crystals now generate near lava in caves and the Nether
+    *Crafting
+        Added Spellbook recipe
+        Added Infernal Crystal Block recipes
+        Removed Infernal Diamond crafting recipe
+###Arcanum 26.1.2-10.0.0.0
+    *API
+        Update to Neoforge to 26.1.2.75
 ###Arcanum 1.21.11-9.0.1.3
     *Bug Fixes
         Generators not stopping fuel consumption when FE storage is full

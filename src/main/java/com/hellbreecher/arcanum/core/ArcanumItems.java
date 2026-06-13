@@ -2,7 +2,9 @@ package com.hellbreecher.arcanum.core;
 
 import com.hellbreecher.arcanum.common.items.BaseItem;
 import com.hellbreecher.arcanum.common.items.HammerItem;
+import com.hellbreecher.arcanum.common.items.InfernalCrystalItem;
 import com.hellbreecher.arcanum.common.items.InfernalDiamondItem;
+import com.hellbreecher.arcanum.common.items.SpellbookItem;
 import com.hellbreecher.arcanum.common.lib.Reference;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -20,6 +22,8 @@ public class ArcanumItems {
 
     //Magical Ingots
     public static final DeferredItem<Item> infernaldiamond = ITEMS.register("infernaldiamond", InfernalDiamondItem::new);
+    public static final DeferredItem<Item> infernalcrystal = ITEMS.register("infernalcrystal", InfernalCrystalItem::new);
+    public static final DeferredItem<Item> spellbook = ITEMS.register("spellbook", SpellbookItem::new);
 
     //Misc
     public static final DeferredItem<Item> quartzstick = ITEMS.register("quartzstick", BaseItem::new);

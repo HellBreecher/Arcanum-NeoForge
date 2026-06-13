@@ -31,6 +31,7 @@ public final class ArcanumBlockTagsProvider extends BlockTagsProvider {
                 ArcanumBlocks.greensapphire_block.get(),
                 ArcanumBlocks.blooddiamond_block.get(),
                 ArcanumBlocks.voiddiamond_block.get(),
+                ArcanumBlocks.infernalcrystal_block.get(),
                 ArcanumBlocks.boneore_block.get(),
                 ArcanumBlocks.fleshore_block.get(),
                 ArcanumBlocks.sulfurore_block.get(),
@@ -46,6 +47,9 @@ public final class ArcanumBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.NEEDS_IRON_TOOL).add(
                 ArcanumBlocks.greensapphireore_block.get(),
                 ArcanumBlocks.deepslategreensapphireore_block.get()
+        );
+        tag(BlockTags.NEEDS_STONE_TOOL).add(
+                ArcanumBlocks.infernalcrystal_block.get()
         );
         tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
                 ArcanumBlocks.blooddiamondore_block.get(),

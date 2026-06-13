@@ -4,12 +4,14 @@ import com.hellbreecher.arcanum.common.blocks.BaseBlockItem;
 import com.hellbreecher.arcanum.common.blocks.BloodDiamondFurnaceBlock;
 import com.hellbreecher.arcanum.common.blocks.BloodDiamondGeneratorBlock;
 import com.hellbreecher.arcanum.common.blocks.FermenterBlock;
+import com.hellbreecher.arcanum.common.blocks.InfernalCrystalPlantBlock;
 import com.hellbreecher.arcanum.common.blocks.InfernalGeneratorBlock;
 import com.hellbreecher.arcanum.common.blocks.InfernalFurnaceBlock;
 import com.hellbreecher.arcanum.common.blocks.SapphireGeneratorBlock;
 import com.hellbreecher.arcanum.common.blocks.SapphireFurnaceBlock;
 import com.hellbreecher.arcanum.common.blocks.VoidDiamondFurnaceBlock;
 import com.hellbreecher.arcanum.common.blocks.VoidDiamondGeneratorBlock;
+import com.hellbreecher.arcanum.common.items.InfernalCrystalBlockItem;
 import com.hellbreecher.arcanum.common.lib.Reference;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -89,11 +92,21 @@ public class ArcanumBlocks {
     public static final DeferredBlock<Block> voiddiamond_block = registerBlock("voiddiamondblock",
             Block::new,
             BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(45.0F, 360.0F).destroyTime(3f).requiresCorrectToolForDrops());
+    public static final DeferredBlock<Block> infernalcrystal_block = registerBlock("infernalcrystalblock",
+            Block::new,
+            BlockBehaviour.Properties.of().sound(SoundType.AMETHYST).strength(1.5F, 6.0F).destroyTime(1.5F)
+                    .lightLevel(state -> 7).requiresCorrectToolForDrops());
+    public static final DeferredBlock<InfernalCrystalPlantBlock> infernalcrystal_plant = registerBlock("infernalcrystal",
+            InfernalCrystalPlantBlock::new,
+            BlockBehaviour.Properties.of().noCollision().noOcclusion().instabreak().sound(SoundType.AMETHYST)
+                    .lightLevel(state -> 10).offsetType(OffsetType.XZ).pushReaction(PushReaction.DESTROY));
 
     //Ingot Block Items
     public static final DeferredItem<Item> greensapphire_block_item = registerBlockItem("greensapphireblock", greensapphire_block);
     public static final DeferredItem<Item> blooddiamond_block_item = registerBlockItem("blooddiamondblock", blooddiamond_block);
     public static final DeferredItem<Item> voiddiamond_block_item = registerBlockItem("voiddiamondblock", voiddiamond_block);
+    public static final DeferredItem<Item> infernalcrystal_block_item = ITEMS.register("infernalcrystalblock",
+            id -> new InfernalCrystalBlockItem(infernalcrystal_block.get(), id));
 
     //Mob Drop Ores
     public static final DeferredBlock<Block> boneore_block = registerBlock("boneore",

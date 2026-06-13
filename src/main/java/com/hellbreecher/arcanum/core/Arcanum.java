@@ -7,19 +7,22 @@ import com.mojang.logging.LogUtils;
 import com.hellbreecher.arcanum.common.handler.ArcanumAnvil;
 import com.hellbreecher.arcanum.common.handler.ArcanumCapabilities;
 import com.hellbreecher.arcanum.common.handler.datagen.ArcanumDataGen;
+import com.hellbreecher.arcanum.common.handler.magic.SpellFlightManager;
 import com.hellbreecher.arcanum.common.items.InfernalDiamondItem;
 import com.hellbreecher.arcanum.common.items.armor.InfernalArmorItem;
 import com.hellbreecher.arcanum.common.items.armor.InfernalDiamondArmorItem;
 import com.hellbreecher.arcanum.common.items.tools.InfernalAxeItem;
 import com.hellbreecher.arcanum.common.items.tools.InfernalPickaxeItem;
+import com.hellbreecher.arcanum.common.items.weapons.InfernalSwordItem;
+import com.hellbreecher.arcanum.common.handler.mana.ArcanumAttachments;
+import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
+import com.hellbreecher.arcanum.common.network.ArcanumNetwork;
 import com.hellbreecher.arcanum.common.recipe.ArcanumRecipeSerializers;
 import com.hellbreecher.arcanum.common.recipe.ArcanumRecipeTypes;
 import com.hellbreecher.arcanum.common.registration.ArcanumBlockEntities;
 import com.hellbreecher.arcanum.common.registration.ArcanumConditionSerializers;
 import com.hellbreecher.arcanum.common.registration.ArcanumMenuTypes;
 import com.hellbreecher.arcanum.client.ArcanumClient;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -28,7 +31,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Arcanum.MODID)
@@ -46,14 +48,17 @@ public class Arcanum {
         modEventBus.addListener(ArcanumDataGen::gatherClient);
         modEventBus.addListener(ArcanumDataGen::gatherServer);
         modEventBus.addListener(ArcanumCapabilities::register);
+        modEventBus.addListener(ArcanumNetwork::register);
 
         // Register the Deferred Register to the mod event bus so blocks get registered
         ArcanumBlocks.register(modEventBus);
+        ArcanumAttachments.register(modEventBus);
         ArcanumBlockEntities.register(modEventBus);
         ArcanumConditionSerializers.register(modEventBus);
         ArcanumMenuTypes.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
         ArcanumItems.register(modEventBus);
+        ArcanumFeatures.register(modEventBus);
         ArcanumFood.register(modEventBus);
         ArcanumTools.register(modEventBus);
         ArcanumWeapons.register(modEventBus);
@@ -74,6 +79,10 @@ public class Arcanum {
         NeoForge.EVENT_BUS.addListener(InfernalDiamondArmorItem::onArmorEquipped);
         NeoForge.EVENT_BUS.addListener(InfernalArmorItem::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(InfernalDiamondArmorItem::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(InfernalArmorItem::onIncomingDamage);
+        NeoForge.EVENT_BUS.addListener(InfernalSwordItem::onLivingDamage);
+        NeoForge.EVENT_BUS.addListener(ManaManager::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(SpellFlightManager::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(InfernalDiamondItem::onItemCrafted);
         NeoForge.EVENT_BUS.addListener(ArcanumAnvil::onAnvilUpdate);
 

@@ -34,6 +34,7 @@ public class ArcanumCreativeTabs  {
                 output.accept(ArcanumBlocks.greensapphire_block.get());
                 output.accept(ArcanumBlocks.blooddiamond_block.get());
                 output.accept(ArcanumBlocks.voiddiamond_block.get());
+                output.accept(ArcanumBlocks.infernalcrystal_block.get());
                 //Block Mob Drop
                 output.accept(ArcanumBlocks.boneore_block.get());
                 output.accept(ArcanumBlocks.fleshore_block.get());
@@ -70,6 +71,8 @@ public class ArcanumCreativeTabs  {
                 output.accept(ArcanumItems.voiddiamond.get());
                 //Item Magical Ingots
                 output.accept(ArcanumItems.infernaldiamond.get());
+                output.accept(ArcanumItems.infernalcrystal.get());
+                output.accept(ArcanumItems.spellbook.get());
                 //Item Misc
                 output.accept(ArcanumItems.quartzstick.get());
                 output.accept(ArcanumItems.blooddiamondstick.get());

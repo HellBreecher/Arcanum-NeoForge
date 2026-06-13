@@ -39,6 +39,8 @@ public final class BlockLootDataGen extends BlockLootSubProvider {
         dropSelf(ArcanumBlocks.greensapphire_block.get());
         dropSelf(ArcanumBlocks.blooddiamond_block.get());
         dropSelf(ArcanumBlocks.voiddiamond_block.get());
+        dropSelf(ArcanumBlocks.infernalcrystal_block.get());
+        dropOther(ArcanumBlocks.infernalcrystal_plant.get(), ArcanumItems.infernalcrystal.get());
 
         add(ArcanumBlocks.boneore_block.get(), createSingleItemTable(Items.BONE, UniformGenerator.between(1.0F, 5.0F)));
         add(ArcanumBlocks.fleshore_block.get(), createSingleItemTable(Items.ROTTEN_FLESH, UniformGenerator.between(1.0F, 5.0F)));
@@ -96,4 +98,5 @@ public final class BlockLootDataGen extends BlockLootSubProvider {
                                 .add(LootItem.lootTableItem(ArcanumItems.voiddiamond.get()))
                 );
     }
+
 }

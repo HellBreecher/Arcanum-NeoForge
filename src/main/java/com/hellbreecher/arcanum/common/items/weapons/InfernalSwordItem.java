@@ -2,7 +2,9 @@ package com.hellbreecher.arcanum.common.items.weapons;
 
 import com.hellbreecher.arcanum.core.Config;
 
+import com.hellbreecher.arcanum.common.items.InfernalManaCosts;
 import com.hellbreecher.arcanum.common.lib.ArcanumToolMaterials;
+import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 
 public class InfernalSwordItem extends Item {
 
@@ -46,6 +49,21 @@ public class InfernalSwordItem extends Item {
                 level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(enchantment),
                 levelValue
         );
+    }
+
+    public static void onLivingDamage(LivingDamageEvent.Pre event) {
+        if (!(event.getSource().getEntity() instanceof Player player)
+                || player.level().isClientSide()
+                || !(player.getMainHandItem().getItem() instanceof InfernalSwordItem)) {
+            return;
+        }
+
+        if (!ManaManager.spend(player, InfernalManaCosts.SWORD_BURST)) {
+            return;
+        }
+
+        event.getEntity().igniteForSeconds(4.0F);
+        event.setNewDamage(event.getNewDamage() + 4.0F);
     }
 }
 

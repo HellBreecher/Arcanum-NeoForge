@@ -84,16 +84,17 @@ public final class RecipeDataGen extends RecipeProvider {
                 .unlockedBy("has_voiddiamond", has(ArcanumItems.voiddiamond.get()))
                 .save(output, recipeId("crafting_voiddiamondblock"));
 
-        // Infernal diamond
-        shaped(items, RecipeCategory.MISC, ArcanumItems.infernaldiamond.get())
-                .pattern("XYX")
-                .pattern("YZY")
-                .pattern("XYX")
-                .define('X', ArcanumBlocks.voiddiamond_block.get())
-                .define('Y', ArcanumBlocks.blooddiamond_block.get())
-                .define('Z', Items.BLAZE_ROD)
-                .unlockedBy("has_voiddiamond_block", has(ArcanumBlocks.voiddiamond_block.get()))
-                .save(output, recipeId("crafting_infernaldiamond"));
+        shapeless(items, RecipeCategory.MISC, ArcanumItems.infernalcrystal.get(), 9)
+                .requires(ArcanumBlocks.infernalcrystal_block.get())
+                .unlockedBy("has_infernalcrystal_block", has(ArcanumBlocks.infernalcrystal_block.get()))
+                .save(output, recipeId("crafting_infernalcrystal"));
+        shaped(items, RecipeCategory.BUILDING_BLOCKS, ArcanumBlocks.infernalcrystal_block.get())
+                .pattern("XXX")
+                .pattern("XXX")
+                .pattern("XXX")
+                .define('X', ArcanumItems.infernalcrystal.get())
+                .unlockedBy("has_infernalcrystal", has(ArcanumItems.infernalcrystal.get()))
+                .save(output, recipeId("crafting_infernalcrystalblock"));
 
         // Sticks and misc
         shaped(items, RecipeCategory.MISC, ArcanumItems.quartzstick.get(), 4)
@@ -122,6 +123,12 @@ public final class RecipeDataGen extends RecipeProvider {
                 .define('Y', Items.STICK)
                 .unlockedBy("has_iron_ingot", has(Items.IRON_INGOT))
                 .save(output, recipeId("crafting_hammer"));
+
+        shapeless(items, RecipeCategory.TOOLS, ArcanumItems.spellbook.get())
+                .requires(Items.BOOK)
+                .requires(ArcanumItems.infernalcrystal.get())
+                .unlockedBy("has_infernalcrystal", has(ArcanumItems.infernalcrystal.get()))
+                .save(output, recipeId("crafting_spellbook"));
 
         shaped(items, RecipeCategory.TOOLS, ArcanumTools.arcwrench.get())
                 .pattern(" X ")

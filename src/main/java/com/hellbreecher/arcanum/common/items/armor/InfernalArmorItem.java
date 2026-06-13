@@ -2,7 +2,9 @@ package com.hellbreecher.arcanum.common.items.armor;
 
 import com.hellbreecher.arcanum.core.Config;
 
+import com.hellbreecher.arcanum.common.items.InfernalManaCosts;
 import com.hellbreecher.arcanum.common.lib.ArcanumArmorMaterials;
+import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
 import com.hellbreecher.arcanum.core.ArcanumArmor;
 import com.hellbreecher.arcanum.core.Arcanum;
 import com.hellbreecher.arcanum.core.ArcanumItems;
@@ -23,6 +25,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.tags.DamageTypeTags;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -127,7 +131,7 @@ public class InfernalArmorItem extends Item {
             return;
         }
 
-        if (isWearingFullSet(player) && player.isSprinting()) {
+        if (isWearingFullSet(player) && player.isSprinting() && spendPeriodic(player, InfernalManaCosts.SPRINT_TICK)) {
             speed.addOrUpdateTransientModifier(new AttributeModifier(
                     SPRINT_SPEED_MODIFIER_ID,
                     Config.INFERNAL_ARMOR_SPRINT_SPEED_MULTIPLIER.get(),
@@ -136,9 +140,33 @@ public class InfernalArmorItem extends Item {
         } else {
             speed.removeModifier(SPRINT_SPEED_MODIFIER_ID);
         }
+
+        if (isWearingFullSet(player) && player.getAbilities().flying) {
+            spendPeriodic(player, InfernalManaCosts.FLIGHT_TICK);
+        }
     }
 
-    private static boolean isWearingFullSet(Player player) {
+    public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player) || player.level().isClientSide() || !isWearingFullSet(player)) {
+            return;
+        }
+
+        if (event.getSource().is(DamageTypeTags.IS_FIRE) && ManaManager.spend(player, InfernalManaCosts.FIRE_DAMAGE_BLOCK)) {
+            event.setAmount(0.0F);
+            player.clearFire();
+            return;
+        }
+
+        if (event.getAmount() > 0.0F && ManaManager.spend(player, InfernalManaCosts.DAMAGE_REDUCTION)) {
+            event.setAmount(event.getAmount() * 0.75F);
+        }
+    }
+
+    private static boolean spendPeriodic(Player player, int amount) {
+        return player.tickCount % 20 != 0 || ManaManager.spend(player, amount);
+    }
+
+    public static boolean isWearingFullSet(Player player) {
         return player.getItemBySlot(EquipmentSlot.HEAD).is(ArcanumArmor.infernalhelmet.get())
                 && player.getItemBySlot(EquipmentSlot.CHEST).is(ArcanumArmor.infernalchestplate.get())
                 && player.getItemBySlot(EquipmentSlot.LEGS).is(ArcanumArmor.infernalleggings.get())

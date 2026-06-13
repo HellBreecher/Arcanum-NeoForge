@@ -19,6 +19,7 @@
     "item.arcanum.voiddiamondblock": "Void Diamond Block",
     "item.arcanum.greensapphireblock": "Green Sapphire Block",
     "item.arcanum.greensapphirecoalblock": "Green Sapphire Coal Block",
+    "item.arcanum.infernalcrystalblock": "Infernal Crystal Block",
     "item.arcanum.sulfurblock": "Sulfur Block",
     "item.arcanum.boneblock": "Bone Block",
     "item.arcanum.fleshblock": "Flesh Block",
@@ -28,6 +29,10 @@
     "item.arcanum.greensapphire": "Green Sapphire",
     "item.arcanum.greensapphirecoal": "Green Sapphire Coal",
     "item.arcanum.infernaldiamond": "Infernal Diamond",
+    "item.arcanum.infernalcrystal": "Infernal Crystal",
+    "item.arcanum.spellbook": "Spellbook",
+    "key.categories.arcanum.spellbook": "Arcanum",
+    "key.arcanum.next_spell": "Next Spell",
 
     "item.arcanum.blooddiamondaxe": "Blood Diamond Axe",
     "item.arcanum.voiddiamondaxe": "Void Diamond Axe",
@@ -125,6 +130,8 @@
     "block.arcanum.blooddiamondgenerator": "Blood Diamond Generator",
     "block.arcanum.voiddiamondgenerator": "Void Diamond Generator",
     "block.arcanum.infernalgenerator": "Infernal Generator",
+    "block.arcanum.infernalcrystal": "Infernal Crystal",
+    "block.arcanum.infernalcrystalblock": "Infernal Crystal Block",
 
     "item.SawDust": "SawDust",
 

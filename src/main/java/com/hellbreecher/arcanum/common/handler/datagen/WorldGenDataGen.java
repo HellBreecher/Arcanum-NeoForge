@@ -1,6 +1,7 @@
 package com.hellbreecher.arcanum.common.handler.datagen;
 
 import com.hellbreecher.arcanum.core.Arcanum;
+import com.hellbreecher.arcanum.core.ArcanumFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
@@ -43,6 +45,7 @@ public final class WorldGenDataGen {
     public static final ResourceKey<ConfiguredFeature<?, ?>> BONE_ORE = configuredKey("boneore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLESH_ORE = configuredKey("fleshore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SULFUR_ORE = configuredKey("sulfurore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> INFERNAL_CRYSTAL_PATCH = configuredKey("infernal_crystal_patch");
 
     public static final ResourceKey<PlacedFeature> GREENSAPPHIRE_ORE_PLACED = placedKey("greensapphire_ore");
     public static final ResourceKey<PlacedFeature> BLOODDIAMOND_ORE_PLACED = placedKey("blooddiamond_ore");
@@ -52,7 +55,10 @@ public final class WorldGenDataGen {
     public static final ResourceKey<PlacedFeature> BONE_ORE_PLACED = placedKey("bone_ore");
     public static final ResourceKey<PlacedFeature> FLESH_ORE_PLACED = placedKey("flesh_ore");
     public static final ResourceKey<PlacedFeature> SULFUR_ORE_PLACED = placedKey("sulfur_ore");
+    public static final ResourceKey<PlacedFeature> INFERNAL_CRYSTAL_PATCH_PLACED = placedKey("infernal_crystal_patch");
     public static final ResourceKey<BiomeModifier> ORE_BIOME_MODIFIER = biomeModifierKey("ores");
+    public static final ResourceKey<BiomeModifier> INFERNAL_CRYSTAL_OVERWORLD_BIOME_MODIFIER = biomeModifierKey("infernal_crystals_overworld");
+    public static final ResourceKey<BiomeModifier> INFERNAL_CRYSTAL_NETHER_BIOME_MODIFIER = biomeModifierKey("infernal_crystals_nether");
 
     private WorldGenDataGen() {}
 
@@ -80,6 +86,7 @@ public final class WorldGenDataGen {
                 oreConfig(context, "fleshore", 8, 0.0F));
         FeatureUtils.register(context, SULFUR_ORE, Feature.ORE,
                 oreConfig(context, "sulfurore", 8, 0.0F));
+        FeatureUtils.register(context, INFERNAL_CRYSTAL_PATCH, ArcanumFeatures.INFERNAL_CRYSTAL_PATCH.get(), NoneFeatureConfiguration.INSTANCE);
     }
 
     private static void bootstrapPlaced(BootstrapContext<PlacedFeature> context) {
@@ -100,6 +107,8 @@ public final class WorldGenDataGen {
                 orePlacement(15, -80, 256));
         PlacementUtils.register(context, SULFUR_ORE_PLACED, configured.getOrThrow(SULFUR_ORE),
                 orePlacement(15, -80, 256));
+        PlacementUtils.register(context, INFERNAL_CRYSTAL_PATCH_PLACED, configured.getOrThrow(INFERNAL_CRYSTAL_PATCH),
+                orePlacement(24, -64, 128));
     }
 
     private static void bootstrapBiomeModifiers(BootstrapContext<BiomeModifier> context) {
@@ -119,6 +128,22 @@ public final class WorldGenDataGen {
         context.register(
                 ORE_BIOME_MODIFIER,
                 new BiomeModifiers.AddFeaturesBiomeModifier(overworld, features, GenerationStep.Decoration.UNDERGROUND_ORES)
+        );
+        context.register(
+                INFERNAL_CRYSTAL_OVERWORLD_BIOME_MODIFIER,
+                new BiomeModifiers.AddFeaturesBiomeModifier(
+                        overworld,
+                        HolderSet.direct(placed.getOrThrow(INFERNAL_CRYSTAL_PATCH_PLACED)),
+                        GenerationStep.Decoration.UNDERGROUND_DECORATION
+                )
+        );
+        context.register(
+                INFERNAL_CRYSTAL_NETHER_BIOME_MODIFIER,
+                new BiomeModifiers.AddFeaturesBiomeModifier(
+                        biomes.getOrThrow(BiomeTags.IS_NETHER),
+                        HolderSet.direct(placed.getOrThrow(INFERNAL_CRYSTAL_PATCH_PLACED)),
+                        GenerationStep.Decoration.UNDERGROUND_DECORATION
+                )
         );
     }
 

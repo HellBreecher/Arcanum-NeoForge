@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -19,6 +20,9 @@ public class ArcanumClient {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         modEventBus.addListener(ArcanumClient::onClientSetup);
         modEventBus.addListener(ArcanumClient::registerScreens);
+        modEventBus.addListener(SpellKeybinds::register);
+        NeoForge.EVENT_BUS.addListener(ManaHud::onRenderGui);
+        NeoForge.EVENT_BUS.addListener(SpellKeybinds::onClientTick);
     }
 
     static void onClientSetup(FMLClientSetupEvent event) {

@@ -2,7 +2,9 @@ package com.hellbreecher.arcanum.common.items.tools;
 
 import com.hellbreecher.arcanum.core.Config;
 
+import com.hellbreecher.arcanum.common.items.InfernalManaCosts;
 import com.hellbreecher.arcanum.common.lib.ArcanumToolMaterials;
+import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -93,6 +95,10 @@ public class InfernalAxeItem extends AxeItem {
 
         ItemStack tool = player.getMainHandItem();
         if (!(tool.getItem() instanceof InfernalAxeItem)) {
+            return;
+        }
+
+        if (!ManaManager.spend(player, InfernalManaCosts.AUTOSMELT)) {
             return;
         }
 
