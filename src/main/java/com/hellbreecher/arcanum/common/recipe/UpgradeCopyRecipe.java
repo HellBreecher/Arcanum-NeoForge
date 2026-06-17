@@ -109,17 +109,33 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
 
     @Override
     public List<RecipeDisplay> display() {
+        int displayWidth = this.pattern.width();
+        List<SlotDisplay> displayIngredients = this.pattern.ingredients()
+                .stream()
+                .map(ingredient -> ingredient.map(Ingredient::display).orElse(SlotDisplay.Empty.INSTANCE))
+                .toList();
+
+        if (this.pattern.width() == 2 && this.pattern.height() == 3) {
+            displayWidth = 3;
+            displayIngredients = expandToThreeWideDisplay(displayIngredients);
+        }
+
         return List.of(
                 new ShapedCraftingRecipeDisplay(
-                        this.pattern.width(),
+                        displayWidth,
                         this.pattern.height(),
-                        this.pattern.ingredients()
-                                .stream()
-                                .map(ingredient -> ingredient.map(Ingredient::display).orElse(SlotDisplay.Empty.INSTANCE))
-                                .toList(),
+                        displayIngredients,
                         new SlotDisplay.ItemStackSlotDisplay(this.result),
                         new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
                 )
+        );
+    }
+
+    private static List<SlotDisplay> expandToThreeWideDisplay(List<SlotDisplay> ingredients) {
+        return List.of(
+                ingredients.get(0), ingredients.get(1), SlotDisplay.Empty.INSTANCE,
+                ingredients.get(2), ingredients.get(3), SlotDisplay.Empty.INSTANCE,
+                ingredients.get(4), ingredients.get(5), SlotDisplay.Empty.INSTANCE
         );
     }
 

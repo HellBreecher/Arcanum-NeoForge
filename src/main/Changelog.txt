@@ -17,6 +17,7 @@
         Fix data gen issue for server/client side causing recipes not to work
         Fixed Sapphire Beating Stick generated recipe using the outdated forge:rods/wooden tag
         Fixed Infernal Wand missing lang entry and showing item.arcanum.infernalwand
+        Fixed upgraded hoe recipe displays being compressed into the wrong crafting grid layout
 ###Arcanum 26.1.2-10.1.0.1
     *Bug Fixes
         Fixed dedicated server crash caused by client-only setup loading on the server
@@ -492,5 +493,4 @@
 ###MCUpgrade 1.0.2
 ###MCUpgrade 1.0.1
 ###MCUpgrade V1.0.0 
-
 
