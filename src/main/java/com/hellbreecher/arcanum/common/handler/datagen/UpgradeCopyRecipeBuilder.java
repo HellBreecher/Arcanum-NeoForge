@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -31,7 +31,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 public class UpgradeCopyRecipeBuilder implements RecipeBuilder {
     private final HolderGetter<Item> items;
     private final RecipeCategory category;
-    private final ItemStack resultStack;
+    private final ItemStackTemplate result;
     private final List<String> rows = Lists.newArrayList();
     private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
@@ -44,7 +44,7 @@ public class UpgradeCopyRecipeBuilder implements RecipeBuilder {
     private UpgradeCopyRecipeBuilder(HolderGetter<Item> items, RecipeCategory category, ItemLike result, int count) {
         this.items = items;
         this.category = category;
-        this.resultStack = new ItemStack(result, count);
+        this.result = new ItemStackTemplate(result.asItem(), count);
     }
 
     public static UpgradeCopyRecipeBuilder shaped(HolderGetter<Item> items, RecipeCategory category, ItemLike result) {
@@ -115,7 +115,7 @@ public class UpgradeCopyRecipeBuilder implements RecipeBuilder {
 
     @Override
     public ResourceKey<Recipe<?>> defaultId() {
-        return RecipeBuilder.getDefaultRecipeId(this.resultStack);
+        return RecipeBuilder.getDefaultRecipeId(this.result);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class UpgradeCopyRecipeBuilder implements RecipeBuilder {
                 Objects.requireNonNullElse(this.group, ""),
                 RecipeBuilder.determineCraftingBookCategory(this.category),
                 pattern,
-                this.resultStack,
+                this.result,
                 this.baseIngredient,
                 this.stripEnchantments,
                 this.showNotification

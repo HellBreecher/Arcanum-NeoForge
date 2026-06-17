@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "arcanum:block/blooddiamondgenerator_front",
-    "side": "arcanum:block/blooddiamondgenerator_side",
-    "top": "arcanum:block/blooddiamondgenerator_top"
-  }
-}

@@ -1,13 +1,19 @@
 package com.hellbreecher.arcanum.common.items.weapons;
 
+import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
+import com.hellbreecher.arcanum.common.items.InfernalManaCosts;
+import com.hellbreecher.arcanum.common.items.SpellbookItem;
 import com.hellbreecher.arcanum.core.Config;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -39,6 +45,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class InfernalWandItem extends Item {
+    private static final double TRANSMUTATION_RANGE = 48.0D;
 
 
     public InfernalWandItem(Identifier id) {
@@ -50,6 +57,17 @@ public class InfernalWandItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (SpellbookItem.castFocusedSelectedSpell(level, player)) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (hasMana(player, InfernalManaCosts.WAND_TRANSMUTE)
+                && SpellbookItem.tryFireboltTransmutation(level, player, TRANSMUTATION_RANGE)) {
+            ManaManager.spend(player, InfernalManaCosts.WAND_TRANSMUTE);
+            player.sendOverlayMessage(Component.literal("Transmuted"));
             return InteractionResult.SUCCESS;
         }
 
@@ -79,12 +97,15 @@ public class InfernalWandItem extends Item {
 
         boolean handled = false;
         if (entityHit != null && isCloser(start, entityHit, blockHit)) {
-            handled = smeltItemEntity(level, (ItemEntity) entityHit.getEntity());
+            handled = smeltItemEntity(level, player, (ItemEntity) entityHit.getEntity());
         } else if (blockHit.getType() == HitResult.Type.BLOCK) {
             handled = smeltBlock(level, player, blockHit.getBlockPos());
         }
 
         if (!handled) {
+            if (!spendMana(player, InfernalManaCosts.WAND_FIREBALL)) {
+                return InteractionResult.CONSUME;
+            }
             shootFireball(level, player, look);
         }
 
@@ -98,13 +119,17 @@ public class InfernalWandItem extends Item {
         return entityHit.getLocation().distanceToSqr(start) < blockHit.getLocation().distanceToSqr(start);
     }
 
-    private static boolean smeltItemEntity(Level level, ItemEntity itemEntity) {
+    private static boolean smeltItemEntity(Level level, Player player, ItemEntity itemEntity) {
         ItemStack stack = itemEntity.getItem();
         ItemStack smelted = smeltStack(level, stack);
         if (smelted == stack) {
             return false;
         }
+        if (!spendMana(player, InfernalManaCosts.WAND_SMELT)) {
+            return true;
+        }
         itemEntity.setItem(smelted);
+        playWandSmelt(level, itemEntity.position());
         return true;
     }
 
@@ -131,13 +156,29 @@ public class InfernalWandItem extends Item {
         BlockEntity blockEntity = serverLevel.getBlockEntity(pos);
         ItemStack tool = player.getItemInHand(InteractionHand.MAIN_HAND);
         List<ItemStack> drops = Block.getDrops(state, serverLevel, pos, blockEntity, player, tool);
+        if (!spendMana(player, InfernalManaCosts.WAND_SMELT)) {
+            return true;
+        }
         for (ItemStack drop : drops) {
             ItemStack smeltedDrop = smeltStack(level, drop);
             Block.popResource(level, pos, smeltedDrop);
         }
 
         level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+        playWandSmelt(level, Vec3.atCenterOf(pos));
         return true;
+    }
+
+    private static boolean hasMana(Player player, int amount) {
+        return ManaManager.get(player).mana() >= amount;
+    }
+
+    private static boolean spendMana(Player player, int amount) {
+        if (ManaManager.spend(player, amount)) {
+            return true;
+        }
+        player.sendOverlayMessage(Component.literal("Not enough mana (" + amount + " needed)"));
+        return false;
     }
 
     private static ItemStack smeltStack(Level level, ItemStack stack) {
@@ -170,6 +211,11 @@ public class InfernalWandItem extends Item {
                 player.getZ() + accel.z * 1.5D
         );
         level.addFreshEntity(fireball);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.8F, 0.8F);
+    }
+
+    private static void playWandSmelt(Level level, Vec3 pos) {
+        level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.6F, 0.6F);
     }
 
     @Override

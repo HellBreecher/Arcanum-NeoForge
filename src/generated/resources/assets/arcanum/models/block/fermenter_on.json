@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "arcanum:block/fermenter_front_on",
-    "side": "arcanum:block/fermenter_side",
-    "top": "arcanum:block/fermenter_top"
-  }
-}

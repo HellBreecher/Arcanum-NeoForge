@@ -3,6 +3,7 @@ package com.hellbreecher.arcanum.client;
 import com.hellbreecher.arcanum.common.items.SpellbookItem;
 import com.hellbreecher.arcanum.common.network.SelectSpellPayload;
 import com.hellbreecher.arcanum.core.ArcanumItems;
+import com.hellbreecher.arcanum.core.ArcanumWeapons;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -43,21 +44,51 @@ public final class SpellKeybinds {
                 return;
             }
 
-            ItemStack stack = getHeldSpellbook(player);
+            ItemStack stack = getSelectableSpellbook(player);
             if (stack.isEmpty()) {
                 return;
             }
 
-            int nextSpell = SpellbookItem.nextSpell(SpellbookItem.getSelectedSpell(stack));
+            int nextSpell = SpellbookItem.nextSpell(player, SpellbookItem.getSelectedSpell(stack));
             SpellbookItem.setSelectedSpell(stack, nextSpell);
             ClientPacketDistributor.sendToServer(new SelectSpellPayload(nextSpell));
             player.sendOverlayMessage(net.minecraft.network.chat.Component.literal("Selected: " + SpellbookItem.getSpellName(nextSpell)));
         }
     }
 
+    private static ItemStack getSelectableSpellbook(LocalPlayer player) {
+        ItemStack heldSpellbook = getHeldSpellbook(player);
+        if (!heldSpellbook.isEmpty()) {
+            return heldSpellbook;
+        }
+        if (isHoldingWand(player)) {
+            return getInventorySpellbook(player);
+        }
+        return ItemStack.EMPTY;
+    }
+
     private static ItemStack getHeldSpellbook(LocalPlayer player) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack stack = player.getItemInHand(hand);
+            if (stack.is(ArcanumItems.spellbook.get())) {
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private static boolean isHoldingWand(LocalPlayer player) {
+        for (InteractionHand hand : InteractionHand.values()) {
+            if (player.getItemInHand(hand).is(ArcanumWeapons.infernalwand.get())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static ItemStack getInventorySpellbook(LocalPlayer player) {
+        for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
+            ItemStack stack = player.getInventory().getItem(slot);
             if (stack.is(ArcanumItems.spellbook.get())) {
                 return stack;
             }

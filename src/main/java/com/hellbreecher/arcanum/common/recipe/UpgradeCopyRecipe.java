@@ -25,7 +25,7 @@ import net.minecraft.world.level.Level;
 
 public class UpgradeCopyRecipe implements CraftingRecipe {
     private final ShapedRecipePattern pattern;
-    private final ItemStack result;
+    private final ItemStackTemplate result;
     private final String group;
     private final CraftingBookCategory category;
     private final boolean showNotification;
@@ -38,7 +38,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
             String group,
             CraftingBookCategory category,
             ShapedRecipePattern pattern,
-            ItemStack result,
+            ItemStackTemplate result,
             Ingredient baseIngredient,
             boolean stripEnchantments,
             boolean showNotification
@@ -93,7 +93,8 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
             return ItemStack.EMPTY;
         }
 
-        ItemStack output = base.transmuteCopy(this.result.getItem(), this.result.getCount());
+        ItemStack output = base.transmuteCopy(this.result.item().value(), this.result.count());
+        output.applyComponents(this.result.components());
         if (this.stripEnchantments) {
             output.remove(DataComponents.ENCHANTMENTS);
             output.remove(DataComponents.STORED_ENCHANTMENTS);
@@ -116,7 +117,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
                                 .stream()
                                 .map(ingredient -> ingredient.map(Ingredient::display).orElse(SlotDisplay.Empty.INSTANCE))
                                 .toList(),
-                        new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(this.result)),
+                        new SlotDisplay.ItemStackSlotDisplay(this.result),
                         new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
                 )
         );
@@ -145,7 +146,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
                                         .orElse(CraftingBookCategory.MISC)
                                         .forGetter(recipe -> recipe.category),
                                 ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern),
-                                ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                                ItemStackTemplate.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                                 Ingredient.CODEC.fieldOf("base").forGetter(recipe -> recipe.baseIngredient),
                                 Codec.BOOL.optionalFieldOf("strip_enchantments", false)
                                         .forGetter(recipe -> recipe.stripEnchantments),
@@ -164,7 +165,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
             String group = buffer.readUtf();
             CraftingBookCategory category = buffer.readEnum(CraftingBookCategory.class);
             ShapedRecipePattern pattern = ShapedRecipePattern.STREAM_CODEC.decode(buffer);
-            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
+            ItemStackTemplate result = ItemStackTemplate.STREAM_CODEC.decode(buffer);
             Ingredient base = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             boolean stripEnchantments = buffer.readBoolean();
             boolean showNotification = buffer.readBoolean();
@@ -175,7 +176,7 @@ public class UpgradeCopyRecipe implements CraftingRecipe {
             buffer.writeUtf(recipe.group);
             buffer.writeEnum(recipe.category);
             ShapedRecipePattern.STREAM_CODEC.encode(buffer, recipe.pattern);
-            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+            ItemStackTemplate.STREAM_CODEC.encode(buffer, recipe.result);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.baseIngredient);
             buffer.writeBoolean(recipe.stripEnchantments);
             buffer.writeBoolean(recipe.showNotification);

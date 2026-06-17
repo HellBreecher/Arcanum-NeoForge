@@ -2,6 +2,7 @@ package com.hellbreecher.arcanum.common.handler.mana;
 
 import com.hellbreecher.arcanum.core.ArcanumArmor;
 import com.hellbreecher.arcanum.core.ArcanumItems;
+import com.hellbreecher.arcanum.core.ArcanumWeapons;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,9 +35,13 @@ public final class ManaManager {
         player.setData(ArcanumAttachments.MANA.get(), get(player).addStorage(amount));
     }
 
+    public static void addMana(Player player, int amount) {
+        player.setData(ArcanumAttachments.MANA.get(), get(player).addMana(amount));
+    }
+
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-        if (player.level().isClientSide() || player.tickCount % REGEN_INTERVAL_TICKS != 0 || !hasSpellbook(player)) {
+        if (player.level().isClientSide() || player.tickCount % REGEN_INTERVAL_TICKS != 0 || !hasManaFocus(player)) {
             return;
         }
 
@@ -50,8 +55,16 @@ public final class ManaManager {
         return player.getInventory().contains(ManaManager::isSpellbook);
     }
 
+    public static boolean hasManaFocus(Player player) {
+        return player.getInventory().contains(ManaManager::isManaFocus);
+    }
+
     private static boolean isSpellbook(ItemStack stack) {
         return stack.is(ArcanumItems.spellbook.get());
+    }
+
+    private static boolean isManaFocus(ItemStack stack) {
+        return isSpellbook(stack) || stack.is(ArcanumWeapons.infernalwand.get());
     }
 
     private static int regenAmount(Player player) {

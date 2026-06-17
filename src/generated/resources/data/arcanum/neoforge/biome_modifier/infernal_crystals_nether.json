@@ -1,6 +1,0 @@
-{
-  "type": "neoforge:add_features",
-  "biomes": "#minecraft:is_nether",
-  "features": "arcanum:infernal_crystal_patch",
-  "step": "underground_decoration"
-}

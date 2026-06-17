@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "arcanum:block/voiddiamondfurnace_front_on",
-    "side": "arcanum:block/voiddiamondfurnace_side",
-    "top": "arcanum:block/voiddiamondfurnace_top"
-  }
-}

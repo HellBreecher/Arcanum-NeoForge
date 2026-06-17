@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
@@ -21,7 +22,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
     private final Ingredient ingredient1;
     private final Ingredient ingredient2;
     private final Ingredient ingredient3;
-    private final ItemStack result;
+    private final ItemStackTemplate result;
     private final int fermentTime;
 
     public FermentingRecipe(
@@ -30,7 +31,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
             Ingredient ingredient1,
             Ingredient ingredient2,
             Ingredient ingredient3,
-            ItemStack result,
+            ItemStackTemplate result,
             int fermentTime
     ) {
         this.group = group;
@@ -94,7 +95,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
 
     @Override
     public ItemStack assemble(FermentingRecipeInput input) {
-        return this.result.copy();
+        return this.result.create();
     }
 
     @Override
@@ -130,7 +131,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
                                 Ingredient.CODEC.fieldOf("ingredient1").forGetter(recipe -> recipe.ingredient1),
                                 Ingredient.CODEC.fieldOf("ingredient2").forGetter(recipe -> recipe.ingredient2),
                                 Ingredient.CODEC.fieldOf("ingredient3").forGetter(recipe -> recipe.ingredient3),
-                                ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                                ItemStackTemplate.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                                 Codec.INT.optionalFieldOf("ferment_time", 1200).forGetter(recipe -> recipe.fermentTime)
                         )
                         .apply(builder, FermentingRecipe::new)
@@ -147,7 +148,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
             Ingredient ingredient1 = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             Ingredient ingredient2 = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             Ingredient ingredient3 = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
+            ItemStackTemplate result = ItemStackTemplate.STREAM_CODEC.decode(buffer);
             int fermentTime = buffer.readVarInt();
             return new FermentingRecipe(group, base, ingredient1, ingredient2, ingredient3, result, fermentTime);
         }
@@ -158,7 +159,7 @@ public class FermentingRecipe implements Recipe<FermentingRecipeInput> {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient1);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient2);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient3);
-            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+            ItemStackTemplate.STREAM_CODEC.encode(buffer, recipe.result);
             buffer.writeVarInt(recipe.fermentTime);
         }
     }

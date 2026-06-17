@@ -13,7 +13,7 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
@@ -23,7 +23,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 
 public class FermentingRecipeBuilder implements RecipeBuilder {
     private final RecipeCategory category;
-    private final ItemStack resultStack;
+    private final ItemStackTemplate result;
     private final Ingredient base;
     private final Ingredient ingredient1;
     private final Ingredient ingredient2;
@@ -35,7 +35,7 @@ public class FermentingRecipeBuilder implements RecipeBuilder {
 
     private FermentingRecipeBuilder(
             RecipeCategory category,
-            ItemStack resultStack,
+            ItemStackTemplate result,
             Ingredient base,
             Ingredient ingredient1,
             Ingredient ingredient2,
@@ -43,7 +43,7 @@ public class FermentingRecipeBuilder implements RecipeBuilder {
             int cookingTime
     ) {
         this.category = category;
-        this.resultStack = resultStack;
+        this.result = result;
         this.base = base;
         this.ingredient1 = ingredient1;
         this.ingredient2 = ingredient2;
@@ -62,7 +62,7 @@ public class FermentingRecipeBuilder implements RecipeBuilder {
     ) {
         return new FermentingRecipeBuilder(
                 category,
-                new ItemStack(result),
+                new ItemStackTemplate(result.asItem()),
                 base,
                 ingredient1,
                 ingredient2,
@@ -85,7 +85,7 @@ public class FermentingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public ResourceKey<Recipe<?>> defaultId() {
-        return RecipeBuilder.getDefaultRecipeId(this.resultStack);
+        return RecipeBuilder.getDefaultRecipeId(this.result);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class FermentingRecipeBuilder implements RecipeBuilder {
                 this.ingredient1,
                 this.ingredient2,
                 this.ingredient3,
-                this.resultStack,
+                this.result,
                 this.cookingTime
         );
         output.accept(

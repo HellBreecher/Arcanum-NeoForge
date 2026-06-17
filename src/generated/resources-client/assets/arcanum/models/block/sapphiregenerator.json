@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "arcanum:block/sapphiregenerator_front",
-    "side": "arcanum:block/sapphiregenerator_side",
-    "top": "arcanum:block/sapphiregenerator_top"
-  }
-}

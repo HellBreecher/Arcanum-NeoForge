@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "arcanum:block/blooddiamondfurnace_front",
-    "side": "arcanum:block/blooddiamondfurnace_side",
-    "top": "arcanum:block/blooddiamondfurnace_top"
-  }
-}
