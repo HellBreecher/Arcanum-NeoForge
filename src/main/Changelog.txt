@@ -5,7 +5,6 @@
         Infernal Wand falls back to base fire magic when no Spellbook is available: transmutation, targeted smelting, and fireball casting
         Added Spellbook transmutation from Infernal Beating Stick to Infernal Wand
         Added additional Spellbook spells: Blink, Infernal Chains, Soulflare, Ash Step, Crystal Ward, and Dispel
-        Added Developer Rift as a developer-only spell for UUID 0f3009c8-0403-42fc-9210-e959cd41988e
         Focused wand casting improves selected spells with stronger range, effects, area, or utility
         Next Spell keybind now works while holding either the Spellbook or the Infernal Wand
         Spell selection skips developer-only spells for non-developer players
