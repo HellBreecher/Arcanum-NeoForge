@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_green_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:green_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_mountaindewmix"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_green_dye"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_mountaindewmix"
+    ]
+  }
+}

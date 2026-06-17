@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "arcanum:block/voiddiamondgenerator_front",
+    "side": "arcanum:block/voiddiamondgenerator_side",
+    "top": "arcanum:block/voiddiamondgenerator_top"
+  }
+}

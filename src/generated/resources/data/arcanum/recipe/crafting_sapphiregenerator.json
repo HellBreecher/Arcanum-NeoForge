@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableGenerators"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "arcanum:sapphirefurnace",
+    "R": "minecraft:redstone",
+    "X": "arcanum:greensapphire"
+  },
+  "pattern": [
+    "XRX",
+    "XFX",
+    "XRX"
+  ],
+  "result": {
+    "id": "arcanum:sapphiregenerator"
+  }
+}

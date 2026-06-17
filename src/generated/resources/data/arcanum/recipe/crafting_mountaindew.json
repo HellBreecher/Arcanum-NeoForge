@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "arcanum:mountaindewmix",
+    "Y": "minecraft:potion",
+    "Z": "arcanum:emptycan"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "Z"
+  ],
+  "result": {
+    "id": "arcanum:mountaindew"
+  }
+}

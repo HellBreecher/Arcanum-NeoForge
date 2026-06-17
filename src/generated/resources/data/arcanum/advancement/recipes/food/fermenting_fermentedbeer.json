@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableFermenter"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:fermenting_fermentedbeer"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_unfermentedbeer": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:unfermentedbeer"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_unfermentedbeer"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:fermenting_fermentedbeer"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "arcanum:blooddiamond",
+    "Y": "arcanum:quartzstick"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "result": {
+    "count": 4,
+    "id": "arcanum:blooddiamondstick"
+  }
+}

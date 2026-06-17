@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableUpgrades"
+    }
+  ],
+  "type": "arcanum:upgrade_copy",
+  "base": "arcanum:voiddiamondpickaxe",
+  "category": "equipment",
+  "key": {
+    "X": "arcanum:infernaldiamond",
+    "Y": "arcanum:voiddiamondbeatingstick",
+    "Z": "arcanum:voiddiamondpickaxe"
+  },
+  "pattern": [
+    "XZX",
+    " Y ",
+    " Y "
+  ],
+  "result": {
+    "id": "arcanum:infernaldiamondpickaxe"
+  }
+}

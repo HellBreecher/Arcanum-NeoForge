@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableUpgrades"
+    }
+  ],
+  "type": "arcanum:upgrade_copy",
+  "base": "minecraft:diamond_leggings",
+  "category": "equipment",
+  "key": {
+    "X": "arcanum:blooddiamond",
+    "Y": "#forge:gems/quartz",
+    "Z": "minecraft:diamond_leggings"
+  },
+  "pattern": [
+    "YXY",
+    "XZX",
+    "X X"
+  ],
+  "result": {
+    "id": "arcanum:blooddiamondleggings"
+  }
+}

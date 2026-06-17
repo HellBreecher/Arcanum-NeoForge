@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableFurnaceBlocks"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_voiddiamondfurnace"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_voiddiamond": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:voiddiamond"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_voiddiamond"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_voiddiamondfurnace"
+    ]
+  }
+}

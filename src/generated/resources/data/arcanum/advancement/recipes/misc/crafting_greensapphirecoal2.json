@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_greensapphirecoal_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:greensapphirecoalblock"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_greensapphirecoal2"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_greensapphirecoal_block"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_greensapphirecoal2"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "arcanum:voiddiamondblock"
+  ],
+  "result": {
+    "count": 9,
+    "id": "arcanum:voiddiamond"
+  }
+}

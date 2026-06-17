@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fleshblock": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arcanum:fleshblock"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_rottenflesh"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_fleshblock"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arcanum:crafting_rottenflesh"
+    ]
+  }
+}
