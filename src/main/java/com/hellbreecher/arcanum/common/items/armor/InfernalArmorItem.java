@@ -8,7 +8,6 @@ import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
 import com.hellbreecher.arcanum.core.ArcanumArmor;
 import com.hellbreecher.arcanum.core.Arcanum;
 import com.hellbreecher.arcanum.core.ArcanumItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -82,7 +81,6 @@ public class InfernalArmorItem extends Item {
             return;
         }
 
-        Level level = player.level();
         int inf = Integer.MAX_VALUE;
 
         if (isWearingFullSet(player)) {
@@ -102,9 +100,6 @@ public class InfernalArmorItem extends Item {
                         false
                 ));
             }
-            if (level.isClientSide()) {
-                Minecraft instance = Minecraft.getInstance();
-            }
             arceffect = true;
         } else if (arceffect) {
             if (!player.isCreative()) {
@@ -112,9 +107,6 @@ public class InfernalArmorItem extends Item {
             }
             if (Config.INFERNAL_ARMOR_JUMP_BOOST.get()) {
                 player.removeEffect(MobEffects.JUMP_BOOST);
-            }
-            if (level.isClientSide()) {
-                Minecraft instance = Minecraft.getInstance();
             }
             arceffect = false;
         }

@@ -1,3 +1,7 @@
+###Arcanum 26.1.2-10.1.0.1
+    *Bug Fixes
+        Fixed dedicated server crash caused by client-only setup loading on the server
+        Removed unused client-only Minecraft references from common armor code
 ###Arcanum 26.1.2-10.1.0.0
     *API
         Update to Neoforge to 26.1.2.76
@@ -469,7 +473,6 @@
 ###MCUpgrade 1.0.2
 ###MCUpgrade 1.0.1
 ###MCUpgrade V1.0.0 
-
 
 
 

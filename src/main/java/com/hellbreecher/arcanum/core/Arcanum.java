@@ -22,13 +22,14 @@ import com.hellbreecher.arcanum.common.recipe.ArcanumRecipeTypes;
 import com.hellbreecher.arcanum.common.registration.ArcanumBlockEntities;
 import com.hellbreecher.arcanum.common.registration.ArcanumConditionSerializers;
 import com.hellbreecher.arcanum.common.registration.ArcanumMenuTypes;
-import com.hellbreecher.arcanum.client.ArcanumClient;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
@@ -67,7 +68,7 @@ public class Arcanum {
         ArcanumRecipeTypes.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         ArcanumCreativeTabs.register(modEventBus);
-        ArcanumClient.init(modEventBus, modContainer);
+        initClient(modEventBus, modContainer);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Arcanum) to respond directly to events.
@@ -88,6 +89,20 @@ public class Arcanum {
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+
+    private static void initClient(IEventBus modEventBus, ModContainer modContainer) {
+        if (FMLEnvironment.getDist() != Dist.CLIENT) {
+            return;
+        }
+
+        try {
+            Class.forName("com.hellbreecher.arcanum.client.ArcanumClient")
+                    .getMethod("init", IEventBus.class, ModContainer.class)
+                    .invoke(null, modEventBus, modContainer);
+        } catch (ReflectiveOperationException exception) {
+            throw new IllegalStateException("Failed to initialize Arcanum client setup", exception);
+        }
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
