@@ -20,6 +20,15 @@ public final class ArcanumAttachments {
                     .build()
     );
 
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<AuthorMantleData>> AUTHOR_MANTLE = ATTACHMENTS.register(
+            "author_mantle",
+            () -> AttachmentType.builder(() -> AuthorMantleData.DEFAULT)
+                    .serialize(AuthorMantleData.CODEC)
+                    .copyOnDeath()
+                    .sync(AuthorMantleData.STREAM_CODEC)
+                    .build()
+    );
+
     private ArcanumAttachments() {
     }
 

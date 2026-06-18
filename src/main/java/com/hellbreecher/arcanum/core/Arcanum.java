@@ -21,6 +21,7 @@ import com.hellbreecher.arcanum.common.recipe.ArcanumRecipeSerializers;
 import com.hellbreecher.arcanum.common.recipe.ArcanumRecipeTypes;
 import com.hellbreecher.arcanum.common.registration.ArcanumBlockEntities;
 import com.hellbreecher.arcanum.common.registration.ArcanumConditionSerializers;
+import com.hellbreecher.arcanum.common.registration.ArcanumEntityTypes;
 import com.hellbreecher.arcanum.common.registration.ArcanumMenuTypes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -56,6 +57,7 @@ public class Arcanum {
         ArcanumAttachments.register(modEventBus);
         ArcanumBlockEntities.register(modEventBus);
         ArcanumConditionSerializers.register(modEventBus);
+        ArcanumEntityTypes.register(modEventBus);
         ArcanumMenuTypes.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
         ArcanumItems.register(modEventBus);

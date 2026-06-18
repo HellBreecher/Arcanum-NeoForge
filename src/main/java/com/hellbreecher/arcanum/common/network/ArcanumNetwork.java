@@ -14,7 +14,8 @@ public final class ArcanumNetwork {
 
     public static void register(RegisterPayloadHandlersEvent event) {
         event.registrar("1")
-                .playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC, ArcanumNetwork::handleSelectSpell);
+                .playToServer(SelectSpellPayload.TYPE, SelectSpellPayload.STREAM_CODEC, ArcanumNetwork::handleSelectSpell)
+                .playToServer(CastAuthorMantlePayload.TYPE, CastAuthorMantlePayload.STREAM_CODEC, ArcanumNetwork::handleCastAuthorMantle);
     }
 
     private static void handleSelectSpell(SelectSpellPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
@@ -33,6 +34,9 @@ public final class ArcanumNetwork {
         }
 
         if (!isHoldingWand(player)) {
+            if (SpellbookItem.isDeveloper(player)) {
+                SpellbookItem.setAuthorMantleSpell(player, spell);
+            }
             return;
         }
 
@@ -43,6 +47,15 @@ public final class ArcanumNetwork {
                 return;
             }
         }
+
+        if (SpellbookItem.isDeveloper(player)) {
+            SpellbookItem.setAuthorMantleSpell(player, spell);
+        }
+    }
+
+    private static void handleCastAuthorMantle(CastAuthorMantlePayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
+        Player player = context.player();
+        SpellbookItem.castAuthorMantleSpell(player.level(), player);
     }
 
     private static boolean isHoldingWand(Player player) {

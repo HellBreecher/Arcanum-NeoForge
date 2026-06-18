@@ -1,6 +1,7 @@
 package com.hellbreecher.arcanum.client;
 
 import com.hellbreecher.arcanum.common.items.SpellbookItem;
+import com.hellbreecher.arcanum.common.network.CastAuthorMantlePayload;
 import com.hellbreecher.arcanum.common.network.SelectSpellPayload;
 import com.hellbreecher.arcanum.core.ArcanumItems;
 import com.hellbreecher.arcanum.core.ArcanumWeapons;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.lwjgl.glfw.GLFW;
 
 public final class SpellKeybinds {
@@ -24,12 +26,19 @@ public final class SpellKeybinds {
             GLFW.GLFW_KEY_R,
             CATEGORY
     );
+    private static final KeyMapping CAST_AUTHOR_MANTLE = new KeyMapping(
+            "key.arcanum.cast_author_mantle",
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_G,
+            CATEGORY
+    );
 
     private SpellKeybinds() {
     }
 
     public static void register(RegisterKeyMappingsEvent event) {
         event.register(NEXT_SPELL);
+        event.register(CAST_AUTHOR_MANTLE);
     }
 
     public static void onClientTick(ClientTickEvent.Post event) {
@@ -38,22 +47,59 @@ public final class SpellKeybinds {
             return;
         }
 
-        while (NEXT_SPELL.consumeClick()) {
-            LocalPlayer player = minecraft.player;
-            if (player == null) {
-                return;
-            }
-
-            ItemStack stack = getSelectableSpellbook(player);
-            if (stack.isEmpty()) {
-                return;
-            }
-
-            int nextSpell = SpellbookItem.nextSpell(player, SpellbookItem.getSelectedSpell(stack));
-            SpellbookItem.setSelectedSpell(stack, nextSpell);
-            ClientPacketDistributor.sendToServer(new SelectSpellPayload(nextSpell));
-            player.sendOverlayMessage(net.minecraft.network.chat.Component.literal("Selected: " + SpellbookItem.getSpellName(nextSpell)));
+        LocalPlayer player = minecraft.player;
+        if (player == null) {
+            return;
         }
+
+        while (NEXT_SPELL.consumeClick()) {
+            cycleSpell(player);
+        }
+
+        while (CAST_AUTHOR_MANTLE.consumeClick()) {
+            if (SpellbookItem.isDeveloper(player)) {
+                ClientPacketDistributor.sendToServer(new CastAuthorMantlePayload());
+            }
+        }
+    }
+
+    public static void onRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
+        if (!(event.getEntity() instanceof LocalPlayer player) || !SpellbookItem.isDeveloper(player)) {
+            return;
+        }
+
+        if (!isOpenHandCast(event.getHand(), player)) {
+            return;
+        }
+
+        ClientPacketDistributor.sendToServer(new CastAuthorMantlePayload());
+    }
+
+    private static void cycleSpell(LocalPlayer player) {
+        ItemStack stack = getSelectableSpellbook(player);
+        if (stack.isEmpty()) {
+            if (!SpellbookItem.isDeveloper(player)) {
+                return;
+            }
+
+            int nextSpell = SpellbookItem.nextSpell(player, SpellbookItem.getAuthorMantleSpell(player));
+            SpellbookItem.setAuthorMantleSpell(player, nextSpell);
+            ClientPacketDistributor.sendToServer(new SelectSpellPayload(nextSpell));
+            player.sendOverlayMessage(net.minecraft.network.chat.Component.literal("Author's Mantle: " + SpellbookItem.getSpellName(nextSpell)));
+            return;
+        }
+
+        int nextSpell = SpellbookItem.nextSpell(player, SpellbookItem.getSelectedSpell(stack));
+        SpellbookItem.setSelectedSpell(stack, nextSpell);
+        ClientPacketDistributor.sendToServer(new SelectSpellPayload(nextSpell));
+        player.sendOverlayMessage(net.minecraft.network.chat.Component.literal("Selected: " + SpellbookItem.getSpellName(nextSpell)));
+    }
+
+    private static boolean isOpenHandCast(InteractionHand hand, LocalPlayer player) {
+        if (!player.getItemInHand(hand).isEmpty()) {
+            return false;
+        }
+        return hand == InteractionHand.MAIN_HAND || !player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty();
     }
 
     private static ItemStack getSelectableSpellbook(LocalPlayer player) {

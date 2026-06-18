@@ -33,6 +33,7 @@
     "item.arcanum.spellbook": "Spellbook",
     "key.categories.arcanum.spellbook": "Arcanum",
     "key.arcanum.next_spell": "Next Spell",
+    "key.arcanum.cast_author_mantle": "Cast Author's Mantle",
 
     "item.arcanum.blooddiamondaxe": "Blood Diamond Axe",
     "item.arcanum.voiddiamondaxe": "Void Diamond Axe",
@@ -147,5 +148,7 @@
     "item.arcanum.applecider": "Apple Cider",
     "item.arcanum.warmapplecider": "Warm Apple Cider",
 
-    "block.EnergyConduit": "Energy Conduit"
+    "block.EnergyConduit": "Energy Conduit",
+
+    "key.category.arcanum.spellbook": "Arcanum Spellbook"
 }

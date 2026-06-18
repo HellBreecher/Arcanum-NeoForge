@@ -15,10 +15,10 @@ import net.neoforged.neoforge.client.event.RenderGuiEvent;
 public final class ManaHud {
     private static final int BAR_WIDTH = 182;
     private static final int BAR_HEIGHT = 5;
-    private static final int BACKGROUND_COLOR = 0xAA160819;
-    private static final int BORDER_COLOR = 0xCC3F123A;
-    private static final int FILL_COLOR = 0xFFB02BFF;
-    private static final int TEXT_COLOR = 0xFFDFA7FF;
+    private static final int BACKGROUND_COLOR = 0xAA1F0502;
+    private static final int BORDER_COLOR = 0xCC5A1309;
+    private static final int FILL_COLOR = 0xFFFF3B16;
+    private static final int TEXT_COLOR = 0xFFFFB199;
 
     private ManaHud() {
     }
@@ -53,6 +53,9 @@ public final class ManaHud {
             if (stack.is(ArcanumItems.spellbook.get())) {
                 return " | " + SpellbookItem.getSpellName(SpellbookItem.getSelectedSpell(stack));
             }
+        }
+        if (SpellbookItem.isDeveloper(player)) {
+            return " | Author's Mantle: " + SpellbookItem.getSpellName(SpellbookItem.getAuthorMantleSpell(player));
         }
         return "";
     }

@@ -3,7 +3,7 @@ package com.hellbreecher.arcanum.common.lib;
 public class Reference {
     public static final String MODID = "arcanum";
     public static final String NAME = "Arcanum";
-    public static final String VERSION = "26.1.2-10.1.1.0";
+    public static final String VERSION = "26.1.2-10.1.1.1";
     public static final String Client_Proxy = "com.hellbreecher.arcanum.client.ClientProxy";
     public static final String Server_Proxy = "com.hellbreecher.arcanum.common.CommonProxy";
     public static final String updateJson = "https://raw.githubusercontent.com/HellBreecher/Arcanum/master/update.json";

@@ -2,6 +2,9 @@ package com.hellbreecher.arcanum.common.items;
 
 import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
 import com.hellbreecher.arcanum.common.handler.magic.SpellFlightManager;
+import com.hellbreecher.arcanum.common.entity.RiftSentenceProjectile;
+import com.hellbreecher.arcanum.common.handler.mana.ArcanumAttachments;
+import com.hellbreecher.arcanum.common.handler.mana.AuthorMantleData;
 import com.hellbreecher.arcanum.core.ArcanumArmor;
 import com.hellbreecher.arcanum.core.ArcanumBlocks;
 import com.hellbreecher.arcanum.core.ArcanumItems;
@@ -9,11 +12,14 @@ import com.hellbreecher.arcanum.core.ArcanumTools;
 import com.hellbreecher.arcanum.core.ArcanumWeapons;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.PowerParticleOption;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.Filterable;
 import net.minecraft.sounds.SoundEvents;
@@ -23,6 +29,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -40,6 +47,7 @@ import net.minecraft.world.level.block.LightBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -68,6 +76,7 @@ public class SpellbookItem extends WrittenBookItem {
     private static final int DEV_RIFT_COST = 1;
     private static final double LUMENFALL_RANGE = 64.0D;
     private static final double FIREBOLT_RANGE = 32.0D;
+    private static final PowerParticleOption DRAGON_BREATH_PARTICLE = PowerParticleOption.create(ParticleTypes.DRAGON_BREATH, 1.0F);
 
     public SpellbookItem(Identifier id) {
         super(new Properties()
@@ -142,6 +151,12 @@ public class SpellbookItem extends WrittenBookItem {
     public static boolean cycleSelectedSpell(Player player) {
         Optional<ItemStack> spellbook = findSpellbook(player);
         if (spellbook.isEmpty()) {
+            if (isDeveloper(player)) {
+                int nextSpell = nextSpell(player, getAuthorMantleSpell(player));
+                setAuthorMantleSpell(player, nextSpell);
+                player.sendOverlayMessage(Component.literal("Author's Mantle: " + getSpellName(nextSpell)));
+                return true;
+            }
             return false;
         }
 
@@ -169,13 +184,28 @@ public class SpellbookItem extends WrittenBookItem {
             default -> {
             }
         }
-        player.sendOverlayMessage(Component.literal("Cast: " + getSpellName(spell)));
+        flareAuthorMantle(level, player, spell == 11);
+        if (spell != 11) {
+            player.sendOverlayMessage(Component.literal("Cast: " + getSpellName(spell)));
+        }
     }
 
     public static boolean castFocusedSelectedSpell(Level level, Player player) {
         Optional<ItemStack> spellbook = findSpellbook(player);
         if (spellbook.isEmpty()) {
-            return false;
+            if (!isDeveloper(player)) {
+                return false;
+            }
+
+            int mantleSpell = getAuthorMantleSpell(player);
+            int cost = spellCost(mantleSpell);
+            if (!ManaManager.spend(player, cost)) {
+                player.sendOverlayMessage(Component.literal("Not enough mana (" + cost + " needed)"));
+                return true;
+            }
+
+            castFocusedSpell(level, player, mantleSpell);
+            return true;
         }
 
         int spell = getSelectedSpell(spellbook.get());
@@ -216,11 +246,14 @@ public class SpellbookItem extends WrittenBookItem {
             case 8 -> castAshStep(level, player, true);
             case 9 -> castCrystalWard(level, player, true);
             case 10 -> castDispel(level, player, true);
-            case 11 -> castDeveloperRift(level, player);
+            case 11 -> castRiftSentenceProjectile(level, player);
             default -> {
             }
         }
-        player.sendOverlayMessage(Component.literal("Focused: " + getSpellName(spell)));
+        flareAuthorMantle(level, player, spell == 11);
+        if (spell != 11) {
+            player.sendOverlayMessage(Component.literal("Focused: " + getSpellName(spell)));
+        }
     }
 
     private static int spellCost(int spell) {
@@ -243,6 +276,34 @@ public class SpellbookItem extends WrittenBookItem {
 
     public static boolean canUseSpell(Player player, int spell) {
         return spell != 11 || player.getUUID().equals(DEVELOPER_UUID);
+    }
+
+    public static boolean isDeveloper(Player player) {
+        return player.getUUID().equals(DEVELOPER_UUID);
+    }
+
+    public static int getAuthorMantleSpell(Player player) {
+        return normalizeSpell(player.getData(ArcanumAttachments.AUTHOR_MANTLE.get()).selectedSpell());
+    }
+
+    public static void setAuthorMantleSpell(Player player, int spell) {
+        player.setData(ArcanumAttachments.AUTHOR_MANTLE.get(), new AuthorMantleData(normalizeSpell(spell)));
+    }
+
+    public static boolean castAuthorMantleSpell(Level level, Player player) {
+        if (!isDeveloper(player)) {
+            return false;
+        }
+
+        int spell = getAuthorMantleSpell(player);
+        int cost = spellCost(spell);
+        if (!ManaManager.spend(player, cost)) {
+            player.sendOverlayMessage(Component.literal("Not enough mana (" + cost + " needed)"));
+            return true;
+        }
+
+        castSpell(level, player, spell);
+        return true;
     }
 
     private static void castFirebolt(Level level, Player player) {
@@ -686,19 +747,229 @@ public class SpellbookItem extends WrittenBookItem {
     }
 
     private static void castDeveloperRift(Level level, Player player) {
-        if (!canUseSpell(player, 11)) {
-            player.sendOverlayMessage(Component.literal("This spell is developer-only"));
+        if (!isDeveloper(player)) {
+            player.sendOverlayMessage(Component.literal("You do not have authority over the rift."));
             return;
         }
-        ManaManager.addMana(player, 1000);
-        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 400, 3));
-        player.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 400, 3));
-        player.addEffect(new MobEffectInstance(MobEffects.SPEED, 400, 3));
-        if (level instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(ParticleTypes.END_ROD, player.getX(), player.getY() + 1.0D, player.getZ(), 80, 2.0D, 1.0D, 2.0D, 0.03D);
-            serverLevel.sendParticles(ParticleTypes.REVERSE_PORTAL, player.getX(), player.getY() + 1.0D, player.getZ(), 120, 2.5D, 1.5D, 2.5D, 0.08D);
+
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
         }
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PORTAL_TRIGGER, SoundSource.PLAYERS, 1.0F, 0.6F);
+
+        ServerLevel destinationLevel = getSelfRiftDestination(serverLevel);
+        if (destinationLevel == null || teleportByRiftSentence(serverLevel, player, player, destinationLevel, true).isEmpty()) {
+            player.sendOverlayMessage(Component.literal("Rift Sentence failed: no destination found."));
+        }
+    }
+
+    private static void castRiftSentenceProjectile(Level level, Player player) {
+        if (!isDeveloper(player)) {
+            player.sendOverlayMessage(Component.literal("This spell rejects you."));
+            return;
+        }
+
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        RiftSentenceProjectile projectile = new RiftSentenceProjectile(serverLevel, player);
+        serverLevel.addFreshEntity(projectile);
+        playDepartureRift(serverLevel, player.position().add(0.0D, 1.0D, 0.0D));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PORTAL_TRIGGER, SoundSource.PLAYERS, 0.8F, 0.7F);
+        player.sendOverlayMessage(Component.literal("Focused: " + getSpellName(11)));
+    }
+
+    public static Optional<Entity> teleportEntityByRiftSentence(ServerLevel sourceLevel, Entity target, Player caster, boolean forceNether) {
+        if (!isDeveloper(caster) || target == caster) {
+            return Optional.empty();
+        }
+
+        ServerLevel destinationLevel = forceNether
+                ? sourceLevel.getServer().getLevel(Level.NETHER)
+                : getSelfRiftDestination(sourceLevel);
+        return teleportByRiftSentence(sourceLevel, target, caster, destinationLevel, false);
+    }
+
+    private static Optional<Entity> teleportByRiftSentence(ServerLevel sourceLevel, Entity target, Player caster, ServerLevel destinationLevel, boolean selfCast) {
+        if (destinationLevel == null || !target.canUsePortal(true)) {
+            return Optional.empty();
+        }
+
+        BlockPos preferredPos = scaleRiftDestination(target, sourceLevel, destinationLevel);
+        BlockPos safePos = findSafeTeleportPosition(destinationLevel, preferredPos);
+        Vec3 departure = target.position();
+        playDepartureRift(sourceLevel, departure.add(0.0D, target.getBbHeight() * 0.5D, 0.0D));
+
+        Entity moved = target.teleport(new TeleportTransition(
+                destinationLevel,
+                Vec3.atBottomCenterOf(safePos),
+                target.getDeltaMovement(),
+                target.getYRot(),
+                target.getXRot(),
+                TeleportTransition.PLAY_PORTAL_SOUND
+        ));
+        if (moved == null) {
+            return Optional.empty();
+        }
+
+        moved.resetFallDistance();
+        applyRiftArrivalEffects(moved);
+        playArrivalRift(destinationLevel, moved.position().add(0.0D, moved.getBbHeight() * 0.5D, 0.0D));
+        if (selfCast) {
+            caster.sendOverlayMessage(Component.literal("Rift Sentence: Rift opened to " + destinationLevel.dimension().identifier() + "."));
+        } else {
+            caster.sendOverlayMessage(Component.literal("Rift Sentence: " + moved.getDisplayName().getString()
+                    + " has been banished to the Nether "
+                    + " at " + moved.blockPosition().getX() + " " + moved.blockPosition().getY() + " " + moved.blockPosition().getZ() + "."));
+        }
+        return Optional.of(moved);
+    }
+
+    private static ServerLevel getSelfRiftDestination(ServerLevel sourceLevel) {
+        MinecraftServer server = sourceLevel.getServer();
+        ResourceKey<Level> destination = sourceLevel.dimension() == Level.NETHER ? Level.OVERWORLD : Level.NETHER;
+        return server.getLevel(destination);
+    }
+
+    private static BlockPos scaleRiftDestination(Entity entity, ServerLevel sourceLevel, ServerLevel destinationLevel) {
+        double x = entity.getX();
+        double z = entity.getZ();
+        if (sourceLevel.dimension() == Level.OVERWORLD && destinationLevel.dimension() == Level.NETHER) {
+            x /= 8.0D;
+            z /= 8.0D;
+        } else if (sourceLevel.dimension() == Level.NETHER && destinationLevel.dimension() == Level.OVERWORLD) {
+            x *= 8.0D;
+            z *= 8.0D;
+        } else if (sourceLevel.dimension() != destinationLevel.dimension()) {
+            x = clampCoordinate(x);
+            z = clampCoordinate(z);
+        }
+
+        int y = Math.max(destinationLevel.getMinY() + 2, Math.min(destinationLevel.getMaxY() - 3, entity.blockPosition().getY()));
+        return BlockPos.containing(x, y, z);
+    }
+
+    private static double clampCoordinate(double coordinate) {
+        return Math.max(-29999984.0D, Math.min(29999984.0D, coordinate));
+    }
+
+    public static BlockPos findSafeTeleportPosition(ServerLevel destinationLevel, BlockPos preferredPos) {
+        int minY = destinationLevel.getMinY() + 1;
+        int maxY = destinationLevel.getMaxY() - 2;
+        int preferredY = Math.max(minY, Math.min(maxY, preferredPos.getY()));
+
+        for (int radius = 0; radius <= 8; radius++) {
+            for (int dx = -radius; dx <= radius; dx++) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    if (Math.abs(dx) != radius && Math.abs(dz) != radius) {
+                        continue;
+                    }
+                    BlockPos column = new BlockPos(preferredPos.getX() + dx, preferredY, preferredPos.getZ() + dz);
+                    BlockPos safe = findSafeInColumn(destinationLevel, column, minY, maxY);
+                    if (safe != null) {
+                        return safe;
+                    }
+                }
+            }
+        }
+
+        BlockPos fallback = new BlockPos(preferredPos.getX(), preferredY, preferredPos.getZ());
+        createFallbackPlatform(destinationLevel, fallback);
+        return fallback;
+    }
+
+    private static BlockPos findSafeInColumn(ServerLevel level, BlockPos column, int minY, int maxY) {
+        for (int offset = 0; offset <= Math.max(maxY - column.getY(), column.getY() - minY); offset++) {
+            BlockPos up = column.above(offset);
+            if (up.getY() <= maxY && isSafeTeleportPosition(level, up)) {
+                return up;
+            }
+
+            if (offset > 0) {
+                BlockPos down = column.below(offset);
+                if (down.getY() >= minY && isSafeTeleportPosition(level, down)) {
+                    return down;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static boolean isSafeTeleportPosition(ServerLevel level, BlockPos pos) {
+        if (!level.isInWorldBounds(pos)) {
+            return false;
+        }
+
+        BlockPos belowPos = pos.below();
+        BlockState below = level.getBlockState(belowPos);
+        BlockState feet = level.getBlockState(pos);
+        BlockState head = level.getBlockState(pos.above());
+        return below.isFaceSturdy(level, belowPos, Direction.UP)
+                && !below.is(Blocks.BEDROCK)
+                && canStandInside(feet)
+                && canStandInside(head)
+                && !feet.getFluidState().is(Fluids.LAVA)
+                && !head.getFluidState().is(Fluids.LAVA)
+                && !feet.is(Blocks.BEDROCK)
+                && !head.is(Blocks.BEDROCK);
+    }
+
+    private static boolean canStandInside(BlockState state) {
+        return state.isAir() || state.canBeReplaced();
+    }
+
+    private static void createFallbackPlatform(ServerLevel level, BlockPos center) {
+        BlockPos floorCenter = center.below();
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                level.setBlock(floorCenter.offset(dx, 0, dz), Blocks.OBSIDIAN.defaultBlockState(), 3);
+            }
+        }
+        for (int dy = 0; dy <= 1; dy++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    level.setBlock(center.offset(dx, dy, dz), Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+        }
+    }
+
+    private static void applyRiftArrivalEffects(Entity entity) {
+        if (entity instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0));
+            living.addEffect(new MobEffectInstance(MobEffects.GLOWING, 60, 0));
+            living.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 0));
+        }
+    }
+
+    private static void playDepartureRift(ServerLevel level, Vec3 pos) {
+        level.sendParticles(DRAGON_BREATH_PARTICLE, pos.x, pos.y, pos.z, 45, 0.8D, 0.45D, 0.8D, 0.02D);
+        level.sendParticles(ParticleTypes.PORTAL, pos.x, pos.y, pos.z, 80, 1.0D, 0.6D, 1.0D, 0.08D);
+        level.sendParticles(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, 24, 0.55D, 0.25D, 0.55D, 0.01D);
+        level.sendParticles(ParticleTypes.LAVA, pos.x, pos.y - 0.3D, pos.z, 8, 0.4D, 0.1D, 0.4D, 0.0D);
+        level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENDER_DRAGON_GROWL, SoundSource.PLAYERS, 0.7F, 0.55F);
+        level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.PORTAL_TRIGGER, SoundSource.PLAYERS, 1.0F, 0.7F);
+    }
+
+    private static void playArrivalRift(ServerLevel level, Vec3 pos) {
+        level.sendParticles(ParticleTypes.REVERSE_PORTAL, pos.x, pos.y, pos.z, 90, 1.0D, 0.75D, 1.0D, 0.08D);
+        level.sendParticles(ParticleTypes.PORTAL, pos.x, pos.y, pos.z, 60, 0.75D, 0.5D, 0.75D, 0.06D);
+        level.sendParticles(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, 28, 0.5D, 0.35D, 0.5D, 0.01D);
+        level.sendParticles(ParticleTypes.LAVA, pos.x, pos.y - 0.35D, pos.z, 10, 0.35D, 0.1D, 0.35D, 0.0D);
+        level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 0.65F);
+    }
+
+    private static void flareAuthorMantle(Level level, Player player, boolean intense) {
+        if (!isDeveloper(player) || !(level instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        Vec3 pos = player.position().add(0.0D, 0.9D, 0.0D);
+        serverLevel.sendParticles(ParticleTypes.FLAME, pos.x, pos.y, pos.z, intense ? 30 : 10, 0.55D, 0.7D, 0.55D, intense ? 0.04D : 0.02D);
+        serverLevel.sendParticles(ParticleTypes.LAVA, pos.x, pos.y - 0.25D, pos.z, intense ? 8 : 2, 0.35D, 0.15D, 0.35D, 0.0D);
+        if (intense) {
+            serverLevel.sendParticles(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, 12, 0.35D, 0.25D, 0.35D, 0.01D);
+        }
     }
 
     private static Optional<LivingEntity> findTargetLiving(Level level, Player player, double range) {
@@ -727,7 +998,7 @@ public class SpellbookItem extends WrittenBookItem {
             case 8 -> "Ash Step";
             case 9 -> "Crystal Ward";
             case 10 -> "Dispel";
-            case 11 -> "Developer Rift";
+            case 11 -> "Rift Sentence";
             default -> "Unknown";
         };
     }
@@ -751,7 +1022,7 @@ public class SpellbookItem extends WrittenBookItem {
                         page("Ash Step\n\nCost: " + ASH_STEP_COST + " mana\n\nDashes forward through flame and grants brief speed and fire resistance."),
                         page("Crystal Ward\n\nCost: " + CRYSTAL_WARD_COST + " mana\n\nSurrounds the caster with protective crystal energy."),
                         page("Dispel\n\nCost: " + DISPEL_COST + " mana\n\nClears fire and common harmful effects."),
-                        page("Developer Rift\n\nDeveloper-only.\n\nBends mana around the caster in a short-lived rift of power.")
+                        page("Rift Sentence\n\nDeveloper-only.\n\nOpens a forbidden rift beneath the caster, dragging them through the boundary between worlds.\n\nWhen channeled through a wand, the sentence may be passed onto another entity.")
                 ),
                 true
         );

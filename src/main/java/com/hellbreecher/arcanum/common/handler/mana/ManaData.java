@@ -40,4 +40,9 @@ public record ManaData(int mana, int maxMana) {
         int newMax = this.maxMana + amount;
         return new ManaData(this.mana + amount, newMax);
     }
+
+    public ManaData withMinimumMaxMana(int minimumMaxMana) {
+        int newMax = Math.max(this.maxMana, minimumMaxMana);
+        return new ManaData(this.mana, newMax);
+    }
 }

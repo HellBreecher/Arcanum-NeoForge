@@ -1,3 +1,11 @@
+###Arcanum 26.1.2-10.1.1.1
+     *Visuals
+        Changed mana HUD colors from purple to infernal red
+        Changed developer aura and Author's Mantle flare particles to fire, smoke, and lava
+    *Bug Fixes
+        Fixed Author's Mantle spell selection not syncing to the server
+        Fixed Author's Mantle cast packets not being registered
+        Fixed Author's Mantle spells effectively ignoring mana costs
 ###Arcanum 26.1.2-10.1.1.0
     *Magic
         Added Infernal Wand behavior as a mana-powered magic focus
@@ -492,4 +500,3 @@
 ###MCUpgrade 1.0.2
 ###MCUpgrade 1.0.1
 ###MCUpgrade V1.0.0 
-
