@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "X": "arcanum:blooddiamond",
-    "Y": "#forge:gems/quartz"
+    "Y": "#c:gems/quartz"
   },
   "pattern": [
     "X ",

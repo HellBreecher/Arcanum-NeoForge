@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "arcanum:config_boolean",
+      "key": "recipes.enableFermenter"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:barrel",
+    "X": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    " X ",
+    "XBX",
+    " X "
+  ],
+  "result": {
+    "id": "arcanum:fermenter"
+  }
+}

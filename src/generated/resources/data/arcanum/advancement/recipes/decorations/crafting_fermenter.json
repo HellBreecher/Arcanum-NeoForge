@@ -2,16 +2,16 @@
   "neoforge:conditions": [
     {
       "type": "arcanum:config_boolean",
-      "key": "recipes.enableUpgrades"
+      "key": "recipes.enableFermenter"
     }
   ],
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_infernaldiamond": {
+    "has_iron_ingot": {
       "conditions": {
         "items": [
           {
-            "items": "arcanum:infernaldiamond"
+            "items": "minecraft:iron_ingot"
           }
         ]
       },
@@ -19,7 +19,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arcanum:crafting_infernaldiamondlegs"
+        "recipe": "arcanum:crafting_fermenter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -27,12 +27,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_infernaldiamond"
+      "has_iron_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
-      "arcanum:crafting_infernaldiamondlegs"
+      "arcanum:crafting_fermenter"
     ]
   }
 }

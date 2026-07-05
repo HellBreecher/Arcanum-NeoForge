@@ -9,7 +9,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arcanum:crafting_voiddiamondlegs"
+        "recipe": "arcanum:crafting_voiddiamondleggings"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -32,7 +32,7 @@
   ],
   "rewards": {
     "recipes": [
-      "arcanum:crafting_voiddiamondlegs"
+      "arcanum:crafting_voiddiamondleggings"
     ]
   }
 }

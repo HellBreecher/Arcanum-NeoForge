@@ -7,32 +7,32 @@
   ],
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_blooddiamond": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_voiddiamondchestplate"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_voiddiamond": {
       "conditions": {
         "items": [
           {
-            "items": "arcanum:blooddiamond"
+            "items": "arcanum:voiddiamond"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
-    },
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "arcanum:crafting_blooddiamondlegs"
-      },
-      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
-      "has_blooddiamond"
+      "has_voiddiamond"
     ]
   ],
   "rewards": {
     "recipes": [
-      "arcanum:crafting_blooddiamondlegs"
+      "arcanum:crafting_voiddiamondchestplate"
     ]
   }
 }

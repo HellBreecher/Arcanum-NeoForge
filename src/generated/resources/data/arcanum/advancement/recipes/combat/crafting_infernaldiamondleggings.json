@@ -7,32 +7,32 @@
   ],
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "arcanum:crafting_voiddiamondchest"
-      },
-      "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_voiddiamond": {
+    "has_infernaldiamond": {
       "conditions": {
         "items": [
           {
-            "items": "arcanum:voiddiamond"
+            "items": "arcanum:infernaldiamond"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arcanum:crafting_infernaldiamondleggings"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
-      "has_voiddiamond"
+      "has_infernaldiamond"
     ]
   ],
   "rewards": {
     "recipes": [
-      "arcanum:crafting_voiddiamondchest"
+      "arcanum:crafting_infernaldiamondleggings"
     ]
   }
 }

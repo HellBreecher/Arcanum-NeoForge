@@ -1,3 +1,8 @@
+###Arcanum 26.1.2-10.1.1.2
+    *Bug Fixes
+        Fixed Blood Diamond armor and shears recipes using the outdated forge:gems/quartz tag
+        Fixed Void Diamond and Infernal Diamond armor recipe ids to match their registered item names
+        Added the missing Fermenter crafting recipe using iron ingots and a barrel
 ###Arcanum 26.1.2-10.1.1.1
      *Visuals
         Changed mana HUD colors from purple to infernal red
