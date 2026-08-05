@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "X": "arcanum:mountaindewmix",
     "Y": "minecraft:potion",

@@ -1,3 +1,7 @@
+###Arcanum 26.2-10.2.0.0
+    *API
+        Update to Neoforge to 26.2.0.48-beta
+        Update to Minecraft 26.2
 ###Arcanum 26.1.2-10.1.1.2
     *Bug Fixes
         Fixed Blood Diamond armor and shears recipes using the outdated forge:gems/quartz tag

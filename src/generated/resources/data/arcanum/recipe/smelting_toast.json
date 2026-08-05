@@ -7,7 +7,6 @@
   ],
   "type": "minecraft:smelting",
   "category": "food",
-  "cookingtime": 200,
   "experience": 1.0,
   "ingredient": "minecraft:bread",
   "result": {

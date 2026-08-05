@@ -5,7 +5,9 @@ import com.hellbreecher.arcanum.core.Arcanum;
 import com.hellbreecher.arcanum.core.ArcanumBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,57 +20,57 @@ public final class ArcanumBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
-                ArcanumBlocks.greensapphireore_block.get(),
-                ArcanumBlocks.blooddiamondore_block.get(),
-                ArcanumBlocks.voiddiamondore_block.get(),
-                ArcanumBlocks.vanillarandomore_block.get(),
-                ArcanumBlocks.modrandomore_block.get(),
-                ArcanumBlocks.deepslategreensapphireore_block.get(),
-                ArcanumBlocks.deepslateblooddiamondore_block.get(),
-                ArcanumBlocks.deepslatevoiddiamondore_block.get(),
-                ArcanumBlocks.deepslatevanillarandomore_block.get(),
-                ArcanumBlocks.deepslatemodrandomore_block.get(),
-                ArcanumBlocks.greensapphire_block.get(),
-                ArcanumBlocks.blooddiamond_block.get(),
-                ArcanumBlocks.voiddiamond_block.get(),
-                ArcanumBlocks.infernalcrystal_block.get(),
-                ArcanumBlocks.boneore_block.get(),
-                ArcanumBlocks.fleshore_block.get(),
-                ArcanumBlocks.sulfurore_block.get(),
-                ArcanumBlocks.bone_block.get(),
-                ArcanumBlocks.flesh_block.get(),
-                ArcanumBlocks.sulfur_block.get(),
-                ArcanumBlocks.greensapphirecoal_block.get(),
-                ArcanumBlocks.voiddiamondfurnace_block.get(),
-                ArcanumBlocks.sapphirefurnace_block.get(),
-                ArcanumBlocks.blooddiamondfurnace_block.get(),
-                ArcanumBlocks.infernalfurnace_block.get()
+                key(ArcanumBlocks.greensapphireore_block.get()),
+                key(ArcanumBlocks.blooddiamondore_block.get()),
+                key(ArcanumBlocks.voiddiamondore_block.get()),
+                key(ArcanumBlocks.vanillarandomore_block.get()),
+                key(ArcanumBlocks.modrandomore_block.get()),
+                key(ArcanumBlocks.deepslategreensapphireore_block.get()),
+                key(ArcanumBlocks.deepslateblooddiamondore_block.get()),
+                key(ArcanumBlocks.deepslatevoiddiamondore_block.get()),
+                key(ArcanumBlocks.deepslatevanillarandomore_block.get()),
+                key(ArcanumBlocks.deepslatemodrandomore_block.get()),
+                key(ArcanumBlocks.greensapphire_block.get()),
+                key(ArcanumBlocks.blooddiamond_block.get()),
+                key(ArcanumBlocks.voiddiamond_block.get()),
+                key(ArcanumBlocks.infernalcrystal_block.get()),
+                key(ArcanumBlocks.boneore_block.get()),
+                key(ArcanumBlocks.fleshore_block.get()),
+                key(ArcanumBlocks.sulfurore_block.get()),
+                key(ArcanumBlocks.bone_block.get()),
+                key(ArcanumBlocks.flesh_block.get()),
+                key(ArcanumBlocks.sulfur_block.get()),
+                key(ArcanumBlocks.greensapphirecoal_block.get()),
+                key(ArcanumBlocks.voiddiamondfurnace_block.get()),
+                key(ArcanumBlocks.sapphirefurnace_block.get()),
+                key(ArcanumBlocks.blooddiamondfurnace_block.get()),
+                key(ArcanumBlocks.infernalfurnace_block.get())
         );
         tag(BlockTags.NEEDS_IRON_TOOL).add(
-                ArcanumBlocks.greensapphireore_block.get(),
-                ArcanumBlocks.deepslategreensapphireore_block.get()
+                key(ArcanumBlocks.greensapphireore_block.get()),
+                key(ArcanumBlocks.deepslategreensapphireore_block.get())
         );
         tag(BlockTags.NEEDS_STONE_TOOL).add(
-                ArcanumBlocks.infernalcrystal_block.get()
+                key(ArcanumBlocks.infernalcrystal_block.get())
         );
         tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
-                ArcanumBlocks.blooddiamondore_block.get(),
-                ArcanumBlocks.deepslateblooddiamondore_block.get()
+                key(ArcanumBlocks.blooddiamondore_block.get()),
+                key(ArcanumBlocks.deepslateblooddiamondore_block.get())
         );
 
         tag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL).add(
-                ArcanumBlocks.voiddiamondore_block.get(),
-                ArcanumBlocks.deepslatevoiddiamondore_block.get()
+                key(ArcanumBlocks.voiddiamondore_block.get()),
+                key(ArcanumBlocks.deepslatevoiddiamondore_block.get())
         );
 
         tag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL).add(
-                ArcanumBlocks.voiddiamondore_block.get(),
-                ArcanumBlocks.deepslatevoiddiamondore_block.get()
+                key(ArcanumBlocks.voiddiamondore_block.get()),
+                key(ArcanumBlocks.deepslatevoiddiamondore_block.get())
         );
 
         tag(ArcanumBlockTags.NEEDS_BLOODDIAMOND_TOOL).add(
-                ArcanumBlocks.voiddiamondore_block.get(),
-                ArcanumBlocks.deepslatevoiddiamondore_block.get()
+                key(ArcanumBlocks.voiddiamondore_block.get()),
+                key(ArcanumBlocks.deepslatevoiddiamondore_block.get())
         );
 
         tag(ArcanumBlockTags.NEEDS_VOIDDIAMOND_TOOL);
@@ -79,5 +81,9 @@ public final class ArcanumBlockTagsProvider extends BlockTagsProvider {
         tag(ArcanumBlockTags.INCORRECT_FOR_VOIDDIAMOND_TOOL);
         tag(ArcanumBlockTags.INCORRECT_FOR_INFERNALDIAMOND_TOOL);
         tag(ArcanumBlockTags.INCORRECT_FOR_INFERNAL_TOOL);
+    }
+
+    private static ResourceKey<Block> key(Block block) {
+        return block.builtInRegistryHolder().key();
     }
 }

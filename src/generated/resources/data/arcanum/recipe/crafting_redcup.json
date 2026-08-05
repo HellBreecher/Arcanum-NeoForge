@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "X": "arcanum:emptycan",
     "Y": "minecraft:red_dye"

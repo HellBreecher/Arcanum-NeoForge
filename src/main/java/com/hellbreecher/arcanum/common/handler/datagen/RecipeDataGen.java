@@ -22,6 +22,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -644,10 +645,10 @@ public final class RecipeDataGen extends RecipeProvider {
 
         shapeless(items, RecipeCategory.MISC, ArcanumItems.mountaindewmix.get())
                 .requires(Items.GLOWSTONE_DUST)
-                .requires(Items.GREEN_DYE)
+                .requires(Items.DYE.pick(DyeColor.GREEN))
                 .requires(Items.WHEAT)
                 .requires(Items.SUGAR)
-                .unlockedBy("has_green_dye", has(Items.GREEN_DYE))
+                .unlockedBy("has_green_dye", has(Items.DYE.pick(DyeColor.GREEN)))
                 .save(output, recipeId("crafting_mountaindewmix"));
 
         shaped(items, RecipeCategory.FOOD, ArcanumFood.mountaindew.get())
@@ -671,7 +672,7 @@ public final class RecipeDataGen extends RecipeProvider {
                 .pattern("Y")
                 .pattern("X")
                 .define('X', ArcanumItems.emptycan.get())
-                .define('Y', Items.RED_DYE)
+                .define('Y', Items.DYE.pick(DyeColor.RED))
                 .unlockedBy("has_emptycan", has(ArcanumItems.emptycan.get()))
                 .save(output, recipeId("crafting_redcup"));
 
@@ -761,7 +762,7 @@ public final class RecipeDataGen extends RecipeProvider {
         FermentingRecipeBuilder.fermenting(
                         Ingredient.of(ArcanumFood.applecider.get()),
                         Ingredient.of(Items.SUGAR),
-                        Ingredient.of(Items.RED_DYE),
+                        Ingredient.of(Items.DYE.pick(DyeColor.RED)),
                         Ingredient.of(ArcanumFood.unfermentedbeer.get()),
                         RecipeCategory.FOOD,
                         ArcanumFood.cortonwine.get(),

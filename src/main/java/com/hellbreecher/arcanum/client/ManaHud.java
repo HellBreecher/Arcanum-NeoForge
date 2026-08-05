@@ -26,7 +26,7 @@ public final class ManaHud {
     public static void onRenderGui(RenderGuiEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
-        if (player == null || minecraft.options.hideGui || !ManaManager.hasManaFocus(player)) {
+        if (player == null || minecraft.gui.hud.isHidden() || !ManaManager.hasManaFocus(player)) {
             return;
         }
 
