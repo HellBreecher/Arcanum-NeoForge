@@ -1,0 +1,72 @@
+package com.hellbreecher.arcanum.common.items.weapons;
+
+import com.hellbreecher.arcanum.common.config.ArcanumConfig;
+
+import com.hellbreecher.arcanum.common.items.InfernalManaCosts;
+import com.hellbreecher.arcanum.common.lib.ArcanumToolMaterials;
+import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Unit;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.damagesource.DamageSource;
+
+public class InfernalSwordItem extends Item {
+
+    public InfernalSwordItem(Identifier id) {
+        super(new Properties()
+                .sword(ArcanumToolMaterials.InfernalTool, 1.0F, -2.4F)
+                .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+                .setId(ResourceKey.create(Registries.ITEM, id)));
+    }
+
+    @Override
+    public void onCraftedBy(ItemStack stack, Player player) {
+        Level level = player.level();
+        if (!ArcanumConfig.enableCraftedEnchantments()) {
+            return;
+        }
+        if (level.isClientSide() || stack.isEnchanted()) {
+            return;
+        }
+
+        enchant(stack, level, Enchantments.SHARPNESS, 10);
+        enchant(stack, level, Enchantments.SMITE, 10);
+        enchant(stack, level, Enchantments.BANE_OF_ARTHROPODS, 10);
+        enchant(stack, level, Enchantments.KNOCKBACK, 10);
+        enchant(stack, level, Enchantments.FIRE_ASPECT, 10);
+        enchant(stack, level, Enchantments.LOOTING, 10);
+    }
+
+    private static void enchant(ItemStack stack, Level level, net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.Enchantment> enchantment, int levelValue) {
+        stack.enchant(
+                level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(enchantment),
+                levelValue
+        );
+    }
+
+    public static float onLivingDamage(LivingEntity target, DamageSource source, float damage) {
+        if (!(source.getEntity() instanceof Player player)
+                || player.level().isClientSide()
+                || !(player.getMainHandItem().getItem() instanceof InfernalSwordItem)) {
+            return damage;
+        }
+
+        if (!ManaManager.spend(player, InfernalManaCosts.SWORD_BURST)) {
+            return damage;
+        }
+
+        target.igniteForSeconds(4.0F);
+        return damage + 4.0F;
+    }
+}
+
+
+

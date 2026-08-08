@@ -1,0 +1,55 @@
+plugins {
+    id 'java-library'
+    id 'net.fabricmc.fabric-loom'
+    id 'maven-publish'
+}
+
+base {
+    archivesName = "${mod_id}-${minecraft_version}-fabric"
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+            sourceSet project(':common').sourceSets.main
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    implementation include("teamreborn:energy:${fabric_energy_version}")
+    implementation project(':common')
+}
+
+tasks.named('jar').configure {
+    dependsOn ':common:classes'
+    from project(':common').sourceSets.main.output
+    exclude 'data/arcanum/neoforge/**'
+    filesMatching('data/arcanum/**/*.json') {
+        filter { line -> line
+                .replace('"neoforge:conditions"', '"fabric:load_conditions"')
+                .replace('"type": "arcanum:config_boolean"', '"condition": "fabric:true"')
+                .replace('"type": "arcanum:upgrade_copy"', '"type": "minecraft:crafting_shaped"') }
+    }
+}
+
+processResources {
+    def replacements = [
+            version: project.version,
+            minecraft_version: minecraft_version,
+            fabric_loader_version: fabric_loader_version,
+            fabric_api_version: fabric_api_version,
+            fabric_energy_version: fabric_energy_version
+    ]
+    inputs.properties replacements
+    filesMatching('fabric.mod.json') {
+        expand replacements
+    }
+}

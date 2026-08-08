@@ -1,0 +1,100 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.moddev'
+    id 'idea'
+}
+
+base {
+    archivesName = "${mod_id}-${minecraft_version}-neoforge"
+}
+
+def serverDataOutput = layout.buildDirectory.dir('generated/arcanumData/server')
+def clientDataOutput = layout.buildDirectory.dir('generated/arcanumData/client')
+
+dependencies {
+    implementation project(':common')
+}
+
+tasks.named('jar').configure {
+    dependsOn ':common:classes'
+    from project(':common').sourceSets.main.output
+}
+
+neoForge {
+    version = project.neo_version
+
+    runs {
+        client { client() }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+        data {
+            serverData()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output',
+                    serverDataOutput.get().asFile.absolutePath,
+                    '--existing', file('src/main/resources').absolutePath
+        }
+        dataClient {
+            clientData()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output',
+                    clientDataOutput.get().asFile.absolutePath,
+                    '--existing', file('src/main/resources').absolutePath
+        }
+        configureEach {
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+            sourceSet(project(':common').sourceSets.main)
+        }
+    }
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+tasks.register('syncCommonGeneratedResources', Sync) {
+    group = 'arcanum runs'
+    description = 'Merges loader-neutral server and client data into the common module.'
+    dependsOn tasks.named('runData'), tasks.named('runDataClient')
+    from(serverDataOutput) {
+        exclude 'data/arcanum/neoforge/**'
+    }
+    from(clientDataOutput)
+    into project(':common').file('src/generated/resources')
+}
+
+tasks.register('syncNeoForgeGeneratedResources', Sync) {
+    group = 'arcanum runs'
+    description = 'Copies only NeoForge-specific generated data into the NeoForge module.'
+    dependsOn tasks.named('runData')
+    from(serverDataOutput) {
+        include 'data/arcanum/neoforge/**'
+    }
+    into file('src/generated/resources')
+}
+
+tasks.named('processResources').configure {
+    def replacements = [
+            minecraft_version: minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version: neo_version,
+            mod_id: mod_id,
+            mod_name: mod_name,
+            mod_license: mod_license,
+            mod_version: mod_version
+    ]
+    inputs.properties replacements
+    filesMatching('META-INF/neoforge.mods.toml') { expand replacements }
+}
+
+idea.module {
+    downloadSources = true
+    downloadJavadoc = true
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "arcanum",
+  "version": "${version}",
+  "name": "Arcanum",
+  "description": "A magic based mod implementing mystical items with incredible power.",
+  "authors": ["HellBreecher"],
+  "contact": {
+    "homepage": "http://arcanum.hellbreecher.com/",
+    "issues": "https://github.com/HellBreecher/Arcanum-NeoForge/issues"
+  },
+  "license": "All Rights Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.hellbreecher.arcanum.fabric.ArcanumFabric"],
+    "client": ["com.hellbreecher.arcanum.fabric.client.ArcanumFabricClient"]
+  },
+  "mixins": ["arcanum.fabric.mixins.json"],
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "${minecraft_version}",
+    "java": ">=25",
+    "fabric-api": ">=${fabric_api_version}",
+    "team_reborn_energy": ">=${fabric_energy_version}"
+  }
+}

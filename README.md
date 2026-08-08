@@ -1,7 +1,17 @@
 Please backup your worlds before adding in or updating Arcanum, or well any mod! Check changelogs for details and please report any bugs (properly).
 
 From tools equal to Iron and easy to find all the way to weapons so overpowered they could kill the EnderDragon in 1 hit yet have Absolutely NO durability but hard to obtain. Armor that makes you invincible, move faster (w/ no FOV change), and gives creative flight. Full auto smelting tool set that gives you way more of the item than normal. This mod has all that and more! So be sure to check it out and let me know of any suggestions you have and bugs you find.
-This mod requires Forge of course, but past that its all on its own. I do intend for it to be used in packs, but definitely not required to be. It is Singleplayer and Server ready so feel free to use on a server if you would like, both in the same file so no worries there.
+Arcanum is available as separate NeoForge and Fabric jars for the same Minecraft version. It is singleplayer and server ready; clients and servers must use the jar for their loader.
+
+For Minecraft 26.2, the Fabric jar requires:
+
+- Fabric Loader 0.19.3 or newer
+- Fabric API 0.156.0+26.2 or newer
+- Java 25 or newer
+
+The Team Reborn Energy API is bundled in the Fabric jar and does not need to be downloaded separately.
+
+The NeoForge jar requires NeoForge 26.2.0.48-beta or newer in the compatible 26.2 line. Build both release jars with `./gradlew buildAll`; outputs are written to `fabric/build/libs` and `neoforge/build/libs`. Registry IDs, shared resources, recipes, world-generation IDs, and block-entity save fields remain under the existing `arcanum` namespace.
 
 If your having issues/crashes due to this mod, go HERE and report them
 
