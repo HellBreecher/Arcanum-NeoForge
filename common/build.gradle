@@ -20,3 +20,9 @@ loom {
 }
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
+
+tasks.named('processResources').configure {
+    from('src/main/resources/assets/arcanum/textures/item/infernaldiamond.png') {
+        rename { 'arcanum-icon.png' }
+    }
+}

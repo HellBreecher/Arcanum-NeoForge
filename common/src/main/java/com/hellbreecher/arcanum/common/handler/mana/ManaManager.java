@@ -72,7 +72,7 @@ public final class ManaManager {
     }
 
     private static boolean isSpellbook(ItemStack stack) {
-        return stack.is(ArcanumItems.spellbook.get());
+        return SpellbookItem.isSpellBook(stack);
     }
 
     private static boolean isManaFocus(ItemStack stack) {

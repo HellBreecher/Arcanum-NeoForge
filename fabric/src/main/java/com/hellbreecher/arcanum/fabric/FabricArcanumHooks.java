@@ -2,6 +2,7 @@ package com.hellbreecher.arcanum.fabric;
 
 import com.hellbreecher.arcanum.common.blocks.tileentities.*;
 import com.hellbreecher.arcanum.common.handler.magic.SpellFlightManager;
+import com.hellbreecher.arcanum.common.handler.magic.BindingRitualManager;
 import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
 import com.hellbreecher.arcanum.common.items.armor.InfernalArmorItem;
 import com.hellbreecher.arcanum.common.items.armor.InfernalDiamondArmorItem;
@@ -54,14 +55,17 @@ final class FabricArcanumHooks {
         PlayerBlockBreakEvents.BEFORE.register((level, player, pos, state, blockEntity) ->
                 InfernalAxeItem.onBlockBreak(level, pos, state, player)
                         && InfernalPickaxeItem.onBlockBreak(level, pos, state, player));
-        ServerTickEvents.END_SERVER_TICK.register(server -> server.getPlayerList().getPlayers().forEach(player -> {
-            InfernalArmorItem.onEquipped(player);
-            InfernalDiamondArmorItem.onArmorEquipped(player);
-            InfernalArmorItem.onPlayerTick(player);
-            InfernalDiamondArmorItem.onPlayerTick(player);
-            ManaManager.onPlayerTick(player);
-            SpellFlightManager.onPlayerTick(player);
-        }));
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            server.getPlayerList().getPlayers().forEach(player -> {
+                InfernalArmorItem.onEquipped(player);
+                InfernalDiamondArmorItem.onArmorEquipped(player);
+                InfernalArmorItem.onPlayerTick(player);
+                InfernalDiamondArmorItem.onPlayerTick(player);
+                ManaManager.onPlayerTick(player);
+                SpellFlightManager.onPlayerTick(player);
+            });
+            BindingRitualManager.tick(server);
+        });
     }
 
     private static void registerEnergy() {

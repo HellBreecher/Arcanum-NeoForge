@@ -58,6 +58,24 @@ public final class ItemModelDataGen extends ModelProvider {
         itemModels.generateFlatItem(ArcanumItems.infernaldiamond.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ArcanumItems.infernalcrystal.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ArcanumItems.spellbook.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.arcane_codex.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.forbidden_grimoire.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.codex_binding.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.grimoire_binding.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.renew_page.get(), ArcanumItems.spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.ember_ward_page.get(), ArcanumItems.spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.aetherwing_page.get(), ArcanumItems.blood_spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.blink_page.get(), ArcanumItems.spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.infernal_chains_page.get(), ArcanumItems.spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.soulflare_page.get(), ArcanumItems.spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.ash_step_page.get(), ArcanumItems.spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.crystal_ward_page.get(), ArcanumItems.spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.dispel_page.get(), ArcanumItems.spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.blood_spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.blood_lance_page.get(), ArcanumItems.blood_spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.crimson_feast_page.get(), ArcanumItems.blood_spell_page.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ArcanumItems.sanguine_ward_page.get(), ArcanumItems.blood_spell_page.get(), ModelTemplates.FLAT_ITEM);
         //Misc
         itemModels.generateFlatItem(ArcanumItems.quartzstick.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ArcanumItems.blooddiamondstick.get(), ModelTemplates.FLAT_ITEM);

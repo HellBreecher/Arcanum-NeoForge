@@ -6,12 +6,12 @@ Arcanum is available as separate NeoForge and Fabric jars for the same Minecraft
 For Minecraft 26.2, the Fabric jar requires:
 
 - Fabric Loader 0.19.3 or newer
-- Fabric API 0.156.0+26.2 or newer
+- Fabric API 0.158.0+26.2 or newer
 - Java 25 or newer
 
 The Team Reborn Energy API is bundled in the Fabric jar and does not need to be downloaded separately.
 
-The NeoForge jar requires NeoForge 26.2.0.48-beta or newer in the compatible 26.2 line. Build both release jars with `./gradlew buildAll`; outputs are written to `fabric/build/libs` and `neoforge/build/libs`. Registry IDs, shared resources, recipes, world-generation IDs, and block-entity save fields remain under the existing `arcanum` namespace.
+The NeoForge jar requires NeoForge 26.2.0.66 or newer in the compatible 26.2 line. Build both release jars with `./gradlew buildAll`; outputs are written to `fabric/build/libs` and `neoforge/build/libs`. Registry IDs, shared resources, recipes, world-generation IDs, and block-entity save fields remain under the existing `arcanum` namespace.
 
 If your having issues/crashes due to this mod, go HERE and report them
 

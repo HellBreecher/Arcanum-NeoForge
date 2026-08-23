@@ -1,3 +1,28 @@
+###Arcanum 26.2-10.2.1.0
+    *API
+        Updated NeoForge to 26.2.0.66
+        Updated Fabric Loom to 1.17-SNAPSHOT
+        Updated Fabric API to 0.158.0+26.2
+        Fabric support targets Minecraft 26.2 with Fabric Loader 0.19.3
+    *Magic
+        Added Spellbook progression through the Arcane Codex and Forbidden Grimoire
+        Spellbooks now begin with Lumenfall and Firebolt; additional spells are learned from lootable spell pages
+        Added the Binding spell for performing book-upgrade rituals
+        Added Codex Binding loot and a five-second fire ritual that transforms a Spellbook into an Arcane Codex
+        Added rare, End City-exclusive Grimoire Binding loot
+        Added a 60-second blood ritual that transforms an Arcane Codex into a Forbidden Grimoire
+        The Forbidden Grimoire ritual forces nightfall, reduces the caster to one heart, and summons hostile mobs that target the caster
+        Forbidden Grimoire rituals cannot begin on Peaceful difficulty
+        Added Blood Lance, Crimson Feast, and Sanguine Ward blood spells
+        Changed Aetherwing into a blood spell requiring 250 mana and a three-heart sacrifice
+        Aetherwing and blood-magic pages can only be learned and cast from the Forbidden Grimoire
+    *Loot
+        Added spell pages to structure chest loot
+        Added Aetherwing and blood-magic pages exclusively to End City treasure
+    *Visuals
+        Added floating items, ritual fire effects, and transformation bursts to Binding rituals
+        Added red blood-magic particles and shared textures for standard and blood spell pages
+        Changed texture for spellbook to fit new spellbook design
 ###Arcanum 26.2-10.2.0.0
     *API
         Update to Neoforge to 26.2.0.48-beta

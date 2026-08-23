@@ -2,6 +2,7 @@ package com.hellbreecher.arcanum.common.items;
 
 import com.hellbreecher.arcanum.common.handler.mana.ManaManager;
 import com.hellbreecher.arcanum.common.handler.magic.SpellFlightManager;
+import com.hellbreecher.arcanum.common.handler.magic.BindingRitualManager;
 import com.hellbreecher.arcanum.common.entity.RiftSentenceProjectile;
 import com.hellbreecher.arcanum.common.handler.mana.ManaAccess;
 import com.hellbreecher.arcanum.common.handler.mana.AuthorMantleData;
@@ -14,6 +15,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.DustColorTransitionOptions;
 import net.minecraft.core.particles.PowerParticleOption;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -54,14 +56,17 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class SpellbookItem extends WrittenBookItem {
     private static final String SPELL_KEY = "ArcanumSpell";
+    private static final String UNLOCKED_SPELLS_KEY = "ArcanumUnlockedSpells";
+    private static final int BASE_SPELLS = (1 << 0) | (1 << 1) | (1 << 11);
     private static final UUID DEVELOPER_UUID = UUID.fromString("0f3009c8-0403-42fc-9210-e959cd41988e");
-    private static final int SPELL_COUNT = 12;
+    private static final int SPELL_COUNT = 16;
     private static final int FIREBOLT_COST = 20;
     private static final int EMBER_WARD_COST = 35;
     private static final int RENEW_COST = 30;
@@ -73,15 +78,28 @@ public class SpellbookItem extends WrittenBookItem {
     private static final int ASH_STEP_COST = 20;
     private static final int CRYSTAL_WARD_COST = 45;
     private static final int DISPEL_COST = 20;
+    private static final int BINDING_COST = 50;
+    private static final int BLOOD_LANCE_COST = 30;
+    private static final int CRIMSON_FEAST_COST = 45;
+    private static final int SANGUINE_WARD_COST = 60;
     private static final int DEV_RIFT_COST = 1;
     private static final double LUMENFALL_RANGE = 64.0D;
     private static final double FIREBOLT_RANGE = 32.0D;
     private static final PowerParticleOption DRAGON_BREATH_PARTICLE = PowerParticleOption.create(ParticleTypes.DRAGON_BREATH, 1.0F);
+    private static final DustColorTransitionOptions BLOOD_FLAME_PARTICLE = new DustColorTransitionOptions(0x4A0008, 0xFF1A1A, 1.25F);
 
     public SpellbookItem(Identifier id) {
+        this(id, false, "Spellbook");
+    }
+
+    protected SpellbookItem(Identifier id, boolean codex) {
+        this(id, codex, codex ? "Arcane Codex" : "Spellbook");
+    }
+
+    protected SpellbookItem(Identifier id, boolean codex, String title) {
         super(new Properties()
                 .stacksTo(1)
-                .component(DataComponents.WRITTEN_BOOK_CONTENT, createBookContent())
+                .component(DataComponents.WRITTEN_BOOK_CONTENT, createBookContent(codex, title))
                 .setId(ResourceKey.create(Registries.ITEM, id)));
     }
 
@@ -101,8 +119,8 @@ public class SpellbookItem extends WrittenBookItem {
         }
 
         int spell = getSelectedSpell(stack);
-        if (!canUseSpell(player, spell)) {
-            player.sendOverlayMessage(Component.literal("This spell is developer-only"));
+        if (!canUseSpell(stack, player, spell)) {
+            player.sendOverlayMessage(Component.literal("This spell has not been added to this book"));
             return InteractionResult.CONSUME;
         }
         int cost = spellCost(spell);
@@ -118,7 +136,9 @@ public class SpellbookItem extends WrittenBookItem {
 
     private static void ensureBookContent(ItemStack stack) {
         if (!stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
-            stack.set(DataComponents.WRITTEN_BOOK_CONTENT, createBookContent());
+            boolean grimoire = stack.is(ArcanumItems.forbidden_grimoire.get());
+            boolean codex = stack.is(ArcanumItems.arcane_codex.get()) || grimoire;
+            stack.set(DataComponents.WRITTEN_BOOK_CONTENT, createBookContent(codex, grimoire ? "Forbidden Grimoire" : codex ? "Arcane Codex" : "Spellbook"));
         }
     }
 
@@ -148,6 +168,14 @@ public class SpellbookItem extends WrittenBookItem {
         return nextSpell;
     }
 
+    public static int nextSpell(ItemStack stack, Player player, int spell) {
+        int nextSpell = nextSpell(spell);
+        while (!canUseSpell(stack, player, nextSpell)) {
+            nextSpell = nextSpell(nextSpell);
+        }
+        return nextSpell;
+    }
+
     public static boolean cycleSelectedSpell(Player player) {
         Optional<ItemStack> spellbook = findSpellbook(player);
         if (spellbook.isEmpty()) {
@@ -161,7 +189,7 @@ public class SpellbookItem extends WrittenBookItem {
         }
 
         ItemStack stack = spellbook.get();
-        int nextSpell = nextSpell(player, getSelectedSpell(stack));
+        int nextSpell = nextSpell(stack, player, getSelectedSpell(stack));
         setSelectedSpell(stack, nextSpell);
         player.sendOverlayMessage(Component.literal("Selected: " + getSpellName(nextSpell)));
         return true;
@@ -180,12 +208,16 @@ public class SpellbookItem extends WrittenBookItem {
             case 8 -> castAshStep(level, player, false);
             case 9 -> castCrystalWard(level, player, false);
             case 10 -> castDispel(level, player, false);
-            case 11 -> castDeveloperRift(level, player);
+            case 11 -> castBinding(level, player);
+            case 12 -> castDeveloperRift(level, player);
+            case 13 -> castBloodLance(level, player, false);
+            case 14 -> castCrimsonFeast(level, player, false);
+            case 15 -> castSanguineWard(level, player, false);
             default -> {
             }
         }
-        flareAuthorMantle(level, player, spell == 11);
-        if (spell != 11) {
+        flareAuthorMantle(level, player, spell == 12);
+        if (spell != 12) {
             player.sendOverlayMessage(Component.literal("Cast: " + getSpellName(spell)));
         }
     }
@@ -209,8 +241,8 @@ public class SpellbookItem extends WrittenBookItem {
         }
 
         int spell = getSelectedSpell(spellbook.get());
-        if (!canUseSpell(player, spell)) {
-            player.sendOverlayMessage(Component.literal("This spell is developer-only"));
+        if (!canUseSpell(spellbook.get(), player, spell)) {
+            player.sendOverlayMessage(Component.literal("This spell has not been added to this book"));
             return true;
         }
         int cost = spellCost(spell);
@@ -226,7 +258,7 @@ public class SpellbookItem extends WrittenBookItem {
     private static Optional<ItemStack> findSpellbook(Player player) {
         for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
             ItemStack stack = player.getInventory().getItem(slot);
-            if (stack.is(ArcanumItems.spellbook.get())) {
+            if (isSpellBook(stack)) {
                 return Optional.of(stack);
             }
         }
@@ -246,12 +278,16 @@ public class SpellbookItem extends WrittenBookItem {
             case 8 -> castAshStep(level, player, true);
             case 9 -> castCrystalWard(level, player, true);
             case 10 -> castDispel(level, player, true);
-            case 11 -> castRiftSentenceProjectile(level, player);
+            case 11 -> castBinding(level, player);
+            case 12 -> castRiftSentenceProjectile(level, player);
+            case 13 -> castBloodLance(level, player, true);
+            case 14 -> castCrimsonFeast(level, player, true);
+            case 15 -> castSanguineWard(level, player, true);
             default -> {
             }
         }
-        flareAuthorMantle(level, player, spell == 11);
-        if (spell != 11) {
+        flareAuthorMantle(level, player, spell == 12);
+        if (spell != 12) {
             player.sendOverlayMessage(Component.literal("Focused: " + getSpellName(spell)));
         }
     }
@@ -269,13 +305,44 @@ public class SpellbookItem extends WrittenBookItem {
             case 8 -> ASH_STEP_COST;
             case 9 -> CRYSTAL_WARD_COST;
             case 10 -> DISPEL_COST;
-            case 11 -> DEV_RIFT_COST;
+            case 11 -> BINDING_COST;
+            case 12 -> DEV_RIFT_COST;
+            case 13 -> BLOOD_LANCE_COST;
+            case 14 -> CRIMSON_FEAST_COST;
+            case 15 -> SANGUINE_WARD_COST;
             default -> 0;
         };
     }
 
     public static boolean canUseSpell(Player player, int spell) {
-        return spell != 11 || player.getUUID().equals(DEVELOPER_UUID);
+        if (isDeveloper(player)) return true;
+        return findSpellbook(player).map(stack -> knowsSpell(stack, spell)).orElse(false);
+    }
+
+    public static boolean canUseSpell(ItemStack stack, Player player, int spell) {
+        return isDeveloper(player) || knowsSpell(stack, spell);
+    }
+
+    public static boolean isSpellBook(ItemStack stack) {
+        return stack.is(ArcanumItems.spellbook.get()) || stack.is(ArcanumItems.arcane_codex.get())
+                || stack.is(ArcanumItems.forbidden_grimoire.get());
+    }
+
+    public static boolean knowsSpell(ItemStack stack, int spell) {
+        spell = normalizeSpell(spell);
+        if (spell == 12) return false;
+        if (requiresForbiddenGrimoire(spell) && !stack.is(ArcanumItems.forbidden_grimoire.get())) return false;
+        if ((BASE_SPELLS & (1 << spell)) != 0) return true;
+        if (!stack.is(ArcanumItems.arcane_codex.get()) && !stack.is(ArcanumItems.forbidden_grimoire.get())) return false;
+        int unlocked = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getIntOr(UNLOCKED_SPELLS_KEY, BASE_SPELLS);
+        return (unlocked & (1 << spell)) != 0;
+    }
+
+    public static boolean unlockSpell(ItemStack stack, int spell) {
+        if (!canLearnSpell(stack, spell)) return false;
+        int bit = 1 << normalizeSpell(spell);
+        CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.putInt(UNLOCKED_SPELLS_KEY, tag.getIntOr(UNLOCKED_SPELLS_KEY, BASE_SPELLS) | bit));
+        return true;
     }
 
     public static boolean isDeveloper(Player player) {
@@ -303,6 +370,76 @@ public class SpellbookItem extends WrittenBookItem {
         }
 
         castSpell(level, player, spell);
+        return true;
+    }
+
+    private static void castBinding(Level level, Player player) {
+        if (level instanceof ServerLevel serverLevel && !BindingRitualManager.begin(serverLevel, player)) {
+            ManaManager.addMana(player, BINDING_COST);
+        }
+    }
+
+    private static void castBloodLance(Level level, Player player, boolean focused) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        Optional<LivingEntity> target = findTargetLiving(level, player, focused ? 48.0D : 32.0D);
+        if (target.isEmpty()) {
+            ManaManager.addMana(player, BLOOD_LANCE_COST);
+            player.sendOverlayMessage(Component.literal("Blood Lance requires a living target"));
+            return;
+        }
+        float healthCost = focused ? 3.0F : 4.0F;
+        if (!sacrificeBlood(player, healthCost, BLOOD_LANCE_COST)) return;
+        LivingEntity victim = target.get();
+        victim.hurtServer(serverLevel, level.damageSources().indirectMagic(player, player), focused ? 16.0F : 12.0F);
+        Vec3 pos = victim.position().add(0.0D, victim.getBbHeight() * 0.5D, 0.0D);
+        serverLevel.sendParticles(ParticleTypes.DAMAGE_INDICATOR, pos.x, pos.y, pos.z, 28, 0.35D, 0.45D, 0.35D, 0.08D);
+        serverLevel.sendParticles(ParticleTypes.CRIMSON_SPORE, pos.x, pos.y, pos.z, 22, 0.4D, 0.5D, 0.4D, 0.03D);
+        serverLevel.playSound(null, victim.blockPosition(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 1.0F, 0.55F);
+    }
+
+    private static void castCrimsonFeast(Level level, Player player, boolean focused) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        double range = focused ? 10.0D : 7.0D;
+        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(range),
+                entity -> entity != player && entity.isAlive());
+        if (targets.isEmpty()) {
+            ManaManager.addMana(player, CRIMSON_FEAST_COST);
+            player.sendOverlayMessage(Component.literal("Crimson Feast found no life to consume"));
+            return;
+        }
+        if (!sacrificeBlood(player, 2.0F, CRIMSON_FEAST_COST)) return;
+        int drained = 0;
+        for (LivingEntity target : targets) {
+            if (target.hurtServer(serverLevel, level.damageSources().indirectMagic(player, player), focused ? 8.0F : 6.0F)) {
+                drained++;
+                Vec3 pos = target.position().add(0.0D, target.getBbHeight() * 0.5D, 0.0D);
+                serverLevel.sendParticles(ParticleTypes.DAMAGE_INDICATOR, pos.x, pos.y, pos.z, 12, 0.25D, 0.35D, 0.25D, 0.05D);
+            }
+        }
+        if (drained > 0) player.heal(Math.min(focused ? 12.0F : 8.0F, drained * 2.0F));
+        Vec3 center = player.position().add(0.0D, 0.8D, 0.0D);
+        serverLevel.sendParticles(ParticleTypes.CRIMSON_SPORE, center.x, center.y, center.z, 45, range * 0.35D, 0.8D, range * 0.35D, 0.04D);
+        serverLevel.playSound(null, player.blockPosition(), SoundEvents.WARDEN_HEARTBEAT, SoundSource.PLAYERS, 0.9F, 0.7F);
+    }
+
+    private static void castSanguineWard(Level level, Player player, boolean focused) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        if (!sacrificeBlood(player, focused ? 6.0F : 8.0F, SANGUINE_WARD_COST)) return;
+        player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, focused ? 800 : 600, focused ? 3 : 2));
+        player.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, focused ? 500 : 400, focused ? 2 : 1));
+        Vec3 pos = player.position().add(0.0D, 0.9D, 0.0D);
+        serverLevel.sendParticles(ParticleTypes.DAMAGE_INDICATOR, pos.x, pos.y, pos.z, 35, 0.7D, 0.9D, 0.7D, 0.03D);
+        serverLevel.sendParticles(BLOOD_FLAME_PARTICLE, pos.x, pos.y, pos.z, 36, 0.6D, 0.8D, 0.6D, 0.03D);
+        serverLevel.playSound(null, player.blockPosition(), SoundEvents.SCULK_CATALYST_BLOOM, SoundSource.PLAYERS, 1.0F, 0.6F);
+    }
+
+    private static boolean sacrificeBlood(Player player, float amount, int manaRefund) {
+        if (player.getHealth() <= amount) {
+            ManaManager.addMana(player, manaRefund);
+            player.sendOverlayMessage(Component.literal("The spell demands more blood than you can safely give"));
+            return false;
+        }
+        player.setHealth(player.getHealth() - amount);
         return true;
     }
 
@@ -550,15 +687,26 @@ public class SpellbookItem extends WrittenBookItem {
     }
 
     private static void castAetherwing(Level level, Player player) {
+        if (!sacrificeBlood(player, 6.0F, AETHERWING_COST)) return;
         SpellFlightManager.activate(player);
+        bloodWingParticles(level, player);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ELYTRA_FLYING, SoundSource.PLAYERS, 0.6F, 1.4F);
     }
 
     private static void castFocusedAetherwing(Level level, Player player) {
+        if (!sacrificeBlood(player, 6.0F, AETHERWING_COST)) return;
         SpellFlightManager.activate(player);
         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 400, 0));
         player.addEffect(new MobEffectInstance(MobEffects.SPEED, 400, 1));
+        bloodWingParticles(level, player);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ELYTRA_FLYING, SoundSource.PLAYERS, 0.8F, 1.8F);
+    }
+
+    private static void bloodWingParticles(Level level, Player player) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        Vec3 pos = player.position().add(0.0D, 1.0D, 0.0D);
+        serverLevel.sendParticles(BLOOD_FLAME_PARTICLE, pos.x, pos.y, pos.z, 55, 1.1D, 0.75D, 0.35D, 0.04D);
+        serverLevel.sendParticles(ParticleTypes.CRIMSON_SPORE, pos.x, pos.y, pos.z, 35, 1.2D, 0.8D, 0.4D, 0.03D);
     }
 
     private static void castRenew(Player player) {
@@ -998,32 +1146,63 @@ public class SpellbookItem extends WrittenBookItem {
             case 8 -> "Ash Step";
             case 9 -> "Crystal Ward";
             case 10 -> "Dispel";
-            case 11 -> "Rift Sentence";
+            case 11 -> "Binding";
+            case 12 -> "Rift Sentence";
+            case 13 -> "Blood Lance";
+            case 14 -> "Crimson Feast";
+            case 15 -> "Sanguine Ward";
             default -> "Unknown";
         };
     }
 
     private static WrittenBookContent createBookContent() {
+        return createBookContent(false, "Spellbook");
+    }
+
+    public static boolean canLearnSpell(ItemStack stack, int spell) {
+        if (!stack.is(ArcanumItems.arcane_codex.get()) && !stack.is(ArcanumItems.forbidden_grimoire.get())) return false;
+        return !requiresForbiddenGrimoire(spell) || stack.is(ArcanumItems.forbidden_grimoire.get());
+    }
+
+    public static boolean requiresForbiddenGrimoire(int spell) {
+        int normalized = normalizeSpell(spell);
+        return normalized == 4 || normalized >= 13;
+    }
+
+    private static WrittenBookContent createBookContent(boolean codex) {
+        return createBookContent(codex, codex ? "Arcane Codex" : "Spellbook");
+    }
+
+    private static WrittenBookContent createBookContent(boolean codex, String title) {
+        List<Filterable<Component>> pages = new ArrayList<>();
+        if (codex) {
+            pages.add(page(title + "\n\nRight-click a discovered spell page while carrying this book to permanently inscribe it.\n\nPress R to cycle learned spells."));
+            pages.add(page("Lumenfall\n\nCost: " + LUMENFALL_COST + " mana\n\nFires a lunar spark forward and leaves a bright magic light where it lands."));
+            pages.add(page("Firebolt\n\nCost: " + FIREBOLT_COST + " mana\n\nLaunches a small ball of infernal flame in the direction you are facing."));
+            pages.add(page("Renew\n\nCost: " + RENEW_COST + " mana\n\nRestores health and grants a short pulse of Regeneration."));
+            pages.add(page("Ember Ward\n\nCost: " + EMBER_WARD_COST + " mana\n\nGrants Fire Resistance and brief Resistance."));
+            pages.add(page("Blink\n\nCost: " + BLINK_COST + " mana\n\nTeleports a short distance toward your target."));
+            pages.add(page("Infernal Chains\n\nCost: " + INFERNAL_CHAINS_COST + " mana\n\nBinds nearby enemies."));
+            pages.add(page("Soulflare\n\nCost: " + SOULFLARE_COST + " mana\n\nIgnites a soul target and restores mana."));
+            pages.add(page("Ash Step\n\nCost: " + ASH_STEP_COST + " mana\n\nDashes forward through flame."));
+            pages.add(page("Crystal Ward\n\nCost: " + CRYSTAL_WARD_COST + " mana\n\nSurrounds the caster with protective crystal energy."));
+            pages.add(page("Dispel\n\nCost: " + DISPEL_COST + " mana\n\nClears fire and common harmful effects."));
+            if (title.equals("Forbidden Grimoire")) {
+                pages.add(page("Aetherwing\n\nCost: " + AETHERWING_COST + " mana + 3 hearts\n\nBlood-forged wings grant creative-style flight until you land."));
+                pages.add(page("Blood Lance\n\nCost: " + BLOOD_LANCE_COST + " mana + 2 hearts\n\nSacrifices blood to strike a distant living target."));
+                pages.add(page("Crimson Feast\n\nCost: " + CRIMSON_FEAST_COST + " mana + 1 heart\n\nDrains nearby life and returns it to the caster."));
+                pages.add(page("Sanguine Ward\n\nCost: " + SANGUINE_WARD_COST + " mana + 4 hearts\n\nTrades blood for powerful Absorption and Resistance."));
+            }
+        } else {
+            pages.add(page("Arcanum Spellbook\n\nRight-click casts the selected spell.\n\nPress R to cycle spells.\n\nSneak + right-click opens this book."));
+            pages.add(page("Lumenfall\n\nCost: " + LUMENFALL_COST + " mana\n\nFires a lunar spark forward and leaves a bright magic light where it lands."));
+            pages.add(page("Firebolt\n\nCost: " + FIREBOLT_COST + " mana\n\nLaunches a small ball of infernal flame in the direction you are facing."));
+        }
         return new WrittenBookContent(
-                Filterable.passThrough("Spellbook"),
+                Filterable.passThrough(title),
                 "Arcanum",
                 0,
-                List.of(
-                        page("Arcanum Spellbook\n\nRight-click casts the selected spell.\n\nPress R to cycle spells.\n\nSneak + right-click opens this book."),
-                        page("Lumenfall\n\nCost: " + LUMENFALL_COST + " mana\n\nFires a lunar spark forward and leaves a bright magic light where it lands."),
-                        page("Firebolt\n\nCost: " + FIREBOLT_COST + " mana\n\nLaunches a small ball of infernal flame in the direction you are facing."),
-                        page("Infernal Wand\n\nFirebolt can transmute a dropped Infernal Beating Stick into an Infernal Wand.\n\nWith this book in your inventory, the wand focuses the selected spell instead of its base fire magic."),
-                        page("Renew\n\nCost: " + RENEW_COST + " mana\n\nRestores health and grants a short pulse of Regeneration."),
-                        page("Ember Ward\n\nCost: " + EMBER_WARD_COST + " mana\n\nWraps the caster in protective heat, granting Fire Resistance and brief Resistance."),
-                        page("Aetherwing\n\nCost: " + AETHERWING_COST + " mana\n\nGrants creative-style flight until you land."),
-                        page("Blink\n\nCost: " + BLINK_COST + " mana\n\nTeleports a short distance toward your target."),
-                        page("Infernal Chains\n\nCost: " + INFERNAL_CHAINS_COST + " mana\n\nBinds nearby enemies with Slowness, Weakness, and Glowing."),
-                        page("Soulflare\n\nCost: " + SOULFLARE_COST + " mana\n\nIgnites and marks a soul target, restoring mana to the caster."),
-                        page("Ash Step\n\nCost: " + ASH_STEP_COST + " mana\n\nDashes forward through flame and grants brief speed and fire resistance."),
-                        page("Crystal Ward\n\nCost: " + CRYSTAL_WARD_COST + " mana\n\nSurrounds the caster with protective crystal energy."),
-                        page("Dispel\n\nCost: " + DISPEL_COST + " mana\n\nClears fire and common harmful effects."),
-                        page("Rift Sentence\n\nDeveloper-only.\n\nOpens a forbidden rift beneath the caster, dragging them through the boundary between worlds.\n\nWhen channeled through a wand, the sentence may be passed onto another entity.")
-                ),
+                pages,
                 true
         );
     }

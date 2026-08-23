@@ -42,7 +42,7 @@ final class FabricSpellKeybinds {
             player.sendOverlayMessage(Component.literal("Author's Mantle: " + SpellbookItem.getSpellName(spell)));
             return;
         }
-        int spell = SpellbookItem.nextSpell(player, SpellbookItem.getSelectedSpell(book));
+        int spell = SpellbookItem.nextSpell(book, player, SpellbookItem.getSelectedSpell(book));
         SpellbookItem.setSelectedSpell(book, spell);
         ArcanumClientNetworking.send(new SelectSpellPayload(spell));
         player.sendOverlayMessage(Component.literal("Selected: " + SpellbookItem.getSpellName(spell)));
@@ -51,13 +51,13 @@ final class FabricSpellKeybinds {
     private static ItemStack findBook(LocalPlayer player) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack stack = player.getItemInHand(hand);
-            if (stack.is(ArcanumItems.spellbook.get())) return stack;
+            if (SpellbookItem.isSpellBook(stack)) return stack;
         }
         boolean wand = false;
         for (InteractionHand hand : InteractionHand.values()) wand |= player.getItemInHand(hand).is(ArcanumWeapons.infernalwand.get());
         if (wand) for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
-            if (stack.is(ArcanumItems.spellbook.get())) return stack;
+            if (SpellbookItem.isSpellBook(stack)) return stack;
         }
         return ItemStack.EMPTY;
     }

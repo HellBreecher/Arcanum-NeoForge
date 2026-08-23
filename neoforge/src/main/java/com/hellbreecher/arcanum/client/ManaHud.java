@@ -50,7 +50,7 @@ public final class ManaHud {
     private static String selectedSpellLabel(LocalPlayer player) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack stack = player.getItemInHand(hand);
-            if (stack.is(ArcanumItems.spellbook.get())) {
+            if (SpellbookItem.isSpellBook(stack)) {
                 return " | " + SpellbookItem.getSpellName(SpellbookItem.getSelectedSpell(stack));
             }
         }

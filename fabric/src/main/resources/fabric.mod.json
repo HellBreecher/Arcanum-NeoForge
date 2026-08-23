@@ -10,6 +10,7 @@
     "issues": "https://github.com/HellBreecher/Arcanum-NeoForge/issues"
   },
   "license": "All Rights Reserved",
+  "icon": "arcanum-icon.png",
   "environment": "*",
   "entrypoints": {
     "main": ["com.hellbreecher.arcanum.fabric.ArcanumFabric"],

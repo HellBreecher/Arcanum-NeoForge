@@ -12,11 +12,10 @@ public final class ArcanumServerNetworking {
 
     public static void handle(SelectSpellPayload payload, Player player) {
         int spell = SpellbookItem.normalizeSpell(payload.spell());
-        if (!SpellbookItem.canUseSpell(player, spell)) return;
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack stack = player.getItemInHand(hand);
-            if (stack.is(ArcanumItems.spellbook.get())) {
-                SpellbookItem.setSelectedSpell(stack, spell);
+            if (SpellbookItem.isSpellBook(stack)) {
+                if (SpellbookItem.canUseSpell(stack, player, spell)) SpellbookItem.setSelectedSpell(stack, spell);
                 return;
             }
         }
@@ -26,7 +25,7 @@ public final class ArcanumServerNetworking {
         }
         for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
             ItemStack stack = player.getInventory().getItem(slot);
-            if (stack.is(ArcanumItems.spellbook.get())) {
+            if (SpellbookItem.isSpellBook(stack) && SpellbookItem.canUseSpell(stack, player, spell)) {
                 SpellbookItem.setSelectedSpell(stack, spell);
                 return;
             }

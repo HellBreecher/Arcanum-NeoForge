@@ -89,7 +89,7 @@ public final class SpellKeybinds {
             return;
         }
 
-        int nextSpell = SpellbookItem.nextSpell(player, SpellbookItem.getSelectedSpell(stack));
+        int nextSpell = SpellbookItem.nextSpell(stack, player, SpellbookItem.getSelectedSpell(stack));
         SpellbookItem.setSelectedSpell(stack, nextSpell);
         ArcanumClientNetworking.send(new SelectSpellPayload(nextSpell));
         player.sendOverlayMessage(net.minecraft.network.chat.Component.literal("Selected: " + SpellbookItem.getSpellName(nextSpell)));
@@ -116,7 +116,7 @@ public final class SpellKeybinds {
     private static ItemStack getHeldSpellbook(LocalPlayer player) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack stack = player.getItemInHand(hand);
-            if (stack.is(ArcanumItems.spellbook.get())) {
+            if (SpellbookItem.isSpellBook(stack)) {
                 return stack;
             }
         }
@@ -135,7 +135,7 @@ public final class SpellKeybinds {
     private static ItemStack getInventorySpellbook(LocalPlayer player) {
         for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
             ItemStack stack = player.getInventory().getItem(slot);
-            if (stack.is(ArcanumItems.spellbook.get())) {
+            if (SpellbookItem.isSpellBook(stack)) {
                 return stack;
             }
         }

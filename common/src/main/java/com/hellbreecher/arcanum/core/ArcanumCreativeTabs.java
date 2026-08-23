@@ -23,6 +23,14 @@ public class ArcanumCreativeTabs  {
             .build());
 
     public static void addAll(Consumer<ItemLike> output) {
+                //Magic progression
+                output.accept(ArcanumItems.spellbook.get());
+                output.accept(ArcanumItems.codex_binding.get());
+                output.accept(ArcanumItems.arcane_codex.get());
+                output.accept(ArcanumItems.grimoire_binding.get());
+                output.accept(ArcanumItems.forbidden_grimoire.get());
+                output.accept(ArcanumItems.spell_page.get());
+                output.accept(ArcanumItems.blood_spell_page.get());
                 //Block Ores
                 output.accept(ArcanumBlocks.greensapphireore_block.get());
                 output.accept(ArcanumBlocks.blooddiamondore_block.get());
@@ -76,7 +84,18 @@ public class ArcanumCreativeTabs  {
                 //Item Magical Ingots
                 output.accept(ArcanumItems.infernaldiamond.get());
                 output.accept(ArcanumItems.infernalcrystal.get());
-                output.accept(ArcanumItems.spellbook.get());
+                output.accept(ArcanumItems.renew_page.get());
+                output.accept(ArcanumItems.ember_ward_page.get());
+                output.accept(ArcanumItems.aetherwing_page.get());
+                output.accept(ArcanumItems.blink_page.get());
+                output.accept(ArcanumItems.infernal_chains_page.get());
+                output.accept(ArcanumItems.soulflare_page.get());
+                output.accept(ArcanumItems.ash_step_page.get());
+                output.accept(ArcanumItems.crystal_ward_page.get());
+                output.accept(ArcanumItems.dispel_page.get());
+                output.accept(ArcanumItems.blood_lance_page.get());
+                output.accept(ArcanumItems.crimson_feast_page.get());
+                output.accept(ArcanumItems.sanguine_ward_page.get());
                 //Item Misc
                 output.accept(ArcanumItems.quartzstick.get());
                 output.accept(ArcanumItems.blooddiamondstick.get());

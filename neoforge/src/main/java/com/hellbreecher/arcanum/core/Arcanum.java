@@ -8,6 +8,7 @@ import com.hellbreecher.arcanum.common.handler.ArcanumAnvil;
 import com.hellbreecher.arcanum.common.handler.ArcanumCapabilities;
 import com.hellbreecher.arcanum.common.handler.datagen.ArcanumDataGen;
 import com.hellbreecher.arcanum.common.handler.magic.SpellFlightManager;
+import com.hellbreecher.arcanum.common.handler.magic.BindingRitualManager;
 import com.hellbreecher.arcanum.common.items.InfernalDiamondItem;
 import com.hellbreecher.arcanum.common.items.armor.InfernalArmorItem;
 import com.hellbreecher.arcanum.common.items.armor.InfernalDiamondArmorItem;
@@ -37,6 +38,8 @@ import com.hellbreecher.arcanum.common.platform.RegistryPlatform;
 import com.hellbreecher.arcanum.common.platform.MenuTypePlatform;
 import com.hellbreecher.arcanum.ArcanumCommon;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import com.hellbreecher.arcanum.common.loot.SpellLoot;
+import net.neoforged.neoforge.event.LootTableLoadEvent;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Arcanum.MODID)
@@ -95,6 +98,11 @@ public class Arcanum {
         NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.tick.PlayerTickEvent.Post event) -> SpellFlightManager.onPlayerTick(event.getEntity()));
         NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.entity.player.PlayerEvent.ItemCraftedEvent event) -> InfernalDiamondItem.onItemCrafted(event.getInventory()));
         NeoForge.EVENT_BUS.addListener(ArcanumAnvil::onAnvilUpdate);
+        NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) -> BindingRitualManager.tick(event.getServer()));
+        NeoForge.EVENT_BUS.addListener((LootTableLoadEvent event) -> {
+            var pool = SpellLoot.pool(event.getName());
+            if (pool != null) event.getTable().addPool(pool.build());
+        });
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

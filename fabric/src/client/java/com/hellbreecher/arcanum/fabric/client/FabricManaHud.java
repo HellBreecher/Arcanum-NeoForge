@@ -30,7 +30,7 @@ final class FabricManaHud {
     private static String spell(LocalPlayer player) {
         for (InteractionHand hand : InteractionHand.values()) {
             var stack = player.getItemInHand(hand);
-            if (stack.is(ArcanumItems.spellbook.get())) return " | " + SpellbookItem.getSpellName(SpellbookItem.getSelectedSpell(stack));
+            if (SpellbookItem.isSpellBook(stack)) return " | " + SpellbookItem.getSpellName(SpellbookItem.getSelectedSpell(stack));
         }
         return SpellbookItem.isDeveloper(player) ? " | Author's Mantle: " + SpellbookItem.getSpellName(SpellbookItem.getAuthorMantleSpell(player)) : "";
     }
